@@ -1,0 +1,2016 @@
+fileFormatVersion: 2
+guid: d53e87f3676f21849ba35a174d0a2c87
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 4993485490529594301
+    second: Mouse - Stealth_0
+  - first:
+      213: -3357588857482878741
+    second: Mouse - Stealth_1
+  - first:
+      213: 6761624349597861421
+    second: Mouse - Stealth_2
+  - first:
+      213: -1648285363593438720
+    second: Mouse - Stealth_3
+  - first:
+      213: -7027958723654183863
+    second: Mouse - Stealth_4
+  - first:
+      213: -8849266767587145123
+    second: Mouse - Stealth_5
+  - first:
+      213: -1320476357992200565
+    second: Mouse - Stealth_6
+  - first:
+      213: -3314321087371897920
+    second: Mouse - Stealth_7
+  - first:
+      213: -4431285028253916507
+    second: Mouse - Stealth_8
+  - first:
+      213: 5840756118541654696
+    second: Mouse - Stealth_9
+  - first:
+      213: -3008689327585685967
+    second: Mouse - Stealth_10
+  - first:
+      213: 2417748377787395432
+    second: Mouse - Stealth_11
+  - first:
+      213: 476514653260305523
+    second: Mouse - Stealth_12
+  - first:
+      213: -2342531606243946824
+    second: Mouse - Stealth_13
+  - first:
+      213: 4566066725595999969
+    second: Mouse - Stealth_14
+  - first:
+      213: -3771604356569677700
+    second: Mouse - Stealth_15
+  - first:
+      213: 3630424295590524091
+    second: Mouse - Stealth_16
+  - first:
+      213: 59891897056314295
+    second: Mouse - Stealth_17
+  - first:
+      213: 8769876641742787825
+    second: Mouse - Stealth_18
+  - first:
+      213: 216756183422117524
+    second: Mouse - Stealth_19
+  - first:
+      213: -7485268254509478947
+    second: Mouse - Stealth_20
+  - first:
+      213: 5185968886992478731
+    second: Mouse - Stealth_21
+  - first:
+      213: 8837228686076633113
+    second: Mouse - Stealth_22
+  - first:
+      213: 355730022539736518
+    second: Mouse - Stealth_23
+  - first:
+      213: -3703619732071371724
+    second: Mouse - Stealth_24
+  - first:
+      213: 1659938775342793805
+    second: Mouse - Stealth_25
+  - first:
+      213: 6185605963099124774
+    second: Mouse - Stealth_26
+  - first:
+      213: -3177735031832404991
+    second: Mouse - Stealth_27
+  - first:
+      213: -3956390002771758168
+    second: Mouse - Stealth_28
+  - first:
+      213: -4657000960370823173
+    second: Mouse - Stealth_29
+  - first:
+      213: 4432841422505803814
+    second: Mouse - Stealth_30
+  - first:
+      213: -4951109832077508681
+    second: Mouse - Stealth_31
+  - first:
+      213: 8486802907576032832
+    second: Mouse - Stealth_32
+  - first:
+      213: -4652063847080978782
+    second: Mouse - Stealth_33
+  - first:
+      213: -3943076770980098598
+    second: Mouse - Stealth_34
+  - first:
+      213: 3069036968794266596
+    second: Mouse - Stealth_35
+  - first:
+      213: -7235877469757279885
+    second: Mouse - Stealth_36
+  - first:
+      213: 9206017118475395415
+    second: Mouse - Stealth_37
+  - first:
+      213: 807996135070021819
+    second: Mouse - Stealth_38
+  - first:
+      213: -260226994057805805
+    second: Mouse - Stealth_39
+  - first:
+      213: 4901336173572776465
+    second: Mouse - Stealth_40
+  - first:
+      213: 4267919975739006349
+    second: Mouse - Stealth_41
+  - first:
+      213: 1620229804924160145
+    second: Mouse - Stealth_42
+  - first:
+      213: 986744749519111621
+    second: Mouse - Stealth_43
+  - first:
+      213: -2398952720894635108
+    second: Mouse - Stealth_44
+  - first:
+      213: 2772596103023708293
+    second: Mouse - Stealth_45
+  - first:
+      213: 778749471866594733
+    second: Mouse - Stealth_46
+  - first:
+      213: -8386439725807089223
+    second: Mouse - Stealth_47
+  - first:
+      213: 8804020191048379549
+    second: Mouse - Stealth_48
+  - first:
+      213: -48889063053491627
+    second: Mouse - Stealth_49
+  - first:
+      213: -6501104514254842214
+    second: Mouse - Stealth_50
+  - first:
+      213: -4207243769728613654
+    second: Mouse - Stealth_51
+  - first:
+      213: -2978018055385015035
+    second: Mouse - Stealth_52
+  - first:
+      213: -1923723820008091329
+    second: Mouse - Stealth_53
+  - first:
+      213: 3462574296142615441
+    second: Mouse - Stealth_54
+  - first:
+      213: 1144284986653189475
+    second: Mouse - Stealth_55
+  - first:
+      213: 2383981952478027115
+    second: Mouse - Stealth_56
+  - first:
+      213: -2704683927197429661
+    second: Mouse - Stealth_57
+  - first:
+      213: -7169002483998607435
+    second: Mouse - Stealth_58
+  - first:
+      213: -2878593203020362696
+    second: Mouse - Stealth_59
+  - first:
+      213: -2475133788962595452
+    second: Mouse - Stealth_60
+  - first:
+      213: -9012481244300749931
+    second: Mouse - Stealth_61
+  - first:
+      213: 6216116154732661122
+    second: Mouse - Stealth_62
+  - first:
+      213: 4213254350997095365
+    second: Mouse - Stealth_63
+  - first:
+      213: 4459862988650628345
+    second: Mouse - Stealth_64
+  - first:
+      213: -5946883367094689439
+    second: Mouse - Stealth_65
+  - first:
+      213: -362765443640516925
+    second: Mouse - Stealth_66
+  - first:
+      213: -715566514807125444
+    second: Mouse - Stealth_67
+  - first:
+      213: 8182406662527039975
+    second: Mouse - Stealth_68
+  - first:
+      213: -6994149177890874275
+    second: Mouse - Stealth_69
+  - first:
+      213: 1389434734115890680
+    second: Mouse - Stealth_70
+  - first:
+      213: -563494385361290114
+    second: Mouse - Stealth_71
+  - first:
+      213: -2165979281069441320
+    second: Mouse - Stealth_72
+  - first:
+      213: -5160177138634877042
+    second: Mouse - Stealth_73
+  - first:
+      213: 7472560058629346512
+    second: Mouse - Stealth_74
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Win64
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Mouse - Stealth_0
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 223
+        width: 13
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dbb6516d89c6c4540800000000000000
+      internalID: 4993485490529594301
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_1
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 223
+        width: 13
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be06cef29b27761d0800000000000000
+      internalID: -3357588857482878741
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_2
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 223
+        width: 14
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d268966758d16dd50800000000000000
+      internalID: 6761624349597861421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_3
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 223
+        width: 13
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00a998ed13d1029e0800000000000000
+      internalID: -1648285363593438720
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_4
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 223
+        width: 12
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9441c7cc6cca77e90800000000000000
+      internalID: -7027958723654183863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_5
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 223
+        width: 12
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5a8c43a2c6113580800000000000000
+      internalID: -8849266767587145123
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_6
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 223
+        width: 13
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b86c293afb9bcade0800000000000000
+      internalID: -1320476357992200565
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_7
+      rect:
+        serializedVersion: 2
+        x: 226
+        y: 236
+        width: 10
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c39c93f78a2102d0800000000000000
+      internalID: -3314321087371897920
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_8
+      rect:
+        serializedVersion: 2
+        x: 233
+        y: 237
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a22b68aeb9e082c0800000000000000
+      internalID: -4431285028253916507
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_9
+      rect:
+        serializedVersion: 2
+        x: 241
+        y: 237
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8aa5d518eb88e0150800000000000000
+      internalID: 5840756118541654696
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_10
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 224
+        width: 13
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13e0fbd4ffcfe36d0800000000000000
+      internalID: -3008689327585685967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_11
+      rect:
+        serializedVersion: 2
+        x: 236
+        y: 224
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86d6b4ef6519d8120800000000000000
+      internalID: 2417748377787395432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_12
+      rect:
+        serializedVersion: 2
+        x: 241
+        y: 224
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37459dd6d8bec9600800000000000000
+      internalID: 476514653260305523
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_13
+      rect:
+        serializedVersion: 2
+        x: 246
+        y: 225
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8be44b65ae7ad7fd0800000000000000
+      internalID: -2342531606243946824
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_14
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 191
+        width: 18
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ee61efae7ded5f30800000000000000
+      internalID: 4566066725595999969
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_15
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 191
+        width: 18
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c70495d02d198abc0800000000000000
+      internalID: -3771604356569677700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_16
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 191
+        width: 18
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb4fe9a79abd16230800000000000000
+      internalID: 3630424295590524091
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_17
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 191
+        width: 18
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b347f0fc57c4d000800000000000000
+      internalID: 59891897056314295
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_18
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 191
+        width: 18
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f41313475cd4b970800000000000000
+      internalID: 8769876641742787825
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_19
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 191
+        width: 18
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 496aeb3b992120300800000000000000
+      internalID: 216756183422117524
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_20
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 191
+        width: 18
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ddb44716e2cfe1890800000000000000
+      internalID: -7485268254509478947
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_21
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 202
+        width: 11
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b022a6de93348f740800000000000000
+      internalID: 5185968886992478731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_22
+      rect:
+        serializedVersion: 2
+        x: 237
+        y: 206
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9106d781ba424aa70800000000000000
+      internalID: 8837228686076633113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_23
+      rect:
+        serializedVersion: 2
+        x: 225
+        y: 193
+        width: 30
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c53c6d129ecfe400800000000000000
+      internalID: 355730022539736518
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_24
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 159
+        width: 18
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43c22cee9791a9cc0800000000000000
+      internalID: -3703619732071371724
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_25
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 159
+        width: 18
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d44443d7589490710800000000000000
+      internalID: 1659938775342793805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_26
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 159
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 624bf07c9dfa7d550800000000000000
+      internalID: 6185605963099124774
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_27
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 159
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 10c905d23da66e3d0800000000000000
+      internalID: -3177735031832404991
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_28
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 159
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a3f1eb11441819c0800000000000000
+      internalID: -3956390002771758168
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_29
+      rect:
+        serializedVersion: 2
+        x: 161
+        y: 169
+        width: 29
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bffa176ec420f5fb0800000000000000
+      internalID: -4657000960370823173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_30
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 159
+        width: 16
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 620881e99cd948d30800000000000000
+      internalID: 4432841422505803814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_31
+      rect:
+        serializedVersion: 2
+        x: 225
+        y: 176
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7bf731ff6df1a4bb0800000000000000
+      internalID: -4951109832077508681
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_32
+      rect:
+        serializedVersion: 2
+        x: 233
+        y: 177
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04e52d8874e27c570800000000000000
+      internalID: 8486802907576032832
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_33
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 178
+        width: 11
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a61d4a249c807fb0800000000000000
+      internalID: -4652063847080978782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_34
+      rect:
+        serializedVersion: 2
+        x: 226
+        y: 164
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: add03af61906749c0800000000000000
+      internalID: -3943076770980098598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_35
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 164
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4eb1687dcd8679a20800000000000000
+      internalID: 3069036968794266596
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_36
+      rect:
+        serializedVersion: 2
+        x: 237
+        y: 164
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3717dd057cff49b90800000000000000
+      internalID: -7235877469757279885
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_37
+      rect:
+        serializedVersion: 2
+        x: 244
+        y: 164
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75124ee2bc752cf70800000000000000
+      internalID: 9206017118475395415
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_38
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 127
+        width: 13
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb8bcb23434963b00800000000000000
+      internalID: 807996135070021819
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_39
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 127
+        width: 13
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 310873a7dec736cf0800000000000000
+      internalID: -260226994057805805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_40
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 139
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 112e39e084b050440800000000000000
+      internalID: 4901336173572776465
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_41
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 140
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8d97b30b92ba3b30800000000000000
+      internalID: 4267919975739006349
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_42
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 127
+        width: 12
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19841095c663c7610800000000000000
+      internalID: 1620229804924160145
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_43
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 127
+        width: 12
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c581172f1f91bd00800000000000000
+      internalID: 986744749519111621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_44
+      rect:
+        serializedVersion: 2
+        x: 195
+        y: 135
+        width: 12
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c935e16e53535bed0800000000000000
+      internalID: -2398952720894635108
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_45
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 137
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5884c52477d3a7620800000000000000
+      internalID: 2772596103023708293
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_46
+      rect:
+        serializedVersion: 2
+        x: 162
+        y: 127
+        width: 28
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da5a1a7c48caeca00800000000000000
+      internalID: 778749471866594733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_47
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 95
+        width: 12
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b94b0da0816d9b80800000000000000
+      internalID: -8386439725807089223
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_48
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 107
+        width: 9
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d9c2ec2d7b92e2a70800000000000000
+      internalID: 8804020191048379549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_49
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 109
+        width: 12
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5528b4bf7af425ff0800000000000000
+      internalID: -48889063053491627
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_50
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 95
+        width: 18
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a96d62c73ef67c5a0800000000000000
+      internalID: -6501104514254842214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_51
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 63
+        width: 18
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae2c9d5151edc95c0800000000000000
+      internalID: -4207243769728613654
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_52
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 63
+        width: 18
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50d931a5b54fba6d0800000000000000
+      internalID: -2978018055385015035
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_53
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 63
+        width: 18
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f31d576c06f8d45e0800000000000000
+      internalID: -1923723820008091329
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_54
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 63
+        width: 18
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1939af11af88d0030800000000000000
+      internalID: 3462574296142615441
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_55
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 63
+        width: 18
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 365a647f12151ef00800000000000000
+      internalID: 1144284986653189475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_56
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 63
+        width: 18
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b6d156474fa951120800000000000000
+      internalID: 2383981952478027115
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_57
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 63
+        width: 18
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36050b95c48077ad0800000000000000
+      internalID: -2704683927197429661
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_58
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 85
+        width: 14
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b7be5b4936928c90800000000000000
+      internalID: -7169002483998607435
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_59
+      rect:
+        serializedVersion: 2
+        x: 241
+        y: 85
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83c0e19bbbe2d08d0800000000000000
+      internalID: -2878593203020362696
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_60
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 68
+        width: 13
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48d5159ceee86add0800000000000000
+      internalID: -2475133788962595452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_61
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 69
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5935598fe0c3de280800000000000000
+      internalID: -9012481244300749931
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_62
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 31
+        width: 18
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 289486555b4144650800000000000000
+      internalID: 6216116154732661122
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_63
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 31
+        width: 18
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c30d8b628c787a30800000000000000
+      internalID: 4213254350997095365
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_64
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 31
+        width: 18
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f4ce6142cd94ed30800000000000000
+      internalID: 4459862988650628345
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_65
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 31
+        width: 18
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 16164a7e51d687da0800000000000000
+      internalID: -5946883367094689439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_66
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 31
+        width: 18
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ce150340c237faf0800000000000000
+      internalID: -362765443640516925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_67
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 50
+        width: 14
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3ac1c7cb0cc116f0800000000000000
+      internalID: -715566514807125444
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_68
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 50
+        width: 10
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e9b6bfd18fbd8170800000000000000
+      internalID: 8182406662527039975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_69
+      rect:
+        serializedVersion: 2
+        x: 249
+        y: 50
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5c59b9116acfee90800000000000000
+      internalID: -6994149177890874275
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_70
+      rect:
+        serializedVersion: 2
+        x: 228
+        y: 36
+        width: 11
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f521957783484310800000000000000
+      internalID: 1389434734115890680
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_71
+      rect:
+        serializedVersion: 2
+        x: 238
+        y: 36
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7cfc9f87d01e28f0800000000000000
+      internalID: -563494385361290114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_72
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 0
+        width: 13
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8defff8d155e0f1e0800000000000000
+      internalID: -2165979281069441320
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_73
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 0
+        width: 13
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8793917b3e5368b0800000000000000
+      internalID: -5160177138634877042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mouse - Stealth_74
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 0
+        width: 18
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d4df5138cdd3b760800000000000000
+      internalID: 7472560058629346512
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable: {}
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

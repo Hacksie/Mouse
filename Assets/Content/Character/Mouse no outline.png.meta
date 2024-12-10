@@ -1833,7 +1833,77 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Mouse no outline_0: 1645265560917357992
+      Mouse no outline_1: -2210083998895293527
+      Mouse no outline_10: -4646767864088393809
+      Mouse no outline_11: 9038085985078766968
+      Mouse no outline_12: -2747182292495325902
+      Mouse no outline_13: -9142324629989338201
+      Mouse no outline_14: 6130371688628172636
+      Mouse no outline_15: -7981946631318226746
+      Mouse no outline_16: 1209631319014866675
+      Mouse no outline_17: -6853964995663183980
+      Mouse no outline_18: 9221648247920881066
+      Mouse no outline_19: 3598123746790309275
+      Mouse no outline_2: -7578290459655288034
+      Mouse no outline_20: -3285298389983489149
+      Mouse no outline_21: 8531821409226477725
+      Mouse no outline_22: -7181496058202116619
+      Mouse no outline_23: 6543061389351254916
+      Mouse no outline_24: 457835991668090958
+      Mouse no outline_25: -5506978568553446601
+      Mouse no outline_26: -7749353146670836640
+      Mouse no outline_27: 4049986683398388552
+      Mouse no outline_28: -6367223709062409550
+      Mouse no outline_29: -3814821729893565143
+      Mouse no outline_3: 2371135723814660877
+      Mouse no outline_30: -2047503520772851127
+      Mouse no outline_31: 7264537467380166397
+      Mouse no outline_32: -8616573834205682343
+      Mouse no outline_33: 4125774497230352502
+      Mouse no outline_34: 6507900565921383608
+      Mouse no outline_35: 7516131701879821869
+      Mouse no outline_36: -3945502481386688865
+      Mouse no outline_37: 6188562927847253522
+      Mouse no outline_38: -4222870045758097401
+      Mouse no outline_39: -3585056647258337548
+      Mouse no outline_4: 7130296058176451149
+      Mouse no outline_40: -7116360986690891029
+      Mouse no outline_41: 8125123326697707540
+      Mouse no outline_42: -8530067894167145636
+      Mouse no outline_43: -1379786259184509432
+      Mouse no outline_44: 3309255920554440918
+      Mouse no outline_45: 1922379123453514330
+      Mouse no outline_46: -1482628096368944834
+      Mouse no outline_47: 8779493107961953918
+      Mouse no outline_48: 4204451440019501941
+      Mouse no outline_49: 5457588922600643359
+      Mouse no outline_5: 5801721356111407714
+      Mouse no outline_50: 1369154294868149760
+      Mouse no outline_51: 3582435884771439183
+      Mouse no outline_52: 2472671989822550487
+      Mouse no outline_53: -7514761596005295748
+      Mouse no outline_54: 920357817769404843
+      Mouse no outline_55: 6923304104408866123
+      Mouse no outline_56: -7983199447294609370
+      Mouse no outline_57: -2756244823923741671
+      Mouse no outline_58: -2455017221453497429
+      Mouse no outline_59: -3929720738886990854
+      Mouse no outline_6: 3853793869764267266
+      Mouse no outline_60: 4215900649457645792
+      Mouse no outline_61: -3742892392726981964
+      Mouse no outline_62: -958654901310142243
+      Mouse no outline_63: 2498852699829959951
+      Mouse no outline_64: 7209446887859617446
+      Mouse no outline_65: 5578373093691911819
+      Mouse no outline_66: -6374786582628780227
+      Mouse no outline_67: -7808855888117611485
+      Mouse no outline_7: -4856703285239235880
+      Mouse no outline_8: 8306115839734695343
+      Mouse no outline_9: -5804069949841237926
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

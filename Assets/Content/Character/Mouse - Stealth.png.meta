@@ -259,7 +259,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -273,7 +273,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -297,7 +297,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -2008,7 +2008,84 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Mouse - Stealth_0: 4993485490529594301
+      Mouse - Stealth_1: -3357588857482878741
+      Mouse - Stealth_10: -3008689327585685967
+      Mouse - Stealth_11: 2417748377787395432
+      Mouse - Stealth_12: 476514653260305523
+      Mouse - Stealth_13: -2342531606243946824
+      Mouse - Stealth_14: 4566066725595999969
+      Mouse - Stealth_15: -3771604356569677700
+      Mouse - Stealth_16: 3630424295590524091
+      Mouse - Stealth_17: 59891897056314295
+      Mouse - Stealth_18: 8769876641742787825
+      Mouse - Stealth_19: 216756183422117524
+      Mouse - Stealth_2: 6761624349597861421
+      Mouse - Stealth_20: -7485268254509478947
+      Mouse - Stealth_21: 5185968886992478731
+      Mouse - Stealth_22: 8837228686076633113
+      Mouse - Stealth_23: 355730022539736518
+      Mouse - Stealth_24: -3703619732071371724
+      Mouse - Stealth_25: 1659938775342793805
+      Mouse - Stealth_26: 6185605963099124774
+      Mouse - Stealth_27: -3177735031832404991
+      Mouse - Stealth_28: -3956390002771758168
+      Mouse - Stealth_29: -4657000960370823173
+      Mouse - Stealth_3: -1648285363593438720
+      Mouse - Stealth_30: 4432841422505803814
+      Mouse - Stealth_31: -4951109832077508681
+      Mouse - Stealth_32: 8486802907576032832
+      Mouse - Stealth_33: -4652063847080978782
+      Mouse - Stealth_34: -3943076770980098598
+      Mouse - Stealth_35: 3069036968794266596
+      Mouse - Stealth_36: -7235877469757279885
+      Mouse - Stealth_37: 9206017118475395415
+      Mouse - Stealth_38: 807996135070021819
+      Mouse - Stealth_39: -260226994057805805
+      Mouse - Stealth_4: -7027958723654183863
+      Mouse - Stealth_40: 4901336173572776465
+      Mouse - Stealth_41: 4267919975739006349
+      Mouse - Stealth_42: 1620229804924160145
+      Mouse - Stealth_43: 986744749519111621
+      Mouse - Stealth_44: -2398952720894635108
+      Mouse - Stealth_45: 2772596103023708293
+      Mouse - Stealth_46: 778749471866594733
+      Mouse - Stealth_47: -8386439725807089223
+      Mouse - Stealth_48: 8804020191048379549
+      Mouse - Stealth_49: -48889063053491627
+      Mouse - Stealth_5: -8849266767587145123
+      Mouse - Stealth_50: -6501104514254842214
+      Mouse - Stealth_51: -4207243769728613654
+      Mouse - Stealth_52: -2978018055385015035
+      Mouse - Stealth_53: -1923723820008091329
+      Mouse - Stealth_54: 3462574296142615441
+      Mouse - Stealth_55: 1144284986653189475
+      Mouse - Stealth_56: 2383981952478027115
+      Mouse - Stealth_57: -2704683927197429661
+      Mouse - Stealth_58: -7169002483998607435
+      Mouse - Stealth_59: -2878593203020362696
+      Mouse - Stealth_6: -1320476357992200565
+      Mouse - Stealth_60: -2475133788962595452
+      Mouse - Stealth_61: -9012481244300749931
+      Mouse - Stealth_62: 6216116154732661122
+      Mouse - Stealth_63: 4213254350997095365
+      Mouse - Stealth_64: 4459862988650628345
+      Mouse - Stealth_65: -5946883367094689439
+      Mouse - Stealth_66: -362765443640516925
+      Mouse - Stealth_67: -715566514807125444
+      Mouse - Stealth_68: 8182406662527039975
+      Mouse - Stealth_69: -6994149177890874275
+      Mouse - Stealth_7: -3314321087371897920
+      Mouse - Stealth_70: 1389434734115890680
+      Mouse - Stealth_71: -563494385361290114
+      Mouse - Stealth_72: -2165979281069441320
+      Mouse - Stealth_73: -5160177138634877042
+      Mouse - Stealth_74: 7472560058629346512
+      Mouse - Stealth_8: -4431285028253916507
+      Mouse - Stealth_9: 5840756118541654696
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

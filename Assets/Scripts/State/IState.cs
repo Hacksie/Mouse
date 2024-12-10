@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace HackedDesign
 {
     public interface IState

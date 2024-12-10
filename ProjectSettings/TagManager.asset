@@ -2,8 +2,12 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
-  tags: []
+  serializedVersion: 3
+  tags:
+  - Interactable
+  - Enemy
+  - DoorUp
+  - DoorDown
   layers:
   - Default
   - TransparentFX
@@ -11,8 +15,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Doors
+  - Environment
   - 
   - 
   - 
@@ -38,8 +42,17 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Background
-    uniqueID: 4250221991
+  - name: Sky
+    uniqueID: 4229194345
+    locked: 0
+  - name: Background 1
+    uniqueID: 2962483693
+    locked: 0
+  - name: Background 2
+    uniqueID: 981644287
+    locked: 0
+  - name: Background 3
+    uniqueID: 1176348327
     locked: 0
   - name: Level
     uniqueID: 1991457745
@@ -47,3 +60,8 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Foreground
+    uniqueID: 2272701023
+    locked: 0
+  m_RenderingLayers:
+  - Default

@@ -983,7 +983,43 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      mouse - Copy_0: 3159663996671968240
+      mouse - Copy_1: -5491603964977317578
+      mouse - Copy_10: -5030801626546111797
+      mouse - Copy_11: -7193168229060725083
+      mouse - Copy_12: 3065241469502715567
+      mouse - Copy_13: -3828126794694228973
+      mouse - Copy_14: 5475940226466174381
+      mouse - Copy_15: -2783411255317337433
+      mouse - Copy_16: -634912133759725353
+      mouse - Copy_17: -4361411137727440141
+      mouse - Copy_18: 3870415514281627990
+      mouse - Copy_19: 4980382954885096066
+      mouse - Copy_2: 3694709014668842737
+      mouse - Copy_20: -3738784708642096342
+      mouse - Copy_21: 7218598038389310199
+      mouse - Copy_22: 7933355100794866579
+      mouse - Copy_23: 1748612475365082085
+      mouse - Copy_24: 7509086403344264934
+      mouse - Copy_25: 2159070029075646228
+      mouse - Copy_26: -3010444778228386567
+      mouse - Copy_27: -2501504285140429805
+      mouse - Copy_28: -6751758418712310237
+      mouse - Copy_29: -3731966596751537469
+      mouse - Copy_3: 2490769284208548354
+      mouse - Copy_30: -319281664269474872
+      mouse - Copy_31: 1434010952112402523
+      mouse - Copy_32: 5235818504218313491
+      mouse - Copy_33: -6678964825198840439
+      mouse - Copy_4: 5631223635541749023
+      mouse - Copy_5: -441127590209549223
+      mouse - Copy_6: 1262073488114896155
+      mouse - Copy_7: -8888275966255484135
+      mouse - Copy_8: -2098121263075198837
+      mouse - Copy_9: -8703400678169555081
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

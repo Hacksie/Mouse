@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CharacterSettings
   m_EditorClassIdentifier: 
   attackRate: 0.33
-  walkSpeed: 3
+  walkSpeed: 2
   runSpeed: 5
   slideSpeed: 10
   crouchSpeed: 3

@@ -1158,7 +1158,50 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      mouseppk_0: -812656877728894221
+      mouseppk_1: -2055120215821901278
+      mouseppk_10: 7161275669315505373
+      mouseppk_11: -1475673708295568440
+      mouseppk_12: 4716044385026774316
+      mouseppk_13: -6153065686583679030
+      mouseppk_14: 2418576525106204179
+      mouseppk_15: -981877227956913917
+      mouseppk_16: -3575984087605540984
+      mouseppk_17: -2626683616081380904
+      mouseppk_18: -6760103676467733816
+      mouseppk_19: -8719496687349438641
+      mouseppk_2: 2267673703683794991
+      mouseppk_20: 2995252971900968582
+      mouseppk_21: 476614236286858797
+      mouseppk_22: -5148661288361740041
+      mouseppk_23: 1082081352157015537
+      mouseppk_24: 2415835687635791542
+      mouseppk_25: 8935501146179492374
+      mouseppk_26: 3958384166985842776
+      mouseppk_27: 919768634005003648
+      mouseppk_28: 6513441779903248141
+      mouseppk_29: -1322878736662135961
+      mouseppk_3: -8155896458382683940
+      mouseppk_30: -252301323915780292
+      mouseppk_31: -8095533758096213820
+      mouseppk_32: -924918141747083329
+      mouseppk_33: -4153873126305904305
+      mouseppk_34: -2639608268953625509
+      mouseppk_35: -4944252016762634044
+      mouseppk_36: 3229225189976058493
+      mouseppk_37: 4738674947073428596
+      mouseppk_38: -886068904516473417
+      mouseppk_39: -3182667984799453129
+      mouseppk_4: 5774412003859654850
+      mouseppk_40: -8775420268728198543
+      mouseppk_5: 9134171476517104787
+      mouseppk_6: -656380685322040736
+      mouseppk_7: 829863214008279731
+      mouseppk_8: 6078829954213457132
+      mouseppk_9: -952179708259409478
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

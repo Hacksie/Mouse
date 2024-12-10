@@ -16,14 +16,15 @@ MonoBehaviour:
   downwardMovementMultiplier: 3
   upwardMovementMultiplier: 1.7
   jumpHeight: 4
-  maxAirJumps: 1
+  maxAirJumps: 0
   coyoteTime: 0.2
   jumpBufferTime: 0.2
   fallingTimeDeath: 1
+  fallingDeathYLimit: -20
   maxAcceleration: 35
   maxAirAcceleration: 20
   wallStick: 0
-  wallSlideMaxSpeed: 0.25
+  wallSlideMaxSpeed: 0
   wallJumpClimb: {x: 4, y: 12}
   wallJumpBounce: {x: 10.7, y: 10}
   wallJumpLeap: {x: 14, y: 12}

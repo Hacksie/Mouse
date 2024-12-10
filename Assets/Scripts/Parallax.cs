@@ -14,10 +14,11 @@ namespace HackedDesign
         {
             if (mainCamera == null)
             {
+                mainCamera = Camera.main;
                 Debug.LogError("cam not set", this);
             }
             startPosition = transform.position;
-            bounds = GetComponent<SpriteRenderer>().bounds.size;
+            //bounds = GetComponent<SpriteRenderer>().bounds.size;
         }
 
         void Update()
@@ -27,6 +28,7 @@ namespace HackedDesign
 
             transform.position = startPosition + dist;
 
+            /*
             if (temp.x > (startPosition.x + bounds.x))
             {
                 startPosition.x += bounds.x;
@@ -42,7 +44,7 @@ namespace HackedDesign
             if (temp.y < (startPosition.y - bounds.y))
             {
                 startPosition.y -= bounds.y;
-            }
+            }*/
         }
     }
 }

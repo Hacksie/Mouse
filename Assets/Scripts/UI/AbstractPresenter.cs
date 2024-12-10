@@ -8,13 +8,15 @@ namespace HackedDesign.UI
     {
         public void Awake()
         {
-            Hide();
+            //Hide();
         }
         
         public virtual void Show()
         {
+            
             if (!gameObject.activeInHierarchy)
             {
+                Debug.Log(gameObject.transform.name);
                 gameObject.SetActive(true);
             }
         }

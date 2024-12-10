@@ -13,6 +13,10 @@
 /Assets/Resources/_External/
 /.vs/
 /.vscode/
+/Assets/DunGen/
+/Assets/Plugins/
+/Assets/TextMesh Pro/
+/Project/
 
 # Never ignore Asset meta data
 !/[Aa]ssets/**/*.meta

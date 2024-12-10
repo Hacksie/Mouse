@@ -1,18 +1,23 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using HackedDesign.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace HackedDesign
 {
     public class Cursor : MonoBehaviour
     {
         //[SerializeField] private HoverPresenter hoverPresenter;
+        [SerializeField] UnityEngine.UI.Text nametagLabel;
+        [SerializeField] private CanvasScaler canvas;
         [SerializeField] private Camera uiCamera;
         [SerializeField] private PlayerInput playerInput = null;
         [SerializeField] private RectTransform uiCrosshair = null;
+        [SerializeField] private RectTransform uiSelectBox = null;
         [SerializeField] private int screenWidth = 320;
         [SerializeField] private int screenHeight = 180;
 
@@ -20,11 +25,19 @@ namespace HackedDesign
 
         //private TilemapHighlight currentTile;
 
+        private Highlightable currentHighlightable;
+
         void Awake()
         {
+            canvas = GetComponentInParent<CanvasScaler>();
             uiCrosshair = GetComponent<RectTransform>();
+            uiSelectBox.gameObject.SetActive(false);
             mousePosAction = playerInput.actions["Mouse Position"];
             UnityEngine.Cursor.visible = false;
+            screenWidth = (int)canvas.referenceResolution.x;
+            screenHeight = (int)canvas.referenceResolution.y;
+            nametagLabel.text = "";
+
         }
 
         void OnApplicationQuit()
@@ -41,37 +54,28 @@ namespace HackedDesign
 
         private void UpdateHover(Vector2 mousePos)
         {
-            /*
+            
             var worldPos = uiCamera.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 0));
 
             var collider = Physics2D.OverlapPoint(new Vector2(worldPos.x, worldPos.y));
-            if(collider != null && (collider.CompareTag("Interactable") || collider.CompareTag("Player") || collider.CompareTag("Enemy")))
+
+            if (currentHighlightable)
             {
-                var tile = collider.GetComponent<TilemapHighlight>();
-                if(currentTile != null)
-                {
-                    currentTile.Reset();
-                    currentTile = null;
-                }
-                
-                if(tile != null)
-                {
-                    tile.Highlight();
-                    currentTile = tile;
-                }
-                hoverPresenter.SetHoverLabel(collider.name);
-                //Debug.Log(collider.name + "mouse over");
+                currentHighlightable.Show(false);
+                nametagLabel.text = "";
             }
-            else 
+
+
+            if (collider != null && (collider.CompareTag("Interactable") || collider.CompareTag("Player") || collider.CompareTag("Enemy")))
             {
-                if(currentTile != null)
+                nametagLabel.text = collider.name.ToString();
+                var highlight = collider.gameObject.GetComponent<Highlightable>();
+                if (highlight != null)
                 {
-                    currentTile.Reset();
-                    currentTile = null;
-                }                
-            }*/
-
-
+                    currentHighlightable = highlight;
+                    currentHighlightable.Show(true);
+                }
+            }
         }
 
         private void PositionCrosshair(Vector2 mousePos)

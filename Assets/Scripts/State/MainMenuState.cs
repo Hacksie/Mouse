@@ -20,7 +20,6 @@ namespace HackedDesign
         public void Begin()
         {
             this.mainMenu.Show();
-            Debug.Log("start menu");
         }
 
         public void End()

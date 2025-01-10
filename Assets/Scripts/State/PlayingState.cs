@@ -8,42 +8,45 @@ namespace HackedDesign
         private PlayerController player;
         private LevelGenerator level;
         private UI.AbstractPresenter actionBar;
-        
+        private EnemyPool enemyPool;
+
         public bool PlayerActionAllowed => true;
         public bool Battle => true;
 
 
-        public PlayingState(PlayerController player, LevelGenerator level, AbstractPresenter actionBar)
+        public PlayingState(PlayerController player, LevelGenerator level, EnemyPool enemyPool, AbstractPresenter actionBar)
         {
             this.player = player;
             this.level = level;
             this.actionBar = actionBar;
+            this.enemyPool = enemyPool; ;
             
         }
 
         public void Begin()
         {
-            this.level.Reset();
-            this.level.Generate(1);
-            var spawn = GameObject.FindGameObjectWithTag("Respawn");
+            //this.level.Reset();
+            //this.level.Generate(1);
+            //var spawn = GameObject.FindGameObjectWithTag("Respawn");
 
-            if (spawn != null)
-            {
-                this.player.transform.position = spawn.transform.position;
-            }
+            //if (spawn != null)
+            //{
+            //    this.player.transform.position = spawn.transform.position;
+            //}
 
-            this.player.Go();
+            this.player.Battle();
             this.actionBar.Show();
         }
 
         public void End()
         {
-
+            this.player.Stop();
         }
 
         public void Update()
         {
             this.player.UpdateBehavior();
+            this.enemyPool.UpdateAllBehaviour();
             //this.actionBarPresenter.Repaint();
   
         }
@@ -61,7 +64,7 @@ namespace HackedDesign
 
         public void Menu()
         {
-            //GameManager.Instance.SetStartMenu();
+            Game.Instance.SetMainMenu();
         }
 
         public void Select()

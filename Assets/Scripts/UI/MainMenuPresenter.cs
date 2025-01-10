@@ -19,7 +19,7 @@ namespace HackedDesign.UI
 
         public void StartClick()
         {
-            Game.Instance.SetPlaying();
+            Game.Instance.SetIntermission();
         }
 
 

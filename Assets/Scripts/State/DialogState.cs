@@ -29,24 +29,21 @@ namespace HackedDesign
 
         public void Update()
         {
-            //this.player.UpdateBehavior();
-  
+ 
         }
 
         public void FixedUpdate()
         {
-            //this.player.FixedUpdateBehaviour();
         }
 
         public void LateUpdate()
         {
-            //this.player.LateUpdateBehaviour();
             
         }
 
         public void Menu()
         {
-            //GameManager.Instance.SetStartMenu();
+            
         }
 
         public void Select()

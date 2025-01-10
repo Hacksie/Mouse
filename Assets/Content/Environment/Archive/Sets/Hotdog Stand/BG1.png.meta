@@ -129,10 +129,10 @@ TextureImporter:
       name: BG1_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 64
-        height: 64
+        x: 21
+        y: 44
+        width: 43
+        height: 20
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -143,6 +143,28 @@ TextureImporter:
       bones: []
       spriteID: f551b02c8a3f5fa20800000000000000
       internalID: 3095648225022645599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BG1_1
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 18
+        width: 8
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d8efa4c4e310cb747b7770940a4644b2
+      internalID: 1237800268
       vertices: []
       indices: 
       edges: []
@@ -162,6 +184,7 @@ TextureImporter:
       entries: []
     nameFileIdTable:
       BG1_0: 3095648225022645599
+      BG1_1: 1237800268
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

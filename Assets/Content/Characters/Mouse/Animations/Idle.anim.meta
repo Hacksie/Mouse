@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: fd5965bda1ed46c41bc0be8626ca2244
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221542
+  packageName: Pixel Prototype Player Sprites
+  packageVersion: 1.2
+  assetPath: Assets/DeadRevolver/PixelPrototypePlayerSprites/Art/Animations/Idle.anim
+  uploadId: 571057

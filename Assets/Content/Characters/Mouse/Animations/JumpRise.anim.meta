@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 5fb874aaf3644ea43bf3a886415f50ee
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221542
+  packageName: Pixel Prototype Player Sprites
+  packageVersion: 1.2
+  assetPath: Assets/DeadRevolver/PixelPrototypePlayerSprites/Art/Animations/JumpRise.anim
+  uploadId: 571057

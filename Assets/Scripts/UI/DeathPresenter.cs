@@ -7,7 +7,7 @@ namespace HackedDesign.UI
     public class DeathPresenter : AbstractPresenter
     {
 
-        private void Awake()
+        private new void Awake()
         {
             base.Awake();
         }

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e5e46827adda4714daa190e2a8d77a48
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 221542
+  packageName: Pixel Prototype Player Sprites
+  packageVersion: 1.2
+  assetPath: Assets/DeadRevolver/PixelPrototypePlayerSprites/Art/Animations/JumpFall.anim
+  uploadId: 571057

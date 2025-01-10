@@ -10,14 +10,13 @@ namespace HackedDesign
         [Header("Game")]
         [SerializeField] private PlayerController player = null;
         [SerializeField] private LevelGenerator level = null;
+        [SerializeField] private EnemyPool enemyPool = null;
         [Header("UI")]
         [SerializeField] private UI.MainMenuPresenter mainMenuPresenter = null;
         [SerializeField] private UI.DeathPresenter deathPresenter = null;
         [SerializeField] private UI.ActionBarPresenter actionBarPresenter = null;
         [Header("Data")]
-        [SerializeField] private GameData gameData = null;
-
-
+        //[SerializeField] private CharacterData charData = null;
 
         public static Game Instance { get; private set; }
         private Game() => Instance = this;
@@ -54,7 +53,10 @@ namespace HackedDesign
         private void LateUpdate() => CurrentState.LateUpdate();
         private void FixedUpdate() => CurrentState.FixedUpdate();
 
-        public void SetPlaying() => CurrentState = new PlayingState(this.player, this.level, this.actionBarPresenter);
+        public void SetIntermission() => CurrentState = new IntermissionState(this.player, this.level, this.actionBarPresenter);
+        public void SetPlaying() => CurrentState = new PlayingState(this.player, this.level, enemyPool, this.actionBarPresenter);
+
+        public void SetLoading() => CurrentState = new LoadingState(this.player, this.level, enemyPool);
         public void SetMainMenu() => CurrentState = new MainMenuState(this.mainMenuPresenter);
         public void SetDeath() => CurrentState = new DeathState(this.deathPresenter);
 
@@ -62,7 +64,8 @@ namespace HackedDesign
 
         public void NewGame()
         {
-            gameData.Reset();
+            player.Character.OperatingSystem.Reset();
+            //charData.Reset();
             //DataManager.Instance.NewGame(levels[0], GetRandomCorp(), GetRandomCorpName());
             player.Reset();
             SetMainMenu();

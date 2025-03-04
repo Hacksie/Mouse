@@ -26,12 +26,6 @@ public class Billboard : MonoBehaviour
     }
     void Start()
     {
-        SetSprite();
-    }
-
-    void SetSprite()
-    {
-
         if (Random.value > billboardChance || billboards.Count == 0)
         {
             spriteRenderer.enabled = false;
@@ -42,25 +36,31 @@ public class Billboard : MonoBehaviour
                 light2D.gameObject.SetActive(false);
             }
 
-            
+
             return;
         }
+        else
+        {
+            light2D?.gameObject.SetActive(true);
+            SetSprite();
+        }
 
-        light2D?.gameObject.SetActive(true);
+    }
 
+    void SetSprite()
+    {
         var sprite = billboards[Random.Range(0, billboards.Count)];
 
         if (sprite != null)
         {
             spriteRenderer.sprite = billboards[Random.Range(0, billboards.Count)];
         }
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(change)
+        if(spriteRenderer.enabled && change)
         {
             if(Time.time > timer)
             {

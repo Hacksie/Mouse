@@ -21,6 +21,7 @@ namespace HackedDesign
         [Header("Move")]
         [SerializeField, Range(0f, 100f)] public float maxAcceleration = 35f;
         [SerializeField, Range(0f, 100f)] public float maxAirAcceleration = 20f;
+        [SerializeField] public float wallClimbSpeed = 3.0f;
         [Header("Wall Jump/Slide")]
         [SerializeField] public bool wallStick = true;
         [SerializeField][Range(0.0f, 5f)] public float wallSlideMaxSpeed = 0.25f;

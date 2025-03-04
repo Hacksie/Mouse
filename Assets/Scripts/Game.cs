@@ -1,3 +1,4 @@
+using HackedDesign.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,13 +10,24 @@ namespace HackedDesign
         public const string gameVersion = "1.0";
         [Header("Game")]
         [SerializeField] private PlayerController player = null;
-        [SerializeField] private LevelGenerator level = null;
+        [SerializeField] private Level level = null;
         [SerializeField] private EnemyPool enemyPool = null;
         [Header("UI")]
-        [SerializeField] private UI.MainMenuPresenter mainMenuPresenter = null;
-        [SerializeField] private UI.DeathPresenter deathPresenter = null;
-        [SerializeField] private UI.ActionBarPresenter actionBarPresenter = null;
+        [SerializeField] private MainMenuPresenter mainMenuPresenter = null;
+        [SerializeField] private DeathPresenter deathPresenter = null;
+        [SerializeField] private PausePresenter pausePresenter = null;
+        [SerializeField] private ActionBarPresenter actionBarPresenter = null;
+        [SerializeField] private OSPresenter osPresenter = null;
+        [SerializeField] private TracePresenter tracePresenter = null;
+        
         [Header("Data")]
+        [SerializeField] private CountdownTimer levelTimer = null;
+        [SerializeField] private float levelTime = 64;
+        [SerializeField] private int randomSeed = 2;
+
+        [Header("Settings")]
+        [SerializeField] private GameSettings gameSettings = null;
+
         //[SerializeField] private CharacterData charData = null;
 
         public static Game Instance { get; private set; }
@@ -32,19 +44,16 @@ namespace HackedDesign
             }
             private set
             {
-                if (currentState != null)
-                {
-                    this.currentState.End();
-                }
+                this.currentState?.End();
                 this.currentState = value;
-                if (this.currentState != null)
-                {
-                    this.currentState.Begin();
-                }
+                this.currentState?.Begin();
             }
         }
 
         public PlayerController Player { get => player; private set => player = value; }
+        public CountdownTimer LevelTimer { get => levelTimer; private set => levelTimer = value; }
+        public GameSettings GameSettings { get => gameSettings; set => gameSettings = value; }
+        public int RandomSeed { get => randomSeed; set => randomSeed = value; }
 
         void Awake() => CheckBindings();
         void Start() => Initialization();  
@@ -53,13 +62,22 @@ namespace HackedDesign
         private void LateUpdate() => CurrentState.LateUpdate();
         private void FixedUpdate() => CurrentState.FixedUpdate();
 
-        public void SetIntermission() => CurrentState = new IntermissionState(this.player, this.level, this.actionBarPresenter);
-        public void SetPlaying() => CurrentState = new PlayingState(this.player, this.level, enemyPool, this.actionBarPresenter);
+        public void ResetLevelTimer()
+        {
+            levelTimer = new CountdownTimer(levelTime);
+        }
 
-        public void SetLoading() => CurrentState = new LoadingState(this.player, this.level, enemyPool);
-        public void SetMainMenu() => CurrentState = new MainMenuState(this.mainMenuPresenter);
-        public void SetDeath() => CurrentState = new DeathState(this.deathPresenter);
+        public void SetRoom1() => CurrentState = new Room1State(player, level, actionBarPresenter);
+        public void SetIntermission() => CurrentState = new IntermissionState(player, level, actionBarPresenter);
+        public void SetPlaying() => CurrentState = new PlayingState(player, level, enemyPool, actionBarPresenter, tracePresenter);
 
+        public void SetLoading() => CurrentState = new LoadingState(player, level, enemyPool);
+        public void SetMainMenu() => CurrentState = new MainMenuState(mainMenuPresenter);
+        public void SetDeath() => CurrentState = new DeathState(deathPresenter);
+        public void SetPaused() => CurrentState = new PausedState(pausePresenter);
+
+
+        public void SetOS() => CurrentState = new OSState(osPresenter);
         public void SetQuit() => Application.Quit();        
 
         public void NewGame()
@@ -68,7 +86,16 @@ namespace HackedDesign
             //charData.Reset();
             //DataManager.Instance.NewGame(levels[0], GetRandomCorp(), GetRandomCorpName());
             player.Reset();
-            SetMainMenu();
+            if (gameSettings.skipIntro)
+            {
+                SetLoading();
+            }
+            else
+            {
+                SetRoom1();
+            }
+            
+            //SetMainMenu();
         }     
 
         private void CheckBindings()
@@ -78,16 +105,18 @@ namespace HackedDesign
         private void Initialization()
         {
             HideUI();
-            NewGame();
+            //NewGame();
+            SetMainMenu();
         } 
         
         private void HideUI()
         {
-            this.mainMenuPresenter.Hide();
-            this.deathPresenter.Hide();
-            this.actionBarPresenter.Hide();
+            mainMenuPresenter.Hide();
+            deathPresenter.Hide();
+            pausePresenter.Hide();
+            actionBarPresenter.Hide();
+            osPresenter.Hide();
+            tracePresenter.Hide();
         }
-
-
     }
 }

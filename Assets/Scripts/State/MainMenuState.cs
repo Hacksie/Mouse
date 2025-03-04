@@ -5,13 +5,13 @@ namespace HackedDesign
 {
     public class MainMenuState : IState
     {
-        private AbstractPresenter mainMenu;
+        private IPresenter mainMenu;
         
         public bool PlayerActionAllowed => false;
         public bool Battle => false;
 
 
-        public MainMenuState(AbstractPresenter mainMenu)
+        public MainMenuState(IPresenter mainMenu)
         {
             this.mainMenu = mainMenu;     
             

@@ -1,73 +1,95 @@
 using EPOOutline;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 namespace HackedDesign
 {
-    [RequireComponent(typeof(EventTrigger))]
-    public class Interactable : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class Interactable : MonoBehaviour
     {
         [SerializeField] private Outlinable outlinable;
+        [SerializeField] private UnityEvent interactAction;
+
+        private bool interact = false;
+        private bool target = false;
+        private bool ping = false;
 
         private float pingTimer = 0;
-        private EventTrigger trigger;
+
+        
 
         private void Awake()
         {
-            outlinable = GetComponent<Outlinable>();
-            trigger = GetComponent<EventTrigger>();
-            var onEnterTrigger = new EventTrigger.Entry()
-            {
-                eventID = EventTriggerType.PointerEnter
-            };
-
-            onEnterTrigger.callback.AddListener(x => { Show(true); });
-
-            var onExitTrigger = new EventTrigger.Entry()
-            {
-                eventID = EventTriggerType.PointerExit
-            };
-
-            onExitTrigger.callback.AddListener(x => { Show(false); });
-
-
-            trigger.triggers.Add(onEnterTrigger);
-            trigger.triggers.Add(onExitTrigger);
             
-
-            Show(false);
+            this.AutoBind(ref outlinable);
+             Target(false);
         }
 
         public void Ping()
         {
             pingTimer = Time.time;
-            Show(true);
+            ping = true;
+            //Target(true);
 
+        }
+
+        public void TriggerInteract()
+        {
+            Debug.Log("Invoke interact");
+            interactAction?.Invoke();
         }
 
         private void Update()
         {
-            /*
-            if (Time.time - 3 > pingTimer)
+            if (pingTimer + 4 < Time.time)
             {
-                Show(false);
-            }*/
+                ping = false;
+            }
+
+            if (interact)
+            {
+                outlinable.enabled = true;
+
+                if ((Game.Instance.Player.transform.position - this.transform.position).magnitude < 2.5f)
+                {
+                    outlinable.OutlineParameters.Color = Color.yellow;
+                }
+                else
+                {
+                    outlinable.OutlineParameters.Color = Color.red;
+                }
+
+                
+            }
+            else if (ping)
+            {
+                outlinable.enabled = true;
+                outlinable.OutlineParameters.Color = Color.magenta;
+            }
+            else if (target)
+            {
+                outlinable.enabled = true;
+                outlinable.OutlineParameters.Color = Color.grey;
+            }
+            else
+            {
+                outlinable.enabled = false;
+            }
         }
 
-        public void Show(bool flag)
+
+        public void Target(bool flag)
         {
-            outlinable.enabled = flag;
-            outlinable.OutlineParameters.Color = Color.white;
+            target = flag;
+            //outlinable.enabled = flag;
+            //outlinable.OutlineParameters.Color = Color.white;
         }
 
-        public void OnPointerEnter(PointerEventData eventData)
+        public void Interact(bool flag)
         {
-            Show(true);
-        }
-
-        public void OnPointerExit(PointerEventData eventData)
-        {
-            Show(false);
+            interact = flag;
+            //outlinable.enabled = flag;
+            //outlinable.OutlineParameters.Color = Color.yellow;
         }
     }
 }

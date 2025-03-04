@@ -19,33 +19,32 @@ namespace HackedDesign
         //[SerializeField] private CharacterData characterData;
         [SerializeField] private PhysicsController body = null;
         [SerializeField] private Animator animator = null;
-        [SerializeField] private new Collider2D collider = null;
+        [SerializeField] private new CapsuleCollider2D collider = null;
 
         [SerializeField] private Transform bulletStart;
 
         [Header("Settings")]
         [SerializeField] private CharacterSettings settings = null;
+        [SerializeField] private LayerMask attackMask;
         [Header("State")]
+        //[SerializeField] private CharStateIdle idleState;
+        //[SerializeField] private CharStateSeated seatedState;
+        //[SerializeField] private CharStateDead deadState;
+        //[SerializeField] private CharStateBattle battleState;
         [SerializeField] private CharacterState state = CharacterState.Idle;
 
-        private float movement;
+        //private float movement;
 
         private bool jumpTriggered = false;
         private bool jumpFlag = false;
         private float nextAttackTimer = int.MinValue;
 
-        public bool IsAttacking { get => animator.GetCurrentAnimatorClipInfo(0)[0].clip.name.StartsWith("Shoot") || animator.GetCurrentAnimatorClipInfo(0)[0].clip.name.StartsWith("Melee"); }
+        public bool IsAttacking { get => Animator.GetCurrentAnimatorClipInfo(0)[0].clip.name.StartsWith("Shoot") || Animator.GetCurrentAnimatorClipInfo(0)[0].clip.name.StartsWith("Melee"); }
         public bool Crouched { get; set; }
 
 
-        public float Movement
-        {
-            get => movement;
-            set
-            {
-                movement = value;
-            }
-        }
+        public float Movement {get; private set;}
+        public float Climb {  get; private set;}
 
         public Vector2 DesiredVelocity
         {
@@ -53,11 +52,11 @@ namespace HackedDesign
             {
                 var speed = state switch
                 {
-                    CharacterState.Idle => Crouched ? settings.crouchSpeed : settings.walkSpeed,
-                    CharacterState.Battle => Crouched ? settings.crouchSpeed : settings.runSpeed,
+                    CharacterState.Idle => Crouched ? Settings.crouchSpeed : Settings.walkSpeed,
+                    CharacterState.Battle => Crouched ? Settings.crouchSpeed : Settings.runSpeed,
                     _ => 0,
                 };
-                return new Vector2(movement, 0.0f) * Mathf.Max(speed - body.Friction, 0f);
+                return new Vector2(Movement, 0.0f) * Mathf.Max(speed - Body.Friction, 0f);
             }
         }
 
@@ -77,20 +76,30 @@ namespace HackedDesign
         public bool JumpHoldFlag { get; set; }
         //public CharacterData CharacterData { get => characterData; set => characterData = value; }
         public CharacterState State { get => state; set => state = value; }
+
         public OperatingSystem OperatingSystem { get => operatingSystem; set => operatingSystem = value; }
+        public Animator Animator { get => animator; set => animator = value; }
+        public PhysicsController Body { get => body; set => body = value; }
+        public CharacterSettings Settings { get => settings; set => settings = value; }
 
         void Awake()
         {
-            this.AutoBind<OperatingSystem>(ref operatingSystem);
-            this.AutoBind<PhysicsController>(ref body);
+            this.AutoBind(ref operatingSystem);
+            this.AutoBind(ref body);
             this.AutoBind(ref collider);
             if (bulletStart == null)
             {
                 bulletStart = transform;
             }
             operatingSystem.changeActions += Hit;
+            //SetStateIdle();
             //animator = GetComponent<Animator>();
         }
+
+        //public void SetStateIdle() => CharState = new CharStateIdle(this);
+        //public void SetStateSeated() => CharState = new CharStateSeated(this);
+        //public void SetStateDead() => CharState = new CharStateDead(this);
+        //public void SetStateBattle() => CharState = new CharStateBattle(this);
 
         private void Hit()
         {
@@ -112,16 +121,19 @@ namespace HackedDesign
             UpdateSpriteDirection(1.0f, 1.0f);
             Crouched = false;
             Stop();
+            //SetStateIdle();
+
         }
 
         public void Stop()
         {
-            body.Freeze();
+            Body.Freeze();
         }
 
 
-        public void Attack(Vector3 target)
+        public void Attack(Vector3 target, bool aiming)
         {
+            
             if (state != CharacterState.Battle)
             {
                 return;
@@ -129,111 +141,98 @@ namespace HackedDesign
 
             if (Time.time >= nextAttackTimer)
             {
-                if (operatingSystem.HasAmmo)
+                if (operatingSystem.HasAmmo && aiming)
                 {
                     operatingSystem.DecreaseAmmo();
                     Shoot(target);
-                    animator.SetTrigger("basicAttack");
+                    Animator.SetTrigger("basicAttack");
 
                 }
                 else
                 {
                     Melee(target);
-                    animator.SetTrigger("melee");
+                    switch(Random.Range(0,3))
+                    {
+                        case 0:
+                            Animator.SetTrigger("melee");
+                            break;
+                        case 1:
+                            Animator.SetTrigger("punch");
+                            break;
+                        case 2:
+                            Animator.SetTrigger("kick");
+                            break;
+                    }
+                    
 
                 }
 
-                nextAttackTimer = Time.time + settings.attackRate;
+                nextAttackTimer = Time.time + Settings.attackRate;
             }
 
-        }
-
-        private void Shoot(Vector3 target)
-        {
-            if (target != null)
-            {
-                Debug.DrawLine(bulletStart.position, bulletStart.position + ((target - bulletStart.position).normalized * operatingSystem.settings.shootDistance), Color.red, 1);
-                var result = Physics2D.Raycast(bulletStart.position, target - bulletStart.position, operatingSystem.settings.shootDistance);
-
-                //Physics2D.Raycast()
-
-                if (result && (result.transform.CompareTag("Enemy") || result.transform.CompareTag("Glass") || result.transform.CompareTag("Interactable")))
-                {
-                    if (result.transform.CompareTag("Glass"))
-                    {
-                        var glass = result.transform.GetComponent<BreakGlass>();
-                        if (glass != null)
-                        {
-                            glass.Break(bulletStart.position);
-                        }
-                    }
-
-                    if (result.transform.CompareTag("Enemy"))
-                    {
-                        var enemy = result.transform.GetComponent<Enemy>();
-                        var damage = Random.Range(operatingSystem.settings.minBulletDamage, operatingSystem.settings.maxBulletDamage);
-                        enemy.TakeDamage(damage, result.point);
-                    }
-
-                    Debug.Log(result.transform.name);
-                }
-            }
-        }
-
-        private void Melee(Vector3 target)
-        {
-            Debug.DrawLine(bulletStart.position, bulletStart.position + ((target - bulletStart.position).normalized * operatingSystem.settings.meleeDistance), Color.magenta, 1);
-            var result = Physics2D.Raycast(bulletStart.position, target - bulletStart.position, operatingSystem.settings.meleeDistance);
-            if (result && (result.transform.CompareTag("Enemy") || result.transform.CompareTag("Glass") || result.transform.CompareTag("Interactable")))
-            {
-                if (result.transform.CompareTag("Glass"))
-                {
-                    var glass = result.transform.GetComponent<BreakGlass>();
-                    if (glass != null)
-                    {
-                        glass.Break(bulletStart.position);
-                    }
-                }
-
-                Debug.Log(result.transform.name);
-            }
         }
 
         public void Roll()
         {
             if (Mathf.Abs(Movement) >= Mathf.Epsilon)
             {
-                animator.SetTrigger("roll");
+                Animator.SetTrigger("roll");
             }
         }
 
-        public void UpdateSpriteDirection(float movementDirection, float facingDirection)
-        {
-            if (Mathf.Abs(movementDirection) >= Mathf.Epsilon)
-            {
-                transform.right = new Vector3(movementDirection, 0, 0);
-            }
-            else if (Mathf.Abs(facingDirection) >= Mathf.Epsilon)
-            {
-                transform.right = new Vector3(facingDirection, 0, 0);
-            }
-        }
 
-        public void UpdateBehavior(float movement, float facing)
+
+        public void UpdateBehaviour(float movement, float climb, float facing)
         {
             switch (state)
             {
                 case CharacterState.Dead:
-                    animator.ResetTrigger("die");
-                    return;
-
+                    UpdateDeadBehaviour();
+                    break;
+                case CharacterState.Battle:
+                    UpdateBattleBehaviour(movement, climb, facing);
+                    break;
+                case CharacterState.Idle:
+                    UpdateIdleBehaviour(movement, climb, facing);
+                    break;
             }
+        }
 
+        private void UpdateDeadBehaviour()
+        {
+            Animator.ResetTrigger("die");
+        }
 
+        private void UpdateBattleBehaviour(float movement, float climb, float facing)
+        {
             Movement = movement;
+            Climb = climb;
 
             UpdateSpriteDirection(Movement, facing);
 
+            if (this.jumpTriggered && Jump)
+            {
+                Animator.SetTrigger("jump");
+            }
+
+            if (Body.climbingLedge)
+            {
+                Animator.ResetTrigger("jump");
+            }
+
+            Animator.SetBool("ledgeStart", Body.climbingLedge);
+
+            jumpTriggered = false;
+        }
+
+        private void UpdateIdleBehaviour(float movement, float climb, float facing)
+        {
+            Movement = movement;
+            Climb = climb;
+
+            UpdateSpriteDirection(Movement, facing);
+
+            /*
             if (this.jumpTriggered && Jump)
             {
                 animator.SetTrigger("jump");
@@ -246,7 +245,7 @@ namespace HackedDesign
 
             animator.SetBool("ledgeStart", body.climbingLedge);
 
-            jumpTriggered = false;
+            jumpTriggered = false;*/
         }
 
         public void FixedUpdateBehaviour()
@@ -258,7 +257,7 @@ namespace HackedDesign
 
             }
 
-            body.FixedMovement(DesiredVelocity, Jump, JumpHoldFlag);
+            Body.FixedMovement(DesiredVelocity, Climb, Jump, JumpHoldFlag);
             Jump = false;
             JumpHoldFlag = false;
         }
@@ -270,38 +269,104 @@ namespace HackedDesign
 
         public void Die()
         {
-            //Dead = true;
             Debug.Log("char dead");
-            animator.SetBool("dead", true);
-            animator.SetTrigger("dying");
+            Animator.SetBool("dead", true);
+            Animator.SetTrigger("dying");
+            //SetStateDead();
             state = CharacterState.Dead;
             dieActions?.Invoke();
-            body.Freeze();
+            Body.Freeze();
             collider.enabled = false;
+        }
+
+        private void Shoot(Vector3 target)
+        {
+            if (target != null)
+            {
+                Debug.DrawLine(bulletStart.position, bulletStart.position + ((target - bulletStart.position).normalized * operatingSystem.settings.shootDistance), Color.red, 1);
+                var result = Physics2D.Raycast(bulletStart.position, target - bulletStart.position, operatingSystem.settings.shootDistance, attackMask);
+
+                if (result) 
+                {
+                    if(result.transform.TryGetComponent<BreakGlass>(out var glass))
+                    {
+                        glass.Break(bulletStart.position);
+                    }
+
+                    if(result.transform.TryGetComponent<Enemy>(out var enemy))
+                    {
+                        var damage = Random.Range(operatingSystem.settings.minBulletDamage, operatingSystem.settings.maxBulletDamage);
+                        enemy.TakeDamage(damage, result.point);
+                    }
+
+                    Debug.Log(result.transform.name);
+                }
+            }
+        }
+
+        private void Melee(Vector3 target)
+        {
+            //FIXME: Don't use a ray to melee. Use a box around the player
+            Debug.DrawLine(bulletStart.position, bulletStart.position + (transform.right * operatingSystem.settings.meleeDistance), Color.magenta, 1);
+            var result = Physics2D.OverlapCircle(bulletStart.position, operatingSystem.settings.meleeDistance, attackMask);
+            
+            //var result = Physics2D.Raycast(bulletStart.position, target - bulletStart.position, operatingSystem.settings.meleeDistance, attackMask);
+            if (result)
+            {
+                if(result.transform.TryGetComponent<BreakGlass>(out var glass))
+                {
+                    glass.Break(bulletStart.position);
+                }
+
+                if (result.transform.TryGetComponent<Enemy>(out var enemy))
+                {
+                    var damage = Random.Range(operatingSystem.settings.minBulletDamage, operatingSystem.settings.maxBulletDamage);
+                    enemy.TakeDamage(damage, result.ClosestPoint(bulletStart.position));
+                }
+
+                Debug.Log(result.transform.name);
+            }
+        }
+
+        private void UpdateSpriteDirection(float movementDirection, float facingDirection)
+        {
+            if (Mathf.Abs(movementDirection) >= Mathf.Epsilon)
+            {
+                transform.right = new Vector3(movementDirection, 0, 0);
+            }
+            else if (Mathf.Abs(facingDirection) >= Mathf.Epsilon)
+            {
+                transform.right = new Vector3(facingDirection, 0, 0);
+            }
         }
 
 
         private void Animate()
         {
-            //Debug.Log(state);
-            switch(state)
+            switch (state)
             {
                 case CharacterState.Dead:
-                    animator.SetBool("dead", true);
+                    Animator.SetBool("dead", true);
+                    break;
+                case CharacterState.Seated:
+                    Animator.SetBool("sit", true);
+                    Animator.SetBool("grounded", true);
+                    Animator.SetBool("dead", false);
                     break;
                 default:
-                    animator.ResetTrigger("roll");
-                    animator.ResetTrigger("melee");
-                    animator.ResetTrigger("basicAttack");
-                    animator.ResetTrigger("strongAttack");
-                    animator.SetBool("dead", false);
-                    animator.SetBool("crouched", Crouched);
-                    animator.SetBool("grounded", body.OnGround);
-                    animator.SetBool("hang", !body.OnGround && body.OnWall);
-                    animator.SetFloat("battleMode", state == CharacterState.Battle ? 1 : 0);
-                    animator.SetFloat("velocityY", body.Body.linearVelocityY);
-                    animator.SetFloat("velocityX", DesiredVelocity.magnitude);
-                    animator.SetFloat("fallingTime", body.FallTime);
+                    Animator.SetBool("sit", false);
+                    Animator.ResetTrigger("roll");
+                    Animator.ResetTrigger("melee");
+                    Animator.ResetTrigger("basicAttack");
+                    Animator.ResetTrigger("strongAttack");
+                    Animator.SetBool("dead", false);
+                    Animator.SetBool("crouched", Crouched);
+                    Animator.SetBool("grounded", Body.OnGround);
+                    Animator.SetBool("hang", !Body.OnGround && Body.OnWall);
+                    Animator.SetFloat("battleMode", state == CharacterState.Battle ? 1 : 0);
+                    Animator.SetFloat("velocityY", Body.Body.linearVelocityY);
+                    Animator.SetFloat("velocityX", DesiredVelocity.magnitude);
+                    Animator.SetFloat("fallingTime", Body.FallTime);
                     break;
             }
         }
@@ -309,6 +374,7 @@ namespace HackedDesign
 
     public enum CharacterState
     {
+        Seated,
         Idle,
         Battle,
         Dead

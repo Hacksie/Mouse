@@ -33,6 +33,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "Climb",
+                    "type": "Value",
+                    "id": "ba45f8ad-184a-48e9-abb6-bd9fb7a16249",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Look",
                     "type": "Value",
                     "id": "fdae06db-f66e-47b2-81c3-afd9406cc8fc",
@@ -60,9 +69,27 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Aim",
+                    "type": "PassThrough",
+                    "id": "5b625e0f-78ec-46bb-903e-bba4af48b8c5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Attack",
                     "type": "Button",
                     "id": "6788a817-5c8b-4b46-9945-a9a9054a3d8d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Crouch",
+                    "type": "PassThrough",
+                    "id": "8a0642e0-55e0-4647-a6cd-e8d700f2a1be",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -74,11 +101,11 @@
                     "id": "c6b9c5b5-2a6a-48a3-97a3-5ab2a9d51bcf",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "MultiTap",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Crouch",
+                    "name": "Crouch Toggle",
                     "type": "Button",
                     "id": "81e92f95-2d5a-407b-9726-a1eb01574f91",
                     "expectedControlType": "Button",
@@ -87,7 +114,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Operating System",
+                    "name": "OperatingSystem",
                     "type": "Button",
                     "id": "e803dc87-acf4-4dcd-aac6-0bbe7692f971",
                     "expectedControlType": "Button",
@@ -187,7 +214,7 @@
                 {
                     "name": "",
                     "id": "05f6913d-c316-48b2-a6bb-e225f14c7960",
-                    "path": "<Mouse>/rightButton",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
@@ -224,7 +251,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Crouch",
+                    "action": "Crouch Toggle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -235,7 +262,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Crouch",
+                    "action": "Crouch Toggle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -323,7 +350,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Operating System",
+                    "action": "OperatingSystem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -334,7 +361,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Operating System",
+                    "action": "OperatingSystem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -345,7 +372,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Operating System",
+                    "action": "OperatingSystem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -367,6 +394,39 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b134f769-d0a6-45bb-914c-08a7f7d5d2c5",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ad244257-7a98-48f6-9198-28bfdead9656",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "182e0c77-2a3b-49e4-b935-04fa5cccb727",
+                    "path": "<Keyboard>/numpadEnter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
                     "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -566,6 +626,116 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "ActionBarDown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6a31c009-5d94-4ce5-9b00-74138407577d",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Aim",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1e867382-402f-44b7-b3d7-dfcd92f562da",
+                    "path": "<Gamepad>/leftStick/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Climb",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "Arrow Keys",
+                    "id": "a0ade99f-d5f3-46b1-a117-68fd54c05ec9",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Climb",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "Negative",
+                    "id": "0a57c340-09fb-4138-bb6d-fa7e1fae2b0f",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Climb",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Positive",
+                    "id": "986cd16a-0b9d-4a8c-960f-67ad6310d29a",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Climb",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "AS",
+                    "id": "bd5de949-be66-4f05-8c9d-d5089045fbe9",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Climb",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "7103b412-5607-4aa7-bbe1-8917b2a9fb6f",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Climb",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "301208ea-fd3e-4e89-b66e-51bfed00a79a",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Climb",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "d12b7ea2-7d81-4d0b-abd0-10eb4ce71229",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5c013667-90b8-4a0a-bd59-0d709577db8c",
+                    "path": "<XInputController>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Crouch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

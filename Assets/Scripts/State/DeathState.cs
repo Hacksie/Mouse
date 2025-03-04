@@ -5,13 +5,13 @@ namespace HackedDesign
 {
     public class DeathState : IState
     {
-        private AbstractPresenter deathMenu;
+        private readonly IPresenter deathMenu;
         
         public bool PlayerActionAllowed => false;
         public bool Battle => false;
 
 
-        public DeathState(AbstractPresenter deathMenu)
+        public DeathState(IPresenter deathMenu)
         {
             this.deathMenu = deathMenu;     
             

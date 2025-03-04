@@ -25,11 +25,20 @@ namespace HackedDesign
         private void Awake()
         {
 
-            this.AutoBind<CharController>(ref character);
+            this.AutoBind(ref character);
 
             character.dieActions.AddListener(Die);
             character.hitActions.AddListener(Hit);
+            //character.SetStateBattle();
         }
+
+        public void Reset()
+        {
+            character.Reset();
+            character.State = CharacterState.Battle;
+            //character.SetStateBattle();
+        }
+
         public void UpdateBehaviour()
         {
             updateBehaviour?.Invoke();

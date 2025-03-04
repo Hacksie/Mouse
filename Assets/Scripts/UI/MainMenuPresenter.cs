@@ -19,23 +19,27 @@ namespace HackedDesign.UI
 
         public void StartClick()
         {
-            Game.Instance.SetIntermission();
+            Debug.Log("New Game", this);
+            Game.Instance.NewGame();
+            //Game.Instance.SetIntermission();
+            //Game.Instance.SetRoom1();
         }
 
 
 
         public void OptionsClick()
         {
-            Debug.Log("Main Menu Options");
+            Debug.Log("Main Menu Options", this);
         }
 
         public void CreditsClick()
         {
-            Debug.Log("Credits Click");
+            Debug.Log("Credits Click", this);
         }
 
         public void ExitClick()
         {
+            Debug.Log("Exit Click", this);
             Application.Quit();
         }
 

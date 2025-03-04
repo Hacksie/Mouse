@@ -69,47 +69,24 @@ namespace HackedDesign
 
         public void Unfreeze() => body.gravityScale = DefaultGravityScale();
 
-        private bool DetectEnvForLedgeGrab()
-        {
-            //Debug.Log("Detect env:" + ledgeDetect.IsTouchingLayers(environmentMask));
-            return ledgeDetect.IsTouchingLayers(environmentMask);
-            //return Physics2D.OverlapCircle(ledgeDetectionPoint.position, ledgeRadius, environmentMask) != null;
-        }
+        private bool DetectEnvForLedgeGrab() => ledgeDetect.IsTouchingLayers(environmentMask);
 
-        private bool DetectClearAirForLedgeGrab()
-        {
-            //Debug.Log("Detect air:" + airDetect.IsTouchingLayers(environmentMask));
-            //Debug.Log(Physics2D.OverlapArea(new Vector3(ledgeDetectionPoint.position.x - ledgeRadius, ledgeDetectionPoint.position.y + ledgeRadius, ledgeDetectionPoint.position.z), new Vector3(ledgeDetectionPoint.position.x + ledgeRadius, ledgeDetectionPoint.position.y, ledgeDetectionPoint.position.z), environmentMask));
-            return airDetect.IsTouchingLayers(environmentMask) == false;
-            //return Physics2D.OverlapArea(new Vector3(ledgeDetectionPoint.position.x - ledgeRadius, ledgeDetectionPoint.position.y + ledgeRadius, ledgeDetectionPoint.position.z), new Vector3(ledgeDetectionPoint.position.x + ledgeRadius, ledgeDetectionPoint.position.y, ledgeDetectionPoint.position.z), environmentMask) == null;
-            //return Physics2D.OverlapBox(new Vector3(ledgeDetectionPoint.x, ledgeDetectionPoint.y + ledgeRadius, ledgeDetectionPoint.z)
-            //return Physics2D.OverlapCircle(ledgeDetectionPoint.position, ledgeRadius, environmentMask) == null;
-        } 
+        private bool DetectClearAirForLedgeGrab() => airDetect.IsTouchingLayers(environmentMask) == false;
 
-        private float DefaultGravityScale()
-        {
-            return settings.fly ? 0 : settings.defaultGravityScale;
-        }
+        private float DefaultGravityScale() => settings.fly ? 0 : settings.defaultGravityScale;
+
 
 
         public bool LedgeEdgeStart()
         {
             if (climbingLedge) return false;
-            Debug.DrawRay(ledgeDetectionPoint.position, transform.right * -0.35f, Color.white);
 
-            //if(Physics2D.OverlapCircle(ledgeDetectionPoint.position, ledgeRadius, environmentMask) != null)
-            //{
-            //    Debug.Log("Test");
-            //}
-
-            // FIXME: Don't use onwall, use a circle, and a box on top
             //https://www.youtube.com/watch?v=Kh5n63A-YBw
             return DetectEnvForLedgeGrab() && DetectClearAirForLedgeGrab();
         }
 
         public void LedgeEdgeEnd()
         {
-            Debug.Log("Ledge end " + OnWall);
             body.transform.position = transform.position + new Vector3(ledgeOffsetEnd.x * Mathf.Sign(transform.right.x), ledgeOffsetEnd.y, 0);
             body.gravityScale = DefaultGravityScale();
             climbingLedge = false;
@@ -124,7 +101,7 @@ namespace HackedDesign
 
         
 
-        public void FixedMovement(Vector2 desiredVelocity, bool jumpFlag, bool jumpHoldFlag)
+        public void FixedMovement(Vector2 desiredVelocity, float climb, bool jumpFlag, bool jumpHoldFlag)
         {
             velocity = body.linearVelocity;
 
@@ -142,19 +119,17 @@ namespace HackedDesign
                 return;
             }
 
-            var forcedMove = Vector2.zero;
+
 
             if (canGrabLedge && LedgeEdgeStart())
             {
                 canGrabLedge = false;
                 Debug.Log("Ledge Edge Start");
                 climbingLedge = true;
-                body.transform.position = ledgeDetectionPoint.position + new Vector3(ledgeOffsetStart.x * Mathf.Sign(transform.right.x), ledgeOffsetStart.y, 0);
+                // FIXME: I think this is causing popping inside the collider
+                //body.transform.position = ledgeDetectionPoint.position + new Vector3(ledgeOffsetStart.x * Mathf.Sign(transform.right.x), ledgeOffsetStart.y, 0);
                 body.linearVelocity = Vector3.zero;
                 body.gravityScale = 0;
-                //return;
-                //    forcedMove = (transform.right + transform.up) * Time.fixedDeltaTime * 3;
-                //    //desiredVelocity += new Vector2(upright.x, upright.y);
             }
 
             if (climbingLedge)
@@ -166,26 +141,10 @@ namespace HackedDesign
                 return;
             }
 
-            //if (LedgeEdgeStart())
-            //{
-            //    forcedMove = (transform.right + transform.up) * Time.fixedDeltaTime * 3;
-            //    /*
-            //    Debug.Log("Ledge Edge");
-                
-            //    Debug.DrawRay(transform.position, upright, Color.magenta);*/
-            //    //body.AddForce(upright, ForceMode2D.Impulse);
-            //    //desiredVelocity += 
-            //    //velocity += 
-            //    //body.MovePosition(upright * Time.fixedDeltaTime * 10);
-            //    //body.AddForce(upright, ForceMode2D.Impulse);
-            //    //body.MovePosition(body.position += ;
-            //}
-
-            
-
-
-            if (OnWall)
+            if (OnWall && !OnGround && climb != 0)
             {
+                velocity.y = climb * settings.wallClimbSpeed;
+                //WallJumping = true;
                 //if (velocity.y < -setting.wallSlideMaxSpeed)
                 //{
                 //    velocity.y = -setting.wallSlideMaxSpeed;
@@ -199,6 +158,7 @@ namespace HackedDesign
 
             if (jumpFlag && OnWall && !OnGround)
             {
+                
                 if (-wallDirectionX == desiredVelocity.x)
                 {
                     velocity = new Vector2(settings.wallJumpClimb.x * wallDirectionX, settings.wallJumpClimb.y);
@@ -260,7 +220,9 @@ namespace HackedDesign
 
             if (OnWall && settings.wallStick && !jumpHoldFlag && !DetectClearAirForLedgeGrab())
             {
+                // FIXME: Wallstick is always false
                 velocity = new Vector2(0, -settings.wallSlideMaxSpeed);
+                //velocity = new Vector2(0, climb);
                 body.gravityScale = 0;
                 fallingTime = 0;
             }
@@ -300,8 +262,6 @@ namespace HackedDesign
                 velocity.x = movementSpeed;
             }
 
-            //velocity.y += desiredVelocity.y;
-            velocity += forcedMove;
 
             body.linearVelocity = velocity;
         }

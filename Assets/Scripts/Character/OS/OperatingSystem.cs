@@ -18,7 +18,7 @@ namespace HackedDesign
 
         [SerializeField] private List<Hack> activeHacks = new List<Hack>();
         [SerializeField] private List<Hack> repoHacks = new List<Hack>();
-        private int currentSlot = 0;
+        //private int currentSlot = 0;
 
         //public int health = 0;
         //public int ammo = 0;
@@ -26,6 +26,7 @@ namespace HackedDesign
         //public bool infAmmo = false;
         //public bool infHealth = false;
 
+        public float PingRadius { get => characterData.pingRadius;  }
 
         public List<Hack> ActiveHacks { get => activeHacks; }
         public List<Hack> RepoHacks { get => repoHacks; set => repoHacks = value; }
@@ -49,6 +50,14 @@ namespace HackedDesign
             }
         }
 
+        public int KineticLevel { get => this.characterData.kinetic; }
+        public int DigitalLevel { get => this.characterData.digital; }
+        public int StealthLevel {  get => this.characterData.stealth; }
+
+        public WeaponSettings CurrentWeapon {  get => this.characterData.currentWeapon; }
+
+        public OSTab CurrentTab { get => this.characterData.currentTab; set { this.characterData.currentTab = value; changeActions.Invoke(); } }
+
         public int Ammo { get => this.characterData.ammo; set { this.characterData.ammo = value; changeActions.Invoke(); } }
 
         private void Awake()
@@ -62,6 +71,7 @@ namespace HackedDesign
             characterData.ammo = settings.ammo;
             characterData.infAmmo = settings.infiniteAmmo;
             characterData.infHealth = settings.infiniteHealth;
+            characterData.currentWeapon = settings.weaponSettings.Count > 0 ? settings.weaponSettings[0] : null;
 
             //for (int i = 0; i < hacks.Length; i++)
             //{
@@ -108,3 +118,4 @@ namespace HackedDesign
 
     }
 }
+

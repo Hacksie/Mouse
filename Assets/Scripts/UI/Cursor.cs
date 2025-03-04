@@ -60,7 +60,7 @@ namespace HackedDesign
 
             if (currentHighlightable)
             {
-                currentHighlightable.Show(false);
+                currentHighlightable.Interact(false);
                 nametagLabel.text = "";
             }
 
@@ -68,11 +68,11 @@ namespace HackedDesign
             if (collider != null && (collider.CompareTag("Interactable") || collider.CompareTag("Player") || collider.CompareTag("Enemy")))
             {
                 nametagLabel.text = collider.name.ToString();
-                var highlight = collider.gameObject.GetComponent<Interactable>();
-                if (highlight != null)
+                if(collider.gameObject.TryGetComponent<Interactable>(out var highlight))
                 {
+                    Debug.Log("interact");
                     currentHighlightable = highlight;
-                    currentHighlightable.Show(true);
+                    currentHighlightable.Interact(true);
                 }
             }
         }

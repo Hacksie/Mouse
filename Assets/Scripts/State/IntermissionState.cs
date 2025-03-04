@@ -6,14 +6,14 @@ namespace HackedDesign
     public class IntermissionState : IState
     {
         private PlayerController player;
-        private LevelGenerator level;
+        private Level level;
         private UI.AbstractPresenter actionBar;
 
         public bool PlayerActionAllowed => true;
         public bool Battle => false;
 
 
-        public IntermissionState(PlayerController player, LevelGenerator level, AbstractPresenter actionBar)
+        public IntermissionState(PlayerController player, Level level, AbstractPresenter actionBar)
         {
             this.player = player;
             this.level = level;
@@ -31,7 +31,9 @@ namespace HackedDesign
                 this.player.transform.position = spawn.transform.position;
             }
 
+            //this.player.
             this.player.Idle();
+            //this.player.Sit();
             this.actionBar.Show();
         }
 

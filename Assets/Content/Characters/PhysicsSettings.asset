@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da616f7d152ddd04caf931e2e7fc11a7, type: 3}
   m_Name: PhysicsSettings
   m_EditorClassIdentifier: 
+  fly: 0
   defaultGravityScale: 1
-  downwardMovementMultiplier: 3
-  upwardMovementMultiplier: 1.7
+  fallingGravityScale: 3
+  risingGravityScale: 1.7
   jumpHeight: 4
   maxAirJumps: 0
   coyoteTime: 0.2
@@ -23,6 +24,7 @@ MonoBehaviour:
   fallingDeathYLimit: -30
   maxAcceleration: 35
   maxAirAcceleration: 20
+  wallClimbSpeed: 6
   wallStick: 0
   wallSlideMaxSpeed: 0
   wallJumpClimb: {x: 4, y: 12}

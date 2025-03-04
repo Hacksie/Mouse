@@ -7,12 +7,25 @@ using UnityEngine.Pool;
 
 namespace HackedDesign
 {
-    public class EnemyPool : MonoBehaviour
+    public interface IEnemyPool
+    {
+        void Reset();
+    }
+
+    public class EnemyPool : MonoBehaviour, IEnemyPool
     {
         [SerializeField] private List<Enemy> prefabList;
 
         private List<Enemy> pool = new List<Enemy>(1000);
 
+        public void Reset()
+        {
+            for(int i = 0;i < this.transform.childCount;i++)
+            {
+                this.transform.GetChild(i).gameObject.SetActive(false);
+                Destroy(this.transform.GetChild(i).gameObject);
+            }
+        }
 
         public Enemy Spawn(EnemyType type, Vector3 position, Quaternion rotation)
         {

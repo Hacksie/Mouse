@@ -4,7 +4,15 @@ using UnityEngine;
 
 namespace HackedDesign.UI
 {
-    public abstract class AbstractPresenter : MonoBehaviour
+    public interface IPresenter
+    {
+        void Show();
+        void Hide();
+        void Toggle();
+        void Repaint();
+    }
+
+    public abstract class AbstractPresenter : MonoBehaviour, IPresenter
     {
         public void Awake()
         {
@@ -27,7 +35,7 @@ namespace HackedDesign.UI
             }
         }
 
-        protected void Toggle() => gameObject.SetActive(!gameObject.activeInHierarchy);
+        public void Toggle() => gameObject.SetActive(!gameObject.activeInHierarchy);
 
         public abstract void Repaint();
     }

@@ -1,4 +1,6 @@
 
+
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace HackedDesign
@@ -18,7 +20,7 @@ namespace HackedDesign
         [SerializeField] public float minAngle = -25.0f;
         [SerializeField] public float shootDistance = 10.0f;
         [SerializeField] public float meleeDistance = 10.0f;
-        [SerializeField] public float interactDistance = 0.5f;
+        [SerializeField] public float interactDistance = 1.0f;
         [SerializeField] public LayerMask shootMask = 0;
         [SerializeField] public LayerMask interactMask = 0;
         [SerializeField] public int maxHealth = 100;
@@ -30,6 +32,7 @@ namespace HackedDesign
         [SerializeField] public int maxBulletDamage = 150;
         [SerializeField] public int minMeleeDamage = 25;
         [SerializeField] public int maxMeleeDamage = 100;
+        [SerializeField] public List<WeaponSettings> weaponSettings;
 
     }
 }

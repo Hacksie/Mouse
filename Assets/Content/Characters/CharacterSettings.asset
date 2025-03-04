@@ -31,6 +31,7 @@ MonoBehaviour:
   interactMask:
     serializedVersion: 2
     m_Bits: 0
+  maxHealth: 100
   health: 100
   ammo: 6
   infiniteAmmo: 0
@@ -39,3 +40,7 @@ MonoBehaviour:
   maxBulletDamage: 150
   minMeleeDamage: 25
   maxMeleeDamage: 100
+  weaponSettings:
+  - {fileID: 11400000, guid: a13376bfbbfd8884f8eef6608c74c67e, type: 2}
+  - {fileID: 11400000, guid: 9b0f56487dedb6041851381a82169f6d, type: 2}
+  - {fileID: 11400000, guid: 2297feb942ec50346a39e3ccaef56f59, type: 2}

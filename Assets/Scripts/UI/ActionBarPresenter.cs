@@ -15,6 +15,7 @@ namespace HackedDesign.UI
         [Header("UI")]
         [SerializeField] private UnityEngine.UI.Slider ramSlider;
         [SerializeField] private UnityEngine.UI.Slider healthSlider;
+        [SerializeField] private RectTransform ammoPanel;
         [SerializeField] private UnityEngine.UI.Text ammoText;
         [SerializeField] private List<Button> buttonList = new List<Button>(6);
         [SerializeField] private List<Image> imageList = new List<Image>(6);
@@ -30,7 +31,12 @@ namespace HackedDesign.UI
         public override void Repaint()
         {
             healthSlider.value = os.Health;
-            ammoText.text = os.Ammo.ToString();
+            ammoPanel.gameObject.SetActive(os.HasPistol);
+            if (os.HasPistol)
+            {
+                ammoText.text = os.Ammo.ToString();
+            }
+            
             RepaintHacks();
             RepaintRam();
         }

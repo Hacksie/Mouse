@@ -20,9 +20,7 @@ namespace HackedDesign
         [SerializeField] private PhysicsController body = null;
         [SerializeField] private Animator animator = null;
         [SerializeField] private new CapsuleCollider2D collider = null;
-
         [SerializeField] private Transform bulletStart;
-
         [Header("Settings")]
         [SerializeField] private CharacterSettings settings = null;
         [SerializeField] private LayerMask attackMask;
@@ -39,12 +37,19 @@ namespace HackedDesign
         private bool jumpFlag = false;
         private float nextAttackTimer = int.MinValue;
 
-        public bool IsAttacking { get => Animator.GetCurrentAnimatorClipInfo(0)[0].clip.name.StartsWith("Shoot") || Animator.GetCurrentAnimatorClipInfo(0)[0].clip.name.StartsWith("Melee"); }
+        public bool IsAttacking
+        {
+            get
+            {
+                var clipName = Animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+                return clipName == "Shoot" || clipName == "Gun Melee" || clipName == "Punch" || clipName == "Kick";
+            }
+        }
         public bool Crouched { get; set; }
 
 
-        public float Movement {get; private set;}
-        public float Climb {  get; private set;}
+        public float Movement { get; private set; }
+        public float Climb { get; private set; }
 
         public Vector2 DesiredVelocity
         {
@@ -101,6 +106,31 @@ namespace HackedDesign
         //public void SetStateDead() => CharState = new CharStateDead(this);
         //public void SetStateBattle() => CharState = new CharStateBattle(this);
 
+        public void Knockback(Vector3 direction)
+        {
+            knockback = true;
+            //body.Stop();
+            body.Knockback(direction, Game.Instance.GameSettings.KnockbackAmount);
+            animator.SetTrigger("knockback");
+            StartCoroutine(KnockbackPause());
+        }
+
+        private bool knockback = false;
+
+        private IEnumerator KnockbackPause()
+        {
+            yield return new WaitForSeconds(Game.Instance.GameSettings.KnockbackTime);
+            Stop();
+            StartCoroutine(KnockbackOver());
+        }
+
+        private IEnumerator KnockbackOver()
+        {
+            yield return new WaitForSeconds(Game.Instance.GameSettings.KnockbackFreezeTime);
+
+            knockback = false;
+        }
+
         private void Hit()
         {
             // Play hit animation
@@ -133,7 +163,7 @@ namespace HackedDesign
 
         public void Attack(Vector3 target, bool aiming)
         {
-            
+
             if (state != CharacterState.Battle)
             {
                 return;
@@ -141,7 +171,7 @@ namespace HackedDesign
 
             if (Time.time >= nextAttackTimer)
             {
-                if (operatingSystem.HasAmmo && aiming)
+                if (operatingSystem.HasAmmo && aiming && OperatingSystem.HasPistol)
                 {
                     operatingSystem.DecreaseAmmo();
                     Shoot(target);
@@ -151,19 +181,19 @@ namespace HackedDesign
                 else
                 {
                     Melee(target);
-                    switch(Random.Range(0,3))
+                    switch (Random.Range(0, 2 + (operatingSystem.HasAmmo && OperatingSystem.HasPistol ? 1 : 0)))
                     {
                         case 0:
-                            Animator.SetTrigger("melee");
-                            break;
-                        case 1:
                             Animator.SetTrigger("punch");
                             break;
-                        case 2:
+                        case 1:
                             Animator.SetTrigger("kick");
                             break;
+                        case 2:
+                            Animator.SetTrigger("melee");
+                            break;
                     }
-                    
+
 
                 }
 
@@ -180,6 +210,12 @@ namespace HackedDesign
             }
         }
 
+        public void MovePosition(Vector3 position)
+        {
+            transform.position = position;
+            //Body.Body.MovePosition(position);
+        }
+
 
 
         public void UpdateBehaviour(float movement, float climb, float facing)
@@ -194,6 +230,9 @@ namespace HackedDesign
                     break;
                 case CharacterState.Idle:
                     UpdateIdleBehaviour(movement, climb, facing);
+                    break;
+                case CharacterState.Seated:
+                    UpdateSeatedBehaviour(movement, climb, facing);
                     break;
             }
         }
@@ -231,21 +270,15 @@ namespace HackedDesign
             Climb = climb;
 
             UpdateSpriteDirection(Movement, facing);
+        }
 
-            /*
-            if (this.jumpTriggered && Jump)
-            {
-                animator.SetTrigger("jump");
-            }
+        private void UpdateSeatedBehaviour(float movement, float climb, float facing)
+        {
+            
+            //Movement = movement;
+            //Climb = climb;
 
-            if (body.climbingLedge)
-            {
-                animator.ResetTrigger("jump");
-            }
-
-            animator.SetBool("ledgeStart", body.climbingLedge);
-
-            jumpTriggered = false;*/
+            //UpdateSpriteDirection(Movement, facing);
         }
 
         public void FixedUpdateBehaviour()
@@ -257,7 +290,14 @@ namespace HackedDesign
 
             }
 
-            Body.FixedMovement(DesiredVelocity, Climb, Jump, JumpHoldFlag);
+            if (!knockback)
+            {
+                Body.FixedMovement(DesiredVelocity, Climb, Jump, JumpHoldFlag);
+            }
+            else
+            {
+                //Body.FixedMovement(Vector3.zero, 0, false, false);
+            }
             Jump = false;
             JumpHoldFlag = false;
         }
@@ -286,14 +326,14 @@ namespace HackedDesign
                 Debug.DrawLine(bulletStart.position, bulletStart.position + ((target - bulletStart.position).normalized * operatingSystem.settings.shootDistance), Color.red, 1);
                 var result = Physics2D.Raycast(bulletStart.position, target - bulletStart.position, operatingSystem.settings.shootDistance, attackMask);
 
-                if (result) 
+                if (result)
                 {
-                    if(result.transform.TryGetComponent<BreakGlass>(out var glass))
+                    if (result.transform.TryGetComponent<BreakGlass>(out var glass))
                     {
                         glass.Break(bulletStart.position);
                     }
 
-                    if(result.transform.TryGetComponent<Enemy>(out var enemy))
+                    if (result.transform.TryGetComponent<Enemy>(out var enemy))
                     {
                         var damage = Random.Range(operatingSystem.settings.minBulletDamage, operatingSystem.settings.maxBulletDamage);
                         enemy.TakeDamage(damage, result.point);
@@ -309,11 +349,11 @@ namespace HackedDesign
             //FIXME: Don't use a ray to melee. Use a box around the player
             Debug.DrawLine(bulletStart.position, bulletStart.position + (transform.right * operatingSystem.settings.meleeDistance), Color.magenta, 1);
             var result = Physics2D.OverlapCircle(bulletStart.position, operatingSystem.settings.meleeDistance, attackMask);
-            
+
             //var result = Physics2D.Raycast(bulletStart.position, target - bulletStart.position, operatingSystem.settings.meleeDistance, attackMask);
             if (result)
             {
-                if(result.transform.TryGetComponent<BreakGlass>(out var glass))
+                if (result.transform.TryGetComponent<BreakGlass>(out var glass))
                 {
                     glass.Break(bulletStart.position);
                 }

@@ -13,8 +13,8 @@ namespace HackedDesign
         [SerializeField] private PlayerInput playerInput;
         [SerializeField] private CharController character = null;
         [SerializeField] private Thermoptic camo = null;
-        [SerializeField] private Interactor interactor = null;
-        [SerializeField] private TargetAim targetAim = null;
+        //[SerializeField] private Interactor interactor = null;
+        [SerializeField] private Targeter targeter = null;
         //[SerializeField] private bool runToggle = false;
         [SerializeField] private Transform aimPivot = null;
         [SerializeField] private bool crouchToggle = false;
@@ -44,7 +44,7 @@ namespace HackedDesign
 
             this.AutoBind(ref character);
             this.AutoBind(ref camo);
-            this.AutoBind(ref interactor);
+            //this.AutoBind(ref interactor);
             character.dieActions.AddListener(Die);
         }
 
@@ -66,7 +66,7 @@ namespace HackedDesign
 
             selectAction.performed += SelectEvent;
             menuAction.performed += MenuEvent;
-            interactAction.performed += InteractEvent;
+            //interactAction.performed += InteractEvent;
         }
 
         void Start() => Reset();
@@ -74,7 +74,8 @@ namespace HackedDesign
         {
             Stop();
             character.Reset();
-            targetAim.HideAimLine();
+            targeter.ShowTarget(Vector3.zero, false, false);
+            //targeter.HideAimLine();
         }
 
         public void Stop()
@@ -82,27 +83,27 @@ namespace HackedDesign
             character.Stop();
         }
 
-        public void Idle() { /*character.SetStateIdle();*/ character.State = CharacterState.Idle; }
-        public void Battle() { /*character.SetStateBattle();*/ character.State = CharacterState.Battle; }
+        public void Idle() { character.State = CharacterState.Idle; }
+        public void Battle() { character.State = CharacterState.Battle; }
 
-        public void Sit() { /*character.SetStateSeated();*/ character.State = CharacterState.Seated; }
+        public void Sit() { character.State = CharacterState.Seated; }
 
         public void MenuEvent(InputAction.CallbackContext context)
         {
-            Debug.Log("Menu Event");
+            Debug.Log("Menu Event", this);
             Game.Instance.CurrentState.Menu();
         }
 
         public void SelectEvent(InputAction.CallbackContext context)
         {
-            Debug.Log("Select Event");
+            Debug.Log("Select Event", this);
             Game.Instance.CurrentState.Select();
         }
 
         public void InteractEvent(InputAction.CallbackContext context)
         {
-            Debug.Log("trigger interact", this);
-            interactor.TriggerInteract();
+            Debug.Log("Trigger interact", this);
+            targeter.TriggerInteract();
         }
 
         public void Die()
@@ -112,11 +113,11 @@ namespace HackedDesign
 
         public void UpdateBehavior()
         {
-            interactor.UpdateInteractors();
 
             switch (character.State)
             {
                 case CharacterState.Seated:
+                    UpdateSitBehaviour();
                     break;
                 case CharacterState.Idle:
                     UpdateIdleBehaviour();
@@ -129,6 +130,19 @@ namespace HackedDesign
             }
         }
 
+        private void UpdateSitBehaviour()
+        {
+            //targeter.UpdateInteractors();
+            //Vector3 targetPos = GetTargetingPosition();
+            targeter.UpdateInteractors();
+            UpdateAimLine(false);
+
+            if(this.attackAction.triggered)
+            {
+                targeter.TriggerInteract();
+            }
+        }
+
         private void UpdateIdleBehaviour()
         {
             float movement = 0;
@@ -138,6 +152,8 @@ namespace HackedDesign
             //character.Jump |= this.jumpAction.triggered;
             //character.JumpHoldFlag |= this.jumpAction.IsPressed();
             Vector3 targetPos = GetTargetingPosition();
+            targeter.UpdateInteractors();
+            UpdateAimLine(crouchToggle || this.crouchAction.IsPressed());
             character.UpdateBehaviour(movement, climb, CalcForward(targetPos));
 
         }
@@ -148,7 +164,7 @@ namespace HackedDesign
             float climb = 0;
 
             Vector3 targetPos = GetTargetingPosition();
-            
+
 
             if (this.crouchToggleAction.triggered)
             {
@@ -157,13 +173,14 @@ namespace HackedDesign
 
             character.Crouched = crouchToggle || this.crouchAction.IsPressed();
 
+            targeter.UpdateInteractors();
+            UpdateAimLine(crouchToggle || this.crouchAction.IsPressed());
 
-             UpdateAimLine(crouchToggle || this.crouchAction.IsPressed());
-            
 
 
             if (character.IsAttacking) // If we're playing the attacking animation, don't let the player take another action
             {
+                Debug.Log("Attacking");
             }
             else if (this.attackAction.triggered)
             {
@@ -175,8 +192,16 @@ namespace HackedDesign
             }
             else
             {
-                movement = moveAction.ReadValue<float>();
-                climb = climbAction.ReadValue<float>();
+                if (Game.Instance.GameSettings.Autorun)
+                {
+                    movement = 1;
+                    climb = 1;
+                }
+                else
+                {
+                    movement = moveAction.ReadValue<float>();
+                    climb = climbAction.ReadValue<float>();
+                }
                 character.Jump |= this.jumpAction.triggered;
                 character.JumpHoldFlag |= this.jumpAction.IsPressed();
             }
@@ -209,32 +234,22 @@ namespace HackedDesign
 
         private void UpdateAimLine(bool crouched)
         {
+
             if (playerInput.currentControlScheme == "Gamepad")
             {
                 var lookPos = lookPosAction.ReadValue<Vector2>();
-                if (!crouched && lookPos.magnitude > 0.1f)
+
+                if (lookPos.magnitude > 0.1f)
                 {
                     Vector3 direction = CalcGamepadDirection(ref lookPos);
-                    targetAim.ShowAimLine(direction);
+                    targeter.ShowTarget(direction, true, character.OperatingSystem.HasPistol);
 
-                }
-                else
-                {
-                    targetAim.HideAimLine();
                 }
             }
             else
             {
-                if (!crouched && aimAction.IsPressed())
-                {
-                    Vector3 direction = CalcMouseDirection();
-
-                    targetAim.ShowAimLine(direction);
-                }
-                else
-                {
-                    targetAim.HideAimLine();
-                }
+                Vector3 direction = CalcMouseDirection();
+                targeter.ShowTarget(direction, IsAiming(), character.OperatingSystem.HasPistol);
             }
         }
 

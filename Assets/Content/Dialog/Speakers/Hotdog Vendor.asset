@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b87639ed3a100e449f24a293a821b16, type: 3}
+  m_Name: Hotdog Vendor
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: 2016766557, guid: 52419acafe198154484d5fe63deee78e, type: 3}
+  - {fileID: 1930803647, guid: 52419acafe198154484d5fe63deee78e, type: 3}
+  - {fileID: 119318727, guid: 52419acafe198154484d5fe63deee78e, type: 3}
+  - {fileID: 909406734, guid: 52419acafe198154484d5fe63deee78e, type: 3}
+  - {fileID: -720516100, guid: 52419acafe198154484d5fe63deee78e, type: 3}
+  - {fileID: 1147601146, guid: 52419acafe198154484d5fe63deee78e, type: 3}
+  - {fileID: 2123517093, guid: 52419acafe198154484d5fe63deee78e, type: 3}
+  - {fileID: 677090285, guid: 52419acafe198154484d5fe63deee78e, type: 3}

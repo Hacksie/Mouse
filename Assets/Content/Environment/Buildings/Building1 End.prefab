@@ -124,10 +124,10 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -32}
+  m_Offset: {x: 16, y: -32}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 1}
+    pivot: {x: 0, y: 1}
     oldSize: {x: 32, y: 64}
     newSize: {x: 16, y: 16}
     adaptiveTilingThreshold: 0.5
@@ -205,8 +205,8 @@ MonoBehaviour:
   RepeatMode: 0
   OverrideAutomaticTileBounds: 1
   TileBoundsOverride:
-    m_Center: {x: 0, y: -32, z: 0}
-    m_Extent: {x: 16, y: 32, z: 0.1}
+    m_Center: {x: 16, y: -30, z: 0}
+    m_Extent: {x: 16, y: 34, z: 0.1}
   Entrances:
   - {fileID: 8979909214621830880}
   Exits: []
@@ -261,7 +261,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2069048176099128547, guid: eeb6b4b2def819f4487e28928c896c8b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 2069048176099128547, guid: eeb6b4b2def819f4487e28928c896c8b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -331,7 +331,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 141998717799973269, guid: a3fc99aa5497d9d419469710ffc7ba6b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -17
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 141998717799973269, guid: a3fc99aa5497d9d419469710ffc7ba6b, type: 3}
       propertyPath: m_LocalPosition.y

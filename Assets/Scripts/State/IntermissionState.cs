@@ -5,41 +5,46 @@ namespace HackedDesign
 {
     public class IntermissionState : IState
     {
-        private PlayerController player;
-        private Level level;
-        private UI.AbstractPresenter actionBar;
+        private readonly PlayerController player;
+        private readonly Level level;
+        private readonly IPresenter actionPresenter;
 
         public bool PlayerActionAllowed => true;
         public bool Battle => false;
 
 
-        public IntermissionState(PlayerController player, Level level, AbstractPresenter actionBar)
+        public IntermissionState(PlayerController player, Level level, IPresenter actionPresenter)
         {
             this.player = player;
             this.level = level;
-            this.actionBar = actionBar;
+            this.actionPresenter = actionPresenter;
         }
 
         public void Begin()
         {
+            
             this.level.Reset();
-            this.level.Intermission();
-            var spawn = GameObject.FindGameObjectWithTag("Respawn");
-
-            if (spawn != null)
-            {
-                this.player.transform.position = spawn.transform.position;
-            }
-
-            //this.player.
-            this.player.Idle();
-            //this.player.Sit();
-            this.actionBar.Show();
+            this.level.ShowNamedRoom("Hotdog Stand", false, true, this.player);
+            this.player.Sit();
+            DialogManager.Instance.ShowDialog("IntroIntermission1", new UnityEngine.Events.UnityAction(Intro1Over));
         }
+
+        public void Intro1Over()
+        {
+            Debug.Log("Intro1 over");
+
+            DialogManager.Instance.ShowDialog("IntroIntermission2", new UnityEngine.Events.UnityAction(Intro2Over));
+        }
+
+        public void Intro2Over()
+        {
+
+        }
+
 
         public void End()
         {
-            
+            this.actionPresenter.Hide();
         }
 
         public void Update()

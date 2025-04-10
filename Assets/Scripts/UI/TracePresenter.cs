@@ -10,9 +10,9 @@ namespace HackedDesign.UI
 
         public override void Repaint()
         {
-            traceLabel.text = Game.Instance.LevelTimer.Time.ToString("N0");
-            traceSlider.maxValue = Game.Instance.LevelTimer.InitialTime;
-            traceSlider.value = Game.Instance.LevelTimer.Time;
+            traceLabel.text = Game.Instance.LevelTimer.Timer.Time.ToString("N0");
+            traceSlider.maxValue = Game.Instance.LevelTimer.Timer.InitialTime;
+            traceSlider.value = Game.Instance.LevelTimer.Timer.Time;
         }
     }
 }

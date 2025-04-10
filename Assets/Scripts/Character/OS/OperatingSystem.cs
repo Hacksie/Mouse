@@ -13,7 +13,7 @@ namespace HackedDesign
         [SerializeField] public Action dieActions;
         [SerializeField] public Action hitActions;
         //[SerializeField] private GameDataRepository gameData;
-        private CharacterData characterData = new CharacterData();
+        private CharacterData characterData = new();
         [SerializeField] public CharacterSettings settings;
 
         [SerializeField] private List<Hack> activeHacks = new List<Hack>();
@@ -30,6 +30,8 @@ namespace HackedDesign
 
         public List<Hack> ActiveHacks { get => activeHacks; }
         public List<Hack> RepoHacks { get => repoHacks; set => repoHacks = value; }
+
+        public bool HasPistol { get => characterData.hasPistol; }
 
         public int Health
         {
@@ -49,6 +51,8 @@ namespace HackedDesign
                 }
             }
         }
+
+        public int CurrentMission { get => this.characterData.currentMission; set => this.characterData.currentMission = value; }
 
         public int KineticLevel { get => this.characterData.kinetic; }
         public int DigitalLevel { get => this.characterData.digital; }
@@ -114,7 +118,7 @@ namespace HackedDesign
         public void DecreaseAmmo()
         {
             Ammo = Mathf.Max(Ammo - 1, 0);
-        }
+        } 
 
     }
 }

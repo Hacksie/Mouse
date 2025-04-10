@@ -23,7 +23,7 @@ namespace HackedDesign
         public void Begin()
         {
             this.level.Reset();
-            this.level.Generate(2);
+            this.level.Generate(player.Character.OperatingSystem.CurrentMission);
             var spawn = GameObject.FindGameObjectWithTag("Respawn");
 
             if (spawn != null)
@@ -52,7 +52,7 @@ namespace HackedDesign
 
         public void Update()
         {
-            Game.Instance.ResetLevelTimer();
+            Game.Instance.LevelTimer.Reset();
             //Game.Instance.LevelTimer = new StopwatchTimer();
             Game.Instance.SetPlaying();
         }

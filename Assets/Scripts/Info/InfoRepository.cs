@@ -42,5 +42,4 @@ namespace HackedDesign
         HitAndRun,
         Bedlam,
     }
-
 }

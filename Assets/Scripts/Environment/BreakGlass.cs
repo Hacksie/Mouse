@@ -30,7 +30,6 @@ namespace HackedDesign
             {
                 return;
             }
-            Debug.Log("Break");
             var x = other.x - transform.position.x;
 
             glassBreakEffect.transform.right = x < 0 ? Vector3.right : Vector3.left;

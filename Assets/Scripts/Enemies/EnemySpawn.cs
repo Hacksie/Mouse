@@ -16,16 +16,16 @@ namespace HackedDesign
 
         public Vector3 GetAirSpawnPosition()
         {
-            var pos = Random.insideUnitCircle * radius;
-            pos.y = Mathf.Abs(pos.y);
+            var position = Random.insideUnitCircle * radius;
+            position.y = Mathf.Abs(position.y);
 
-            return pos;
+            return position;
         }
 
         public Vector3 GetGroundSpawnPosition()
         {
-            var posx = Random.Range(-radius, radius);
-            return new Vector3(posx, transform.position.y, 0);
+            var positionX = Random.Range(-radius, radius);
+            return new Vector3(positionX, transform.position.y, 0);
         }
     }
 }

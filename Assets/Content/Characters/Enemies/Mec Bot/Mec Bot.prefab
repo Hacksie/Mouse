@@ -78,11 +78,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 3525777089061960736}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b4f0b3a7a8d7ea4999457af51126796, type: 3}
+  m_Script: {fileID: 11500000, guid: 3ed9bd0f79fa75146ba38ac31db71a35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionRadius: 10
+  detectionRadius: 8
   timerInterval: 1
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &3857540880771795642
 GameObject:
   m_ObjectHideFlags: 0
@@ -161,11 +164,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 3857540880771795642}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b4f0b3a7a8d7ea4999457af51126796, type: 3}
+  m_Script: {fileID: 11500000, guid: 3ed9bd0f79fa75146ba38ac31db71a35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionRadius: 15
+  detectionRadius: 13
   timerInterval: 1
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &4310837375018008885
 GameObject:
   m_ObjectHideFlags: 0
@@ -316,7 +322,7 @@ MonoBehaviour:
   settings: {fileID: 11400000, guid: 984cbb76f6b561b419668582dfddd3a4, type: 2}
   attackMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 136
   state: 1
 --- !u!212 &1671927891144750178
 SpriteRenderer:
@@ -691,8 +697,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7707912049466806815}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b4f0b3a7a8d7ea4999457af51126796, type: 3}
+  m_Script: {fileID: 11500000, guid: 3ed9bd0f79fa75146ba38ac31db71a35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionRadius: 2.5
+  detectionRadius: 2
   timerInterval: 1
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0

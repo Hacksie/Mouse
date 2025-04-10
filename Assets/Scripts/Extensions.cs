@@ -1,9 +1,73 @@
-﻿using UnityEngine;
+﻿//using System;
+using System.Collections;
+using UnityEngine;
 
 namespace HackedDesign
 {
     public static class Extensions
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mask"></param>
+        /// <param name="layer"></param>
+        /// <returns>True if the layer mask contains a layer</returns>
+        public static bool Contains(this LayerMask mask, int layer)
+        {
+            return mask == (mask | (1 << layer));
+        }
+
+        /// <summary>
+        /// Converts an int to a hex string
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string ToHexString(this int value)
+        {
+            return value.ToString("X");
+        }
+
+        /// <summary>
+        /// Converts an int to a hex string
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string ToHex(this long value)
+        {
+            return value.ToString("X");
+        }
+
+        /// <summary>
+        /// Converts an int to a Base64 string
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string ToBase64String(this int value)
+        {
+            System.Span<byte> bytes = stackalloc byte[4];
+            System.BitConverter.TryWriteBytes(bytes, value);
+            return System.Convert.ToBase64String(bytes).TrimEnd('=');
+        }
+
+        /// <summary>
+        /// Converts an int to a Base64 string
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string ToBase64String(this long value)
+        {
+            System.Span<byte> bytes = stackalloc byte[8];
+            System.BitConverter.TryWriteBytes(bytes, value);
+            return System.Convert.ToBase64String(bytes);
+        }
+
+        /// <summary>
+        /// Automatically binds a component in a monobehaviour to a reference if the reference is null. 
+        /// Then logs a reminder warning 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="monoBehaviour"></param>
+        /// <param name="reference"></param>
         public static void AutoBind<T>(this MonoBehaviour monoBehaviour, ref T reference)
         {
             if (reference == null)
@@ -41,5 +105,7 @@ namespace HackedDesign
         {
             return new Vector3(x ?? vector.x, y ?? vector.y, z ?? vector.z);
         }
+
+
     }
 }

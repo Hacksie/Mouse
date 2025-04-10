@@ -24,6 +24,8 @@ namespace HackedDesign
         public int pingRadius = 10;
         public bool infAmmo = false;
         public bool infHealth = false;
+        public int currentMission = 2;
+        public bool hasPistol = false;
 
         public int kinetic = 1;
         public int digital = 1;

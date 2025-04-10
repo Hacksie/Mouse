@@ -217,6 +217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b1e4331f97e4764ca4cd7a25b4c1566, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 1670407703002308985}
   billboards:
   - {fileID: 21300000, guid: 08c0996c05b3a2c4592c48602bf4a26a, type: 3}
   - {fileID: 21300000, guid: f957904826211d546b02863d8e93433f, type: 3}

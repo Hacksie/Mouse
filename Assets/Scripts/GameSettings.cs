@@ -10,6 +10,20 @@ namespace HackedDesign
     [CreateAssetMenu(fileName = "GameSettings", menuName = "Mouse/Settings/Game")]
     public class GameSettings : ScriptableObject
     {
-        [SerializeField] public bool skipIntro = false;
+        [SerializeField] private bool skipIntro = false;
+        [SerializeField] private bool autorun = true;
+        [SerializeField] private bool startPistol = false;
+        [SerializeField] private float knockbackTime = 0.15f;
+        [SerializeField] private float knockbackFreezeTime = 0.20f;
+        [SerializeField] private float knockbackAmount = 10f;
+        [SerializeField] private float basePropGap = 10f;
+
+        public bool SkipIntro { get => skipIntro; }
+        public bool Autorun { get => autorun; }
+        public bool StartPistol { get => startPistol; }
+        public float KnockbackTime { get => knockbackTime; }
+        public float KnockbackFreezeTime { get => knockbackFreezeTime; }
+        public float KnockbackAmount { get => knockbackAmount; }
+        public float BasePropGap { get => basePropGap; }
     }
 }

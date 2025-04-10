@@ -27,8 +27,8 @@ namespace HackedDesign
 
         public void Begin()
         {
-            Game.Instance.LevelTimer.Start();
-            Game.Instance.LevelTimer.OnTimerStop += TimeOut;
+            Game.Instance.LevelTimer.Timer.Start();
+            Game.Instance.LevelTimer.Timer.OnTimerStop += TimeOut;
             //this.level.Reset();
             //this.level.Generate(1);
             //var spawn = GameObject.FindGameObjectWithTag("Respawn");
@@ -57,7 +57,7 @@ namespace HackedDesign
 
         public void Update()
         {
-            Game.Instance.LevelTimer.Tick(Time.deltaTime);
+            Game.Instance.LevelTimer.Timer.Tick(Time.deltaTime);
             this.player.UpdateBehavior();
             this.enemyPool.UpdateAllBehaviour();
             this.traceBar.Repaint();

@@ -9,6 +9,7 @@ namespace HackedDesign
     {
         [SerializeField] private Outlinable outlinable;
         [SerializeField] private UnityEvent interactAction;
+        [SerializeField] private string label;
 
         private bool interact = false;
         private bool target = false;
@@ -16,22 +17,31 @@ namespace HackedDesign
 
         private float pingTimer = 0;
 
-        
+        public string Label { get => label; set => label = value; }
 
         private void Awake()
         {
-            
+
             this.AutoBind(ref outlinable);
-             Target(false);
+            Target(false);
+
+            FixTag();
+        }
+
+        private void FixTag()
+        {
+            if (this.gameObject.CompareTag("Untagged"))
+            {
+                this.gameObject.tag = "Interactable";
+            }
         }
 
         public void Ping()
         {
             pingTimer = Time.time;
             ping = true;
-            //Target(true);
-
         }
+
 
         public void TriggerInteract()
         {
@@ -81,6 +91,7 @@ namespace HackedDesign
         public void Target(bool flag)
         {
             target = flag;
+
             //outlinable.enabled = flag;
             //outlinable.OutlineParameters.Color = Color.white;
         }
@@ -88,6 +99,15 @@ namespace HackedDesign
         public void Interact(bool flag)
         {
             interact = flag;
+
+            if (flag)
+            {
+                //enterInteractAction?.Invoke();
+            }
+            else
+            {
+                //exitInteractAction?.Invoke();
+            }
             //outlinable.enabled = flag;
             //outlinable.OutlineParameters.Color = Color.yellow;
         }

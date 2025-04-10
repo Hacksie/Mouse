@@ -7,7 +7,8 @@ using UnityEngine.Rendering.Universal;
 
 public class Billboard : MonoBehaviour
 {
-    
+
+    [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] public List<Sprite> billboards;
     [SerializeField] private bool change = false;
     [SerializeField] private float changeTimeMin = 10;
@@ -16,7 +17,7 @@ public class Billboard : MonoBehaviour
 
     private float timer; 
 
-    private SpriteRenderer spriteRenderer;
+    //private SpriteRenderer spriteRenderer;
     private Light2D light2D;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()

@@ -1,30 +1,33 @@
+using HackedDesign.UI;
 using UnityEngine;
 
 namespace HackedDesign
 {
     public class DialogState : IState
     {
-        private PlayerController player;
+        private readonly PlayerController player;
+        private readonly IPresenter dialogPresenter;
         
         public bool PlayerActionAllowed => true;
         public bool Battle => true;
 
 
-        public DialogState(PlayerController player)
+        public DialogState(PlayerController player, IPresenter dialogPresenter)
         {
             this.player = player;
-            
+            this.dialogPresenter = dialogPresenter;           
             
         }
 
         public void Begin()
         {
-
+            this.player.Sit();
+            this.dialogPresenter.Show();
         }
 
         public void End()
         {
-
+            this.dialogPresenter.Hide();
         }
 
         public void Update()

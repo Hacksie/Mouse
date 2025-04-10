@@ -12,12 +12,12 @@ namespace HackedDesign
     //[RequireComponent(typeof(AnimationController))]
     public class GoapAgent : MonoBehaviour
     {
-
+        [SerializeField] CharController character;
         [SerializeField] GoapFactory gFactory;
         [Header("Sensors")]
-        [SerializeField] Sensor chaseSensor;
-        [SerializeField] Sensor attackSensor;
-        [SerializeField] Sensor meleeSensor;
+        [SerializeField] VisualSensor chaseSensor;
+        [SerializeField] VisualSensor attackSensor;
+        [SerializeField] VisualSensor meleeSensor;
 
         [Header("Known Locations")]
         [SerializeField] Transform restingPosition;
@@ -78,6 +78,7 @@ namespace HackedDesign
             factory.AddBelief("Nothing", () => false);
 
             factory.AddBelief("AgentIdle", () => true); // !navMeshAgent.hasPath);
+            factory.AddBelief("Alive", () => character != null && character.State != CharacterState.Dead);
             //factory.AddBelief("AgentMoving", () => navMeshAgent.hasPath);
             //factory.AddBelief("AgentHealthLow", () => health < 30);
             //factory.AddBelief("AgentIsHealthy", () => health >= 50);
@@ -99,6 +100,9 @@ namespace HackedDesign
         void SetupActions()
         {
             actions = new HashSet<AgentAction>();
+
+            //actions.Add(new AgentAction.Builder("Dead")
+            //    .WithStrategy
 
             actions.Add(new AgentAction.Builder("Relax")
                 .WithStrategy(new IdleStrategy(5))
@@ -244,7 +248,11 @@ namespace HackedDesign
 
         void Update()
         {
-            //statsTimer.Tick(Time.deltaTime);
+            if(character != null && character.State == CharacterState.Dead)
+            {
+                return;
+            }
+            //statsTimer.Tick(Timer.deltaTime);
             //animations.SetSpeed(navMeshAgent.velocity.magnitude);
 
             // Update the plan and current action if there is one

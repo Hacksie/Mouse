@@ -8,11 +8,6 @@ public class Swing : MonoBehaviour
 
     private int direction = 1;
     private float currentRotation = 180;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()

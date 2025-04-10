@@ -6,13 +6,10 @@ using UnityEngine;
 
 public class RandomBuilding : MonoBehaviour
 {
-    
+    [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] public List<Sprite> buildingSprites;
 
     private float timer; 
-
-    private SpriteRenderer spriteRenderer;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     private void Awake()
     {

@@ -8,7 +8,7 @@ namespace HackedDesign
         [SerializeField] private int maxX = 4;
         [SerializeField] private int minY = -4;
         [SerializeField] private int maxY = 4;
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
+
         void Start()
         {
             /*

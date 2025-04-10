@@ -23,7 +23,7 @@ namespace HackedDesign
                 .Build());
         }
 
-        public void AddSensorBelief(string key, Sensor sensor)
+        public void AddSensorBelief(string key, VisualSensor sensor)
         {
             beliefs.Add(key, new AgentBelief.Builder(key)
                 .WithCondition(() => sensor.IsTargetInRange)

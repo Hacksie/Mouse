@@ -1,4 +1,5 @@
 using HackedDesign.UI;
+using System.Linq;
 using UnityEngine;
 
 namespace HackedDesign
@@ -7,34 +8,22 @@ namespace HackedDesign
     {
         private PlayerController player;
         private Level level;
-        private readonly IPresenter actionBar;
 
         public bool PlayerActionAllowed => true;
         public bool Battle => false;
 
 
-        public Room1State(PlayerController player, Level level, IPresenter actionBar)
+        public Room1State(PlayerController player, Level level)
         {
             this.player = player;
             this.level = level;
-            this.actionBar = actionBar;
         }
 
         public void Begin()
         {
             this.level.Reset();
-            this.level.Room1();
-            var spawn = GameObject.FindGameObjectWithTag("Respawn");
-
-            if (spawn != null)
-            {
-                this.player.transform.position = spawn.transform.position;
-            }
-
-            //this.player.
-            this.player.Idle();
-            //this.player.Sit();
-            this.actionBar.Show();
+            this.level.ShowNamedRoom("Mouse Starting Room", false, true, this.player);
+            this.player.Sit();
         }
 
         public void End()

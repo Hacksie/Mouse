@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,22 +12,22 @@ namespace HackedDesign
         [SerializeField] private Rigidbody2D body = null;
         [SerializeField] private Collider2D ledgeDetect = null;
         [SerializeField] private Collider2D airDetect = null;
+        [SerializeField] private CapsuleCollider2D bodyCollider = null;
         [Header("Settings")]
         [SerializeField] private PhysicsSettings settings = null;
         [SerializeField] private LayerMask environmentMask;
 
         [Header("Events")]
         [SerializeField] private UnityEvent fallDeathEvent;
-        [Header("Data")]
-        [SerializeField] private bool headBlocked;
-        [SerializeField] private bool onGround;
-        [SerializeField] private bool onWall;
-        [SerializeField] private Vector2 contactNormal;
+        
+        //private bool headBlocked;
+        private bool onGround;
+        private bool onWall;
+        private Vector2 contactNormal;
 
         [Header("Settings")]
         [SerializeField] private Transform ledgeDetectionPoint;
-        [SerializeField] private float ledgeRadius = 0.2f;
-        [SerializeField] public Vector3 ledgeOffsetStart;
+        //[SerializeField] public Vector3 ledgeOffsetStart;
         [SerializeField] public Vector3 ledgeOffsetEnd;
 
         public Rigidbody2D Body { get { return body; } }
@@ -49,6 +50,8 @@ namespace HackedDesign
 
         public bool climbingLedge = false;
 
+        public bool knockback = false;
+
         
         //public Vector3 ledgePosition;
 
@@ -57,7 +60,9 @@ namespace HackedDesign
         private void Awake()
         {
             this.AutoBind(ref body);
+            this.AutoBind(ref bodyCollider);
         }
+
 
         public void Stop() => body.linearVelocity = Vector2.zero;
 
@@ -75,6 +80,28 @@ namespace HackedDesign
 
         private float DefaultGravityScale() => settings.fly ? 0 : settings.defaultGravityScale;
 
+        public void Knockback(Vector3 direction, float amount)
+        {
+            //knockback = true;
+            Stop();
+            body.AddForce(direction.normalized * amount, ForceMode2D.Impulse);
+            
+            //StartCoroutine(KnockbackPause());
+        }
+
+        private IEnumerator KnockbackPause()
+        {
+            yield return new WaitForSeconds(Game.Instance.GameSettings.KnockbackTime);
+            
+            StartCoroutine(KnockbackOver());
+        }
+
+        private IEnumerator KnockbackOver()
+        {
+            yield return new WaitForSeconds(Game.Instance.GameSettings.KnockbackFreezeTime);
+
+            knockback = false;
+        }
 
 
         public bool LedgeEdgeStart()
@@ -109,6 +136,11 @@ namespace HackedDesign
             var maxSpeedChange = acceleration * Time.fixedDeltaTime;
 
             var contactPerp = -1 * Vector2.Perpendicular(ContactNormal).normalized;
+
+            if(knockback)
+            {
+                return;
+            }
 
             if (body.transform.position.y < settings.fallingDeathYLimit)
             {
@@ -309,7 +341,7 @@ namespace HackedDesign
                 body.linearVelocity = Vector2.zero;
             }
 
-            //if (fallingTime > 0 && Time.time - fallingTime > setting.fallingTimeDeath)
+            //if (fallingTime > 0 && Timer.time - fallingTime > setting.fallingTimeDeath)
             //{
             //    Debug.Log("Falling death");
             //    body.linearVelocity = Vector3.zero;
@@ -327,7 +359,7 @@ namespace HackedDesign
         private void EvaluateCollision(Collision2D collision)
         {
             // FIXME: Use a layermask
-            if (collision.gameObject.layer == LayerMask.NameToLayer("Environment"))
+            if (environmentMask.Contains(collision.gameObject.layer))
             {
                 for (int i = 0; i < collision.contactCount; i++)
                 {

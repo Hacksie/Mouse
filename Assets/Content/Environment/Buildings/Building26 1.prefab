@@ -126,16 +126,16 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: -16, y: -64}
-  - {x: -16, y: 0}
-  - {x: 5, y: 0}
-  - {x: 5, y: -2}
-  - {x: 14, y: -2}
-  - {x: 14, y: -8}
-  - {x: 15, y: -8}
-  - {x: 15, y: -11}
-  - {x: 5, y: -11}
-  - {x: 5, y: -64}
+  - {x: 0, y: -64}
+  - {x: 0, y: 0}
+  - {x: 21, y: 0}
+  - {x: 21, y: -2}
+  - {x: 30, y: -2}
+  - {x: 30, y: -8}
+  - {x: 31, y: -8}
+  - {x: 31, y: -11}
+  - {x: 21, y: -11}
+  - {x: 21, y: -64}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
@@ -204,14 +204,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allowImmediateRepeats: 1
+  Entrance: {fileID: 0}
+  Exit: {fileID: 0}
   AllowRotation: 0
   RepeatMode: 0
   OverrideAutomaticTileBounds: 0
   TileBoundsOverride:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0.5, y: 0.5, z: 0.5}
-  Entrance: {fileID: 8979909214621830880}
-  Exit: {fileID: 429475949495754527}
+  Entrances:
+  - {fileID: 8979909214621830880}
+  Exits:
+  - {fileID: 429475949495754527}
   OverrideConnectionChance: 0
   ConnectionChance: 0
   Tags:
@@ -224,6 +228,7 @@ MonoBehaviour:
     normalizedPathDepth: 0
     branchDepth: 0
     normalizedBranchDepth: 0
+    branchId: -1
     isOnMainPath: 0
     localBounds:
       m_Center: {x: 0, y: 0, z: 0}
@@ -251,7 +256,7 @@ MonoBehaviour:
     tileSet: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-  fileVersion: 1
+  fileVersion: 2
 --- !u!1001 &2172985332623987724
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -270,7 +275,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 141998717799973269, guid: a3fc99aa5497d9d419469710ffc7ba6b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -17
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 141998717799973269, guid: a3fc99aa5497d9d419469710ffc7ba6b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -359,7 +364,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 141998717799973269, guid: a3fc99aa5497d9d419469710ffc7ba6b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 15
+      value: 36
       objectReference: {fileID: 0}
     - target: {fileID: 141998717799973269, guid: a3fc99aa5497d9d419469710ffc7ba6b, type: 3}
       propertyPath: m_LocalPosition.y

@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6709158730831488410}
@@ -179,7 +179,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 759593924568943018}
@@ -200,14 +200,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allowImmediateRepeats: 1
+  Entrance: {fileID: 0}
+  Exit: {fileID: 0}
   AllowRotation: 0
   RepeatMode: 0
   OverrideAutomaticTileBounds: 0
   TileBoundsOverride:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0.5, y: 0.5, z: 0.5}
-  Entrance: {fileID: 8979909214621830880}
-  Exit: {fileID: 429475949495754527}
+  Entrances:
+  - {fileID: 8979909214621830880}
+  Exits:
+  - {fileID: 429475949495754527}
   OverrideConnectionChance: 0
   ConnectionChance: 0
   Tags:
@@ -220,6 +224,7 @@ MonoBehaviour:
     normalizedPathDepth: 0
     branchDepth: 0
     normalizedBranchDepth: 0
+    branchId: -1
     isOnMainPath: 0
     localBounds:
       m_Center: {x: 0, y: 0, z: 0}
@@ -247,7 +252,7 @@ MonoBehaviour:
     tileSet: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-  fileVersion: 1
+  fileVersion: 2
 --- !u!1 &9019310944567000748
 GameObject:
   m_ObjectHideFlags: 0
@@ -264,7 +269,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6709158730831488410
 Transform:
   m_ObjectHideFlags: 0
@@ -353,7 +358,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 141998717799973269, guid: a3fc99aa5497d9d419469710ffc7ba6b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -9
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 141998717799973269, guid: a3fc99aa5497d9d419469710ffc7ba6b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -442,7 +447,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 141998717799973269, guid: a3fc99aa5497d9d419469710ffc7ba6b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 141998717799973269, guid: a3fc99aa5497d9d419469710ffc7ba6b, type: 3}
       propertyPath: m_LocalPosition.y

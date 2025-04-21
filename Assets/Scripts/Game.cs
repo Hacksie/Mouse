@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace HackedDesign
 {
-    public class Game : MonoBehaviour
+    public class Game : AutoSingleton<Game>
     {
         public const string gameVersion = "1.0";
         [Header("Game")]
@@ -40,12 +40,11 @@ namespace HackedDesign
         #endregion
 
         #region Singleton
-        public static Game Instance { get; private set; }
-        private Game() => Instance = this;
+        //public static Game Instance { get; private set; }
+        //private Game() => Instance = this;
         #endregion
 
         #region Unity Messages
-        void Awake() => CheckBindings();
         void Start() => Initialization();
 
         private void Update() => CurrentState.Update();
@@ -78,7 +77,7 @@ namespace HackedDesign
         public void SetRoof1() => CurrentState = new Intro1RoofState(player, level);
         public void SetRoom1() => CurrentState = new Room1State(player, level);
         public void SetDialog() => CurrentState = new DialogState(player, dialogPresenter);
-        public void SetMissionSelect() => CurrentState = new MissionSelectState(player, missionPresenter);
+        public void SetMissionSelect() => CurrentState = new MissionSelectState(missionPresenter);
         public void SetIntermission() => CurrentState = new IntermissionState(player, level, actionBarPresenter);
         public void SetPlaying() => CurrentState = new PlayingState(player, level, enemyPool, actionBarPresenter, tracePresenter);
         public void SetLoading() => CurrentState = new LoadingState(player, level, enemyPool);
@@ -103,7 +102,7 @@ namespace HackedDesign
             
             if (gameSettings.SkipIntro)
             {
-                player.Character.OperatingSystem.CurrentMission = Random.Range(int.MinValue, int.MaxValue);
+                player.Character.OperatingSystem.CurrentMission = 1; // Random.Range(int.MinValue, int.MaxValue);
                 SetLoading();
             }
             else
@@ -111,10 +110,6 @@ namespace HackedDesign
                 SetRoof1();
             }
         }     
-
-        private void CheckBindings()
-        {
-        }
 
         private void Initialization()
         {

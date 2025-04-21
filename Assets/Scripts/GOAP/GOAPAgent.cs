@@ -15,9 +15,9 @@ namespace HackedDesign
         [SerializeField] CharController character;
         [SerializeField] GoapFactory gFactory;
         [Header("Sensors")]
-        [SerializeField] VisualSensor chaseSensor;
-        [SerializeField] VisualSensor attackSensor;
-        [SerializeField] VisualSensor meleeSensor;
+        [SerializeField] PlayerSensor chaseSensor;
+        [SerializeField] PlayerSensor attackSensor;
+        [SerializeField] PlayerSensor meleeSensor;
 
         [Header("Known Locations")]
         [SerializeField] Transform restingPosition;

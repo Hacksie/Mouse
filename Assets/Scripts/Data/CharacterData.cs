@@ -25,7 +25,8 @@ namespace HackedDesign
         public bool infAmmo = false;
         public bool infHealth = false;
         public int currentMission = 2;
-        public bool hasPistol = false;
+        public bool hasPistol = true;
+        public float momentumFactor = 0.05f;
 
         public int kinetic = 1;
         public int digital = 1;

@@ -58,7 +58,7 @@ namespace HackedDesign
         public void Update()
         {
             Game.Instance.LevelTimer.Timer.Tick(Time.deltaTime);
-            this.player.UpdateBehavior();
+            this.player.UpdateBattleBehaviour();
             this.enemyPool.UpdateAllBehaviour();
             this.traceBar.Repaint();
             //this.actionBarPresenter.Repaint();

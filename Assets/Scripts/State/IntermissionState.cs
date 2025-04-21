@@ -38,7 +38,7 @@ namespace HackedDesign
 
         public void Intro2Over()
         {
-
+            Game.Instance.SetMissionSelect();
         }
 
 
@@ -49,7 +49,7 @@ namespace HackedDesign
 
         public void Update()
         {
-            this.player.UpdateBehavior();
+            this.player.UpdateSitBehaviour();
         }
 
         public void FixedUpdate()

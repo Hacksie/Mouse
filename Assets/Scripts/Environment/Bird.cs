@@ -10,8 +10,8 @@ namespace HackedDesign
         [SerializeField] private float lookaroundTime = 300f;
         [SerializeField] private float randomFlyingChance = 0.05f;
         [SerializeField] private float flyingDelay = 120f;
-        [SerializeField] private float maxFlyingSpeedX = 10f;
         [SerializeField] private float minFlyingSpeedX = 10f;
+        [SerializeField] private float maxFlyingSpeedX = 10f;
         [SerializeField] private float minFlyingSpeedY = 0.25f;
         [SerializeField] private float maxFlyingSpeedY = 4f;
         [SerializeField] private float flyingTime = 3f;
@@ -36,6 +36,11 @@ namespace HackedDesign
 
         void Update()
         {
+            if (this.flying)
+            {
+                transform.position = new Vector2(transform.position.x + (this.flyingX * Time.deltaTime), transform.position.y + (this.flyingY * Time.deltaTime));
+                return;
+            }
 
             if (Time.time - flyingStart <= flyingDelay)
             {
@@ -45,12 +50,6 @@ namespace HackedDesign
             if (Random.value < randomFlyingChance)
             {
                 StartFlyAway();
-            }
-
-            if (flying)
-            {
-
-                transform.position = new Vector2(transform.position.x + (flyingX * Time.deltaTime), transform.position.y + (flyingY * Time.deltaTime));
             }
         }
 
@@ -79,9 +78,9 @@ namespace HackedDesign
         {
             Debug.Log("Bird Flyaway", this);
             animator.SetTrigger("FlyAway");
-            flying = true;
-            flyingX = Random.Range(minFlyingSpeedX, maxFlyingSpeedX);
-            flyingY = Random.Range(minFlyingSpeedY, maxFlyingSpeedY);
+            this.flying = true;
+            this.flyingX = Random.Range(minFlyingSpeedX, maxFlyingSpeedX);
+            this.flyingY = Random.Range(minFlyingSpeedY, maxFlyingSpeedY);
             StartCoroutine(FlyingTimeout());
         }
 

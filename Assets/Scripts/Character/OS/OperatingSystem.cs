@@ -18,6 +18,8 @@ namespace HackedDesign
 
         [SerializeField] private List<Hack> activeHacks = new List<Hack>();
         [SerializeField] private List<Hack> repoHacks = new List<Hack>();
+
+        private float momentum = 0;
         //private int currentSlot = 0;
 
         //public int health = 0;
@@ -25,6 +27,8 @@ namespace HackedDesign
         //public int ram = 100;
         //public bool infAmmo = false;
         //public bool infHealth = false;
+
+        //public float MomentumFactor { get; set; }
 
         public float PingRadius { get => characterData.pingRadius;  }
 
@@ -57,6 +61,10 @@ namespace HackedDesign
         public int KineticLevel { get => this.characterData.kinetic; }
         public int DigitalLevel { get => this.characterData.digital; }
         public int StealthLevel {  get => this.characterData.stealth; }
+
+        //public float MomentumFactor { get => this.characterData.momentumFactor; }
+
+        public float Momentum { get { return this.momentum; } set { this.momentum = Mathf.Clamp(value, 0, 5); this.changeActions.Invoke(); } }
 
         public WeaponSettings CurrentWeapon {  get => this.characterData.currentWeapon; }
 

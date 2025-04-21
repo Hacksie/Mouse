@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -19,15 +18,15 @@ namespace HackedDesign
 
         [Header("Events")]
         [SerializeField] private UnityEvent fallDeathEvent;
-        
-        //private bool headBlocked;
-        private bool onGround;
-        private bool onWall;
-        private Vector2 contactNormal;
+
+        [SerializeField] private bool onGround;
+        [SerializeField] private bool onWall;
+        [SerializeField] private Vector2 contactNormal;
+
+        [SerializeField] private bool falling = false;
 
         [Header("Settings")]
         [SerializeField] private Transform ledgeDetectionPoint;
-        //[SerializeField] public Vector3 ledgeOffsetStart;
         [SerializeField] public Vector3 ledgeOffsetEnd;
 
         public Rigidbody2D Body { get { return body; } }
@@ -51,9 +50,6 @@ namespace HackedDesign
         public bool climbingLedge = false;
 
         public bool knockback = false;
-
-        
-        //public Vector3 ledgePosition;
 
         private bool canGrabLedge = true;
 
@@ -82,27 +78,9 @@ namespace HackedDesign
 
         public void Knockback(Vector3 direction, float amount)
         {
-            //knockback = true;
             Stop();
             body.AddForce(direction.normalized * amount, ForceMode2D.Impulse);
-            
-            //StartCoroutine(KnockbackPause());
         }
-
-        private IEnumerator KnockbackPause()
-        {
-            yield return new WaitForSeconds(Game.Instance.GameSettings.KnockbackTime);
-            
-            StartCoroutine(KnockbackOver());
-        }
-
-        private IEnumerator KnockbackOver()
-        {
-            yield return new WaitForSeconds(Game.Instance.GameSettings.KnockbackFreezeTime);
-
-            knockback = false;
-        }
-
 
         public bool LedgeEdgeStart()
         {
@@ -126,7 +104,6 @@ namespace HackedDesign
             canGrabLedge = true;
         }
 
-        
 
         public void FixedMovement(Vector2 desiredVelocity, float climb, bool jumpFlag, bool jumpHoldFlag)
         {
@@ -137,22 +114,16 @@ namespace HackedDesign
 
             var contactPerp = -1 * Vector2.Perpendicular(ContactNormal).normalized;
 
-            if(knockback)
+            CheckFallingDeath();
+
+            // If we're going through a knockback, do nothing else
+            if (knockback)
             {
                 return;
             }
 
-            if (body.transform.position.y < settings.fallingDeathYLimit)
-            {
-                Debug.Log("Falling death");
-                body.linearVelocity = Vector3.zero;
-                body.gravityScale = 0;
-                fallDeathEvent.Invoke();
-                return;
-            }
-
-
-
+            // Check if we can start grabbing a ledge
+            // This must be before the next check
             if (canGrabLedge && LedgeEdgeStart())
             {
                 canGrabLedge = false;
@@ -164,16 +135,13 @@ namespace HackedDesign
                 body.gravityScale = 0;
             }
 
+            // If we're climbing a ledge, do nothing else
             if (climbingLedge)
             {
-
-                //Debug.Log("Climbing");
-                //Debug.Break();
-                //climbingLedge = false;
                 return;
             }
 
-            if (OnWall && !OnGround && climb != 0)
+            if (OnWall && !OnGround)
             {
                 velocity.y = climb * settings.wallClimbSpeed;
                 //WallJumping = true;
@@ -190,7 +158,7 @@ namespace HackedDesign
 
             if (jumpFlag && OnWall && !OnGround)
             {
-                
+
                 if (-wallDirectionX == desiredVelocity.x)
                 {
                     velocity = new Vector2(settings.wallJumpClimb.x * wallDirectionX, settings.wallJumpClimb.y);
@@ -250,15 +218,17 @@ namespace HackedDesign
                 CalcJumpVelocity();
             }
 
-            if (OnWall && settings.wallStick && !jumpHoldFlag && !DetectClearAirForLedgeGrab())
-            {
-                // FIXME: Wallstick is always false
-                velocity = new Vector2(0, -settings.wallSlideMaxSpeed);
-                //velocity = new Vector2(0, climb);
-                body.gravityScale = 0;
-                fallingTime = 0;
-            }
-            else if (jumpHoldFlag && body.linearVelocity.y > 0)
+            //if (OnWall && settings.wallStick && !jumpHoldFlag && !DetectClearAirForLedgeGrab())
+            //{
+            //    Debug.Log("Wall stick");
+            //    // FIXME: Wallstick is always false
+            //    velocity = new Vector2(0, -settings.wallSlideMaxSpeed);
+            //    //velocity = new Vector2(0, climb);
+            //    body.gravityScale = 0;
+            //    fallingTime = 0;
+            //}
+            //else 
+            if (jumpHoldFlag && body.linearVelocity.y > 0)
             {
                 body.gravityScale = settings.risingGravityScale;
                 fallingTime = 0;
@@ -280,7 +250,6 @@ namespace HackedDesign
                 {
                     fallingTime = Time.time;
                 }
-
             }
 
             movementSpeed = Mathf.MoveTowards(movementSpeed, desiredVelocity.x, maxSpeedChange);
@@ -296,6 +265,19 @@ namespace HackedDesign
 
 
             body.linearVelocity = velocity;
+        }
+
+        private void CheckFallingDeath()
+        {
+            if (body.transform.position.y < settings.fallingDeathYLimit)
+            {
+                Debug.Log("Falling death");
+                this.falling = true;
+                body.linearVelocity = Vector3.down;
+                //body.gravityScale = 0;
+                fallDeathEvent.Invoke();
+                return;
+            }
         }
 
         private void CalcJumpVelocity()
@@ -334,20 +316,31 @@ namespace HackedDesign
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
+            if(this.falling)
+            {
+                return;
+            }
+
+            // I have no idea why, but the collider won't disable, so this is the hack workaround
+            // Maybe one day I'll work it out and fix this
+            if (environmentMask.Contains(collision.gameObject.layer))
+            {
+                if ((collision.transform.position.y - this.transform.position.y) > 10f)
+                {
+                    Debug.Log("SPLAT!");
+                    this.falling = true;
+                    collision.otherCollider.enabled = false;
+                    bodyCollider.enabled = false;
+                    fallDeathEvent.Invoke();
+                }
+            }
+
             EvaluateCollision(collision);
             UpdateCurrentFriction(collision);
             if (OnWall && !OnGround && WallJumping)
             {
                 body.linearVelocity = Vector2.zero;
             }
-
-            //if (fallingTime > 0 && Timer.time - fallingTime > setting.fallingTimeDeath)
-            //{
-            //    Debug.Log("Falling death");
-            //    body.linearVelocity = Vector3.zero;
-            //    body.gravityScale = 0;
-            //    fallDeathEvent.Invoke();
-            //}
         }
 
         private void OnCollisionStay2D(Collision2D collision)
@@ -358,9 +351,10 @@ namespace HackedDesign
 
         private void EvaluateCollision(Collision2D collision)
         {
-            // FIXME: Use a layermask
             if (environmentMask.Contains(collision.gameObject.layer))
             {
+
+
                 for (int i = 0; i < collision.contactCount; i++)
                 {
                     ContactNormal = collision.GetContact(i).normal;

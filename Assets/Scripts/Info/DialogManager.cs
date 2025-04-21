@@ -8,14 +8,12 @@ using UnityEngine.Events;
 
 namespace HackedDesign
 {
-    public class DialogManager: MonoBehaviour
+    public class DialogManager: AutoSingleton<DialogManager>
     {
         [SerializeField] DialogPresenter presenter;
         [SerializeField] List<Speaker> speakers;
         [SerializeField] List<Dialog> dialogs = new List<Dialog>();
         [SerializeField] List<Dialog> hotdogAdvice = new List<Dialog>();
-        public static DialogManager Instance { get; private set; }
-        private DialogManager() =>  Instance = this;
 
         private UnityAction dialogOverCallback;
 

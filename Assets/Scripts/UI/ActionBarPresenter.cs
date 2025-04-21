@@ -15,6 +15,7 @@ namespace HackedDesign.UI
         [Header("UI")]
         [SerializeField] private UnityEngine.UI.Slider ramSlider;
         [SerializeField] private UnityEngine.UI.Slider healthSlider;
+        [SerializeField] private UnityEngine.UI.Slider energySlider;
         [SerializeField] private RectTransform ammoPanel;
         [SerializeField] private UnityEngine.UI.Text ammoText;
         [SerializeField] private List<Button> buttonList = new List<Button>(6);
@@ -25,7 +26,6 @@ namespace HackedDesign.UI
         {
             base.Awake();
             os.changeActions += Repaint;
-            //Repaint();
         }
 
         public override void Repaint()
@@ -39,6 +39,7 @@ namespace HackedDesign.UI
             
             RepaintHacks();
             RepaintRam();
+            RepaintEnergy();
         }
 
         public void RepaintHacks()
@@ -74,6 +75,11 @@ namespace HackedDesign.UI
         public void RepaintRam()
         {
             ramSlider.value = os.GetRamUsage();
+        }
+
+        private void RepaintEnergy()
+        {
+            energySlider.value = os.Momentum;
         }
 
         public void Action1Click()

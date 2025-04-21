@@ -18,10 +18,6 @@ MonoBehaviour:
   slideSpeed: 5
   crouchSpeed: 3.5
   movementSmoothing: 0.05
-  stealthRate: 1
-  lookAngle: 0
-  maxAngle: 75
-  minAngle: -25
   shootDistance: 20
   meleeDistance: 1.5
   interactDistance: 1
@@ -44,3 +40,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a13376bfbbfd8884f8eef6608c74c67e, type: 2}
   - {fileID: 11400000, guid: 9b0f56487dedb6041851381a82169f6d, type: 2}
   - {fileID: 11400000, guid: 2297feb942ec50346a39e3ccaef56f59, type: 2}
+  splatFallTime: 0.66
+  momentumAirLoss: 0.2
+  baseMomentumFactor: 0.2

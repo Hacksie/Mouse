@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 2510786954886941319}
   - component: {fileID: 1815680132310690625}
   m_Layer: 0
-  m_Name: 4_0
+  m_Name: Billboard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -187,21 +187,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 2510786954886941319}
   billboards:
-  - {fileID: 21300000, guid: fb76d0c06a3e4f9478afc6406705ecdf, type: 3}
-  - {fileID: 21300000, guid: 2962ba2e68e03264abcd3790407d850a, type: 3}
-  - {fileID: 21300000, guid: 655a3ce9514466a439817114bb2b4b85, type: 3}
-  - {fileID: 21300000, guid: 501f1241b65c7554b9f9caa191511402, type: 3}
-  - {fileID: 21300000, guid: 3889a9bac428af9479cf05e325f27ecf, type: 3}
-  - {fileID: 21300000, guid: a143078f20096b6439be186e7491f2c5, type: 3}
-  - {fileID: 21300000, guid: 8e672edf4875c76499f0fb8ea01a67f3, type: 3}
-  - {fileID: 21300000, guid: 041ccab17f26c094f8ddc4d36e6429fc, type: 3}
-  - {fileID: 21300000, guid: c39b419b813a7e7408dc548ebc5f4504, type: 3}
-  - {fileID: 21300000, guid: 0740755304577354b83860d946df37f4, type: 3}
-  - {fileID: 21300000, guid: 40b326d2d8d917d409e412b50d443de1, type: 3}
-  - {fileID: 21300000, guid: d261d1740846ffa47b582b9fa3faee14, type: 3}
-  - {fileID: 21300000, guid: 0fc0ab00535ff0640b176d1b133eb00d, type: 3}
-  - {fileID: 21300000, guid: 1ec81c06d72a30249a218bb5679438eb, type: 3}
-  - {fileID: 21300000, guid: 07b3532aa9b95d4489a3f0fb6608d0ba, type: 3}
+  - {fileID: 21300000, guid: bd77f136a8d6fca488607ea972a6cf59, type: 3}
+  - {fileID: 21300000, guid: 899f9b35445daa54b8f970a996a9cf2a, type: 3}
+  - {fileID: 21300000, guid: 2d46e331f4b2d374d88603cbb90f43ea, type: 3}
   change: 1
   changeTimeMin: 10
   changeTimeMax: 40

@@ -7,24 +7,13 @@ namespace HackedDesign.UI
 {
     public class DialogPresenter : AbstractPresenter
     {
-        [SerializeField] private TargetPresenter targetPresenter;
+        [SerializeField] private UnityEngine.UI.Text nameText;
         [SerializeField] private UnityEngine.UI.Text dialogText;
         [SerializeField] private UnityEngine.UI.Image dialogAvatar;
         [SerializeField] private Sprite defaultAvatar;
         [HideInInspector] public UnityEvent finishedEvent;
 
         private int currentPage = 0;
-
-        private new void Awake()
-        {
-            base.Awake();
-        }
-
-        public override void Hide()
-        {
-            targetPresenter.Hide();
-            base.Hide();
-        }
 
         public override void Repaint()
         {
@@ -33,8 +22,7 @@ namespace HackedDesign.UI
             {
                 dialogText.text = page.text;
                 dialogAvatar.sprite = DialogManager.Instance.GetSpeakerSprite(page);
-                targetPresenter.Repaint(page.speaker);
-                targetPresenter.Show();
+                nameText.text = page.speaker;
             }
             else
             {

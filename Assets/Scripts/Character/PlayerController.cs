@@ -13,9 +13,7 @@ namespace HackedDesign
         [SerializeField] private PlayerInput playerInput;
         [SerializeField] private CharController character = null;
         [SerializeField] private Thermoptic camo = null;
-        //[SerializeField] private Interactor interactor = null;
         [SerializeField] private Targeter targeter = null;
-        //[SerializeField] private bool runToggle = false;
         [SerializeField] private Transform aimPivot = null;
         [SerializeField] private bool crouchToggle = false;
 
@@ -44,7 +42,6 @@ namespace HackedDesign
 
             this.AutoBind(ref character);
             this.AutoBind(ref camo);
-            //this.AutoBind(ref interactor);
             character.dieActions.AddListener(Die);
         }
 
@@ -66,7 +63,6 @@ namespace HackedDesign
 
             selectAction.performed += SelectEvent;
             menuAction.performed += MenuEvent;
-            //interactAction.performed += InteractEvent;
         }
 
         void Start() => Reset();
@@ -75,7 +71,6 @@ namespace HackedDesign
             Stop();
             character.Reset();
             targeter.ShowTarget(Vector3.zero, false, false);
-            //targeter.HideAimLine();
         }
 
         public void Stop()
@@ -130,7 +125,7 @@ namespace HackedDesign
             }
         }
 
-        private void UpdateSitBehaviour()
+        public void UpdateSitBehaviour()
         {
             //targeter.UpdateInteractors();
             //Vector3 targetPos = GetTargetingPosition();
@@ -143,7 +138,7 @@ namespace HackedDesign
             }
         }
 
-        private void UpdateIdleBehaviour()
+        public void UpdateIdleBehaviour()
         {
             float movement = 0;
             float climb = 0;
@@ -158,7 +153,7 @@ namespace HackedDesign
 
         }
 
-        private void UpdateBattleBehaviour()
+        public void UpdateBattleBehaviour()
         {
             float movement = 0;
             float climb = 0;
@@ -260,11 +255,17 @@ namespace HackedDesign
 
         private Vector3 CalcMouseDirection()
         {
+            Vector3 worldPos = CalcMousePosition();
+
+            return (worldPos - aimPivot.position).normalized;
+        }
+
+        private Vector3 CalcMousePosition()
+        {
             var mousePos = mousePosAction.ReadValue<Vector2>();
             var worldPos = mainCam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 0));
             worldPos = new Vector3(worldPos.x, worldPos.y, aimPivot.position.z);
-
-            return (worldPos - aimPivot.position).normalized;
+            return worldPos;
         }
 
         private Vector3 GetTargetingPosition()

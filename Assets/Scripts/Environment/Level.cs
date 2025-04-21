@@ -48,11 +48,6 @@ namespace HackedDesign
             backgroundLevels.ForEach(x => x.Generator.Clear(true));
 
             runtimeDungeon.Generator.Clear(true);
-            //namedRooms.ForEach(x => x.gameObject.SetActive(false));
-            //intermission.gameObject.SetActive(false);
-            //bedroom1.gameObject.SetActive(false);  
-            //bedroom2.gameObject.SetActive(false);
-            //roof1.gameObject.SetActive(false);
         }
 
         public void RainOff()
@@ -64,15 +59,6 @@ namespace HackedDesign
         {
             this.rain.gameObject.SetActive(true);
         }
-
-        //public void Intermission(PlayerController player)
-        //{
-        //    Reset();
-        //    //bedroom1.gameObject.SetActive(true);
-        //    intermission.gameObject.SetActive(true);
-        //    player.Character.MovePosition(intermission.Find("Spawn").transform.position);
-        //}
-
         public void ShowNamedRoom(string name, bool cityBg, bool rain, PlayerController player)
         {
             Reset();
@@ -96,7 +82,7 @@ namespace HackedDesign
             }
 
             var room = namedRoomPrefabs.First(x => x.name == name);
-            this.namedRoom = Object.Instantiate(room, this.transform);
+            this.namedRoom = Instantiate(room, this.transform);
             this.namedRoom.SetActive(true);
             var spawn = this.namedRoom.transform.Find("Spawn");
             if (spawn)
@@ -107,52 +93,10 @@ namespace HackedDesign
             this.rain.gameObject.SetActive(rain);
         }
 
-        
-        //public void Roof1(PlayerController player)
-        //{
-        //    Reset();
-        //    roof1.gameObject.SetActive(true);
-
-        //    backgroundLevels.ForEach(bg => {
-        //        try
-        //        {
-        //            bg.Generator.Seed = 50;
-        //            bg.Generate();
-        //        }
-        //        catch
-        //        {
-        //            Debug.LogWarning("Failed to generate bg level");
-        //        }
-        //    }
-        //    );
-
-        //    player.Character.MovePosition(roof1.Find("Spawn").transform.position);
-        //    //intermission.gameObject.SetActive(true);
-        //}
-
-        //public void Room1(PlayerController player)
-        //{
-        //    Reset();
-        //    bedroom1.gameObject.SetActive(true);
-
-        //    player.Character.MovePosition(bedroom1.Find("Spawn").transform.position);
-            
-        //    //intermission.gameObject.SetActive(true);
-        //}
-
-        //public void Room2(PlayerController player)
-        //{
-        //    Reset();
-        //    bedroom2.gameObject.SetActive(true);
-
-        //    player.Character.MovePosition(bedroom2.Find("Spawn").transform.position);
-        //    //intermission.gameObject.SetActive(true);
-        //}
-
+        // FIXME: This should be separated into seed and level
         public void Generate(int level)
         {
-            Random.InitState(level);
-
+            Random.seed = level;
             backgroundLevels.ForEach(bg => {
                 try
                 {
@@ -166,10 +110,21 @@ namespace HackedDesign
                 }
             );
 
+            runtimeDungeon.Generator.Root = runtimeDungeon.gameObject;
             runtimeDungeon.Generator.Seed = level;
             runtimeDungeon.Generator.Generate();
-            
-            //runtimeDungeon.Generate();
+
+            Debug.Log("Seed:" + level);
+
+            var random = new System.Random(level);
+
+            var spawners = FindObjectsByType<LevelSpawner>(FindObjectsSortMode.InstanceID);
+            foreach (var spawner in spawners)
+            {
+                spawner.SpawnBackgroundProps(random, level);
+                spawner.SpawnProps(random, level);
+            }
+
         }
 
         public void SpawnEnemies(int count)
@@ -182,12 +137,7 @@ namespace HackedDesign
                 {
                     break;
                 }
-
-                
             }
-
-
         }
-
     }
 }

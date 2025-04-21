@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4571080708408635541}
   - component: {fileID: 3826188015671872924}
   m_Layer: 0
-  m_Name: 6_0
+  m_Name: Billboard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -156,7 +156,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4836630099855210536
 Transform:
   m_ObjectHideFlags: 0

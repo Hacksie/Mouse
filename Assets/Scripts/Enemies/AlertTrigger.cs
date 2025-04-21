@@ -7,7 +7,7 @@ namespace HackedDesign
     {
         void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.CompareTag("Player")) // Only care about the player
+            if (other.CompareTag("Player"))
             {
                 Debug.Log("player seen", this);
             }

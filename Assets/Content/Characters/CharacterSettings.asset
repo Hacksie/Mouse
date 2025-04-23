@@ -41,5 +41,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9b0f56487dedb6041851381a82169f6d, type: 2}
   - {fileID: 11400000, guid: 2297feb942ec50346a39e3ccaef56f59, type: 2}
   splatFallTime: 0.66
-  momentumAirLoss: 0.2
-  baseMomentumFactor: 0.2
+  momentumAirLoss: 0
+  baseMomentumFactor: 0
+  attackMomentumLoss: 0
+  minMomentum: 0
+  maxMomentum: 5

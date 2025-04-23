@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: GameSettings
   m_EditorClassIdentifier: 
   skipIntro: 1
-  autorun: 1
-  startPistol: 0
+  autorun: 0
+  startPistol: 1
   knockbackTime: 0.1
   knockbackFreezeTime: 0.25
   knockbackAmount: 10

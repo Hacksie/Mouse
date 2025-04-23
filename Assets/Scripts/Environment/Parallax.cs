@@ -24,7 +24,7 @@ namespace HackedDesign
         void Update()
         {
             //Vector2 temp = mainCamera.transform.position * (1 - parallaxEffect);
-            Vector2 dist = new Vector2(mainCamera.transform.position.x * parallaxEffect, 0);
+            Vector2 dist = new Vector2(mainCamera.transform.position.x * parallaxEffect, mainCamera.transform.position.y * parallaxEffect);
 
             transform.position = startPosition + dist;
 

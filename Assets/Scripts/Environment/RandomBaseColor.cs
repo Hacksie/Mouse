@@ -1,4 +1,5 @@
 ﻿
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -14,7 +15,7 @@ namespace HackedDesign
         }
         private void Start()
         {
-            spriteRenderer.color = Color.HSVToRGB(Random.value, 0.15f, 0.5f);
+            spriteRenderer.color = Color.HSVToRGB(this.transform.position.y / 256, 0.15f, 0.5f);
         }
     }
 }

@@ -279,7 +279,7 @@ namespace HackedDesign
 
             if (!knockback)
             {
-                Debug.Log(DesiredVelocity);
+                //Debug.Log(DesiredVelocity);
                 Body.FixedMovement(DesiredVelocity, Climb, Jump, JumpHoldFlag);
             }
 
@@ -375,6 +375,11 @@ namespace HackedDesign
 
         private void UpdateSpriteDirection(float movementDirection, float facingDirection)
         {
+            if(Body.OnWall)
+            {
+                return;
+            }
+
             if (Mathf.Abs(movementDirection) >= Mathf.Epsilon)
             {
                 transform.right = new Vector3(movementDirection, 0, 0);

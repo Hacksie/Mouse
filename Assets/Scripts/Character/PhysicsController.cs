@@ -114,7 +114,7 @@ namespace HackedDesign
 
             var contactPerp = -1 * Vector2.Perpendicular(ContactNormal).normalized;
 
-            CheckFallingDeath();
+            //CheckFallingDeath();
 
             // If we're going through a knockback, do nothing else
             if (knockback)

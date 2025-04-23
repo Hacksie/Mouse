@@ -1,0 +1,56 @@
+# Unity-specific settings
+*.cs     text diff=csharp
+*.shader text
+*.cginc  text
+*.hlsl   text
+*.compute text
+*.json   text
+*.xml    text
+*.yaml   text
+*.yml    text
+*.asmdef text
+*.unity  text
+*.prefab text
+*.mat    text
+*.meta   text
+*.physicMaterial text
+*.anim   text
+*.controller text
+*.overrideController text
+*.spriteatlas text
+
+# Texture settings
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.tga    binary
+*.psd    binary
+*.gif    binary
+
+# Audio files
+*.mp3    binary
+*.ogg    binary
+*.wav    binary
+
+# Video files
+*.mp4    binary
+*.mov    binary
+*.avi    binary
+
+# 3D models
+*.fbx    binary
+*.obj    text
+*.dae    text
+
+# Fonts
+*.ttf    binary
+*.otf    binary
+
+# Compressed files
+*.zip    binary
+*.7z     binary
+*.rar    binary
+*.gz     binary
+
+# Default settings
+* text=auto

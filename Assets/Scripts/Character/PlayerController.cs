@@ -175,7 +175,7 @@ namespace HackedDesign
 
             if (character.IsAttacking) // If we're playing the attacking animation, don't let the player take another action
             {
-                Debug.Log("Attacking");
+                //Debug.Log("Attacking");
             }
             else if (this.attackAction.triggered)
             {

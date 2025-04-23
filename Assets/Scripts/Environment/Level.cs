@@ -110,20 +110,20 @@ namespace HackedDesign
                 }
             );
 
-            runtimeDungeon.Generator.Root = runtimeDungeon.gameObject;
-            runtimeDungeon.Generator.Seed = level;
-            runtimeDungeon.Generator.Generate();
+            //runtimeDungeon.Generator.Root = runtimeDungeon.gameObject;
+            //runtimeDungeon.Generator.Seed = level;
+            //runtimeDungeon.Generator.Generate();
 
-            Debug.Log("Seed:" + level);
+            //Debug.Log("Seed:" + level);
 
-            var random = new System.Random(level);
+            //var random = new System.Random(level);
 
-            var spawners = FindObjectsByType<LevelSpawner>(FindObjectsSortMode.InstanceID);
-            foreach (var spawner in spawners)
-            {
-                spawner.SpawnBackgroundProps(random, level);
-                spawner.SpawnProps(random, level);
-            }
+            //var spawners = FindObjectsByType<LevelSpawner>(FindObjectsSortMode.InstanceID);
+            //foreach (var spawner in spawners)
+            //{
+            //    spawner.SpawnBackgroundProps(random, level);
+            //    spawner.SpawnProps(random, level);
+            //}
 
         }
 

@@ -78,10 +78,10 @@ namespace HackedDesign
             factory.AddBelief("Nothing", () => false);
 
             factory.AddBelief("AgentIdle", () => true); // !navMeshAgent.hasPath);
-            factory.AddBelief("Alive", () => character != null && character.State != CharacterState.Dead);
+            factory.AddBelief("Alive", () => character != null && character.CurrentState.IsAlive);
             //factory.AddBelief("AgentMoving", () => navMeshAgent.hasPath);
-            //factory.AddBelief("AgentHealthLow", () => health < 30);
-            //factory.AddBelief("AgentIsHealthy", () => health >= 50);
+            //factory.AddBelief("AgentHealthLow", () => startingHealth < 30);
+            //factory.AddBelief("AgentIsHealthy", () => startingHealth >= 50);
             //factory.AddBelief("AgentStaminaLow", () => stamina < 10);
             //factory.AddBelief("AgentIsRested", () => stamina >= 50);
 
@@ -228,9 +228,9 @@ namespace HackedDesign
         {
             /*
             stamina += InRangeOf(restingPosition.position, 3f) ? 20 : -10;
-            health += InRangeOf(foodShack.position, 3f) ? 20 : -5;
+            startingHealth += InRangeOf(foodShack.position, 3f) ? 20 : -5;
             stamina = Mathf.Clamp(stamina, 0, 100);
-            health = Mathf.Clamp(health, 0, 100);*/
+            startingHealth = Mathf.Clamp(startingHealth, 0, 100);*/
         }
 
         bool InRangeOf(Vector3 pos, float range) => Vector3.Distance(transform.position, pos) < range;
@@ -248,7 +248,7 @@ namespace HackedDesign
 
         void Update()
         {
-            if(character != null && character.State == CharacterState.Dead)
+            if(character != null && !character.CurrentState.IsAlive)
             {
                 return;
             }

@@ -47,10 +47,10 @@ namespace HackedDesign
                 return;
             }
 
-            if (Random.value < randomFlyingChance)
-            {
-                StartFlyAway();
-            }
+            //if (Random.value < randomFlyingChance)
+            //{
+            //    StartFlyAway();
+            //}
         }
 
         private void OnTriggerEnter2D(Collider2D collision)

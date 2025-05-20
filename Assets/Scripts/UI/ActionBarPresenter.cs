@@ -79,7 +79,7 @@ namespace HackedDesign.UI
 
         private void RepaintEnergy()
         {
-            energySlider.value = os.Momentum;
+            //energySlider.value = os.Momentum;
         }
 
         public void Action1Click()

@@ -25,7 +25,7 @@ namespace HackedDesign
             
             this.level.Reset();
             this.level.ShowNamedRoom("Hotdog Stand", false, true, this.player);
-            this.player.Sit();
+            this.player.Character.SetSitState();
             DialogManager.Instance.ShowDialog("IntroIntermission1", new UnityEngine.Events.UnityAction(Intro1Over));
         }
 

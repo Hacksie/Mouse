@@ -17,7 +17,7 @@ MonoBehaviour:
   fallingGravityScale: 3
   risingGravityScale: 1.7
   jumpHeight: 4
-  maxAirJumps: 0
+  maxAirJumps: 1
   coyoteTime: 0.2
   jumpBufferTime: 0.2
   fallingTimeDeath: 1

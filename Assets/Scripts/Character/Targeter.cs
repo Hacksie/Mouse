@@ -9,74 +9,36 @@ namespace HackedDesign
 {
     public class Targeter : MonoBehaviour
     {
-        [SerializeField] private new Collider2D collider2D;
         [SerializeField] private Transform pivot;
         [SerializeField] private LayerMask targetMask;
+        [SerializeField] private LayerMask laserMask;
         [SerializeField] private float lineInnerRadius = 1f;
         [SerializeField] private float targetRadius = 20f;
         [SerializeField] private LineRenderer lineRenderer;
         [SerializeField] private Animator animator;
-        [SerializeField] private TargetPresenter targetPresenter;
+
+        public UnityAction<Interactable> targetChangedAction;
 
         private Interactable currentTarget;
+        private ICharacterExecute charExecute;
 
-        private readonly List<Interactable> currentInteractables = new();
 
         private void Awake()
         {
-            this.AutoBind(ref collider2D);
+            charExecute = GetComponent<ICharacterExecute>();
         }
+
+        public bool IsTargetInRange { get => (pivot.position - currentTarget.transform.position).sqrMagnitude < (Game.Instance.GameSettings.InteractDistance * Game.Instance.GameSettings.InteractDistance); }
 
         public void TriggerInteract()
         {
-            if(currentTarget)
+            if (currentTarget && IsTargetInRange)
             {
+                charExecute.ExecuteCommand(new InteractCommand());
                 currentTarget.TriggerInteract();
             }
-            /*
-            if (currentInteractables.Count > 0)
-            {
-                currentInteractables[0].TriggerInteract();
-            }*/
         }
 
-        public void ClearAllInteractors()
-        {
-            currentInteractables.Clear();
-            currentTarget = null;
-        }
-
-        public void UpdateInteractors()
-        {
-            /*
-            foreach (var interactable in currentInteractables)
-            {
-                interactable.Interact(false);
-                //targetPresenter.Repaint();
-            }
-            currentInteractables.Clear();
-
-            List<Collider2D> contacts = new List<Collider2D>();
-
-            collider2D.GetContacts(contacts);
-
-            foreach (var contact in contacts)
-            {
-                if (contact.CompareTag("Player"))
-                {
-                    continue;
-                }
-
-                if (contact.TryGetComponent<Interactable>(out var interactable))
-                {
-                    interactable.Interact(true);
-                    currentInteractables.Add(interactable);
-                    
-                }
-            }
-
-            RepaintUI();*/
-        }
 
         public void ShowTarget(Vector3 direction, bool aiming, bool hasPistol)
         {
@@ -85,7 +47,7 @@ namespace HackedDesign
 
             if (aiming)
             {
-                DrawAimLine(hit, direction);
+                DrawAimLine(direction);
                 AnimateAiming(hasPistol);
             }
             else
@@ -97,34 +59,16 @@ namespace HackedDesign
 
         private void AnimateAiming(bool flag)
         {
-            if (animator)
-            {
-                animator.SetFloat("aiming", flag? 1 : 0);
-            }
+            charExecute.ExecuteCommand(new AimCommand(flag));
         }
 
-        private void RepaintUI()
-        {
-            if(currentInteractables.Count > 0)
-            {
-                targetPresenter.Repaint(currentInteractables[0]);
-            }
-            else if(currentTarget)
-            {
-                targetPresenter.Repaint(currentTarget);
-            }
-            else
-            {
-                targetPresenter.Repaint();
-            }
-        }
-
-
-        private void DrawAimLine(RaycastHit2D hit, Vector3 direction)
+        private void DrawAimLine(Vector3 direction)
         {
             lineRenderer.positionCount = 2;
 
             var startPosition = pivot.position + (direction.normalized * lineInnerRadius);
+
+            var hit = Physics2D.Linecast(pivot.position, startPosition + (direction.normalized * targetRadius), laserMask);
 
             lineRenderer.SetPositions(new Vector3[2] { startPosition, hit ? hit.point : startPosition + (direction.normalized * targetRadius) });
         }
@@ -132,25 +76,16 @@ namespace HackedDesign
 
         private void UpdateHover(RaycastHit2D hit)
         {
-
-            if (hit && hit.collider.gameObject.TryGetComponent<Interactable>(out var highlight))
+            if (hit && hit.collider.gameObject.TryGetComponent<Interactable>(out var newTarget))
             {
                 ClearHighlightable();
-                //currentInteractables.Add(highlight);
-                currentTarget = highlight;
-                highlight.Target(true);
-                RepaintUI();
-                //TargetAction?.Invoke(highlight);
-
+                currentTarget = newTarget;
+                currentTarget.Target(true);
+                targetChangedAction.Invoke(currentTarget);
             }
             else
             {
-                if (currentTarget)
-                {
-                    ClearHighlightable();
-                    RepaintUI();
-                    //UntargetAction?.Invoke();
-                }
+                ClearHighlightable();
             }
         }
 
@@ -160,6 +95,7 @@ namespace HackedDesign
             {
                 currentTarget.Target(false);
                 currentTarget = null;
+                targetChangedAction.Invoke(null);
             }
         }
     }

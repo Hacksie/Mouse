@@ -7,7 +7,7 @@ namespace HackedDesign
 {
     public class Game : AutoSingleton<Game>
     {
-        public const string gameVersion = "1.0";
+        public const string GameVersion = "1.0";
         [Header("Game")]
         [SerializeField] private PlayerController player = null;
         [SerializeField] private Level level = null;
@@ -23,6 +23,7 @@ namespace HackedDesign
         [SerializeField] private DialogPresenter dialogPresenter = null;
         [SerializeField] private MissionPresenter missionPresenter = null;
         [SerializeField] private TargetPresenter targetPresenter = null;
+        [SerializeField] private ElevatorPresenter elevatorPresenter = null;
 
         [Header("Data")]
         //[SerializeField] private float levelTime = 64;
@@ -37,11 +38,6 @@ namespace HackedDesign
         public LevelTimer LevelTimer { get => levelTimer; private set => levelTimer = value; }
         public GameSettings GameSettings { get => gameSettings; set => gameSettings = value; }
         public int RandomSeed { get => randomSeed; set => randomSeed = value; }
-        #endregion
-
-        #region Singleton
-        //public static Game Instance { get; private set; }
-        //private Game() => Instance = this;
         #endregion
 
         #region Unity Messages
@@ -86,6 +82,7 @@ namespace HackedDesign
         public void SetLevelEndState() => CurrentState = new LevelEndState(player);
         public void SetPaused() => CurrentState = new PausedState(pausePresenter);
         public void SetOS() => CurrentState = new OSState(osPresenter);
+        public void SetElevator() => CurrentState = new ElevatorState(elevatorPresenter);
         public void SetQuit() => Application.Quit();
 
         #endregion
@@ -95,11 +92,10 @@ namespace HackedDesign
         public void NewGame()
         {
             gameData.Reset();
-            player.Character.OperatingSystem.Reset();
             
             //DataManager.Instance.NewGame(levels[0], GetRandomCorp(), GetRandomCorpName());
             player.Reset();
-            
+
             if (gameSettings.SkipIntro)
             {
                 player.Character.OperatingSystem.CurrentMission = 1; // Random.Range(int.MinValue, int.MaxValue);
@@ -114,7 +110,6 @@ namespace HackedDesign
         private void Initialization()
         {
             HideUI();
-            //NewGame();
             SetMainMenu();
         } 
         
@@ -129,6 +124,7 @@ namespace HackedDesign
             dialogPresenter.Hide();
             missionPresenter.Hide();
             targetPresenter.Hide();
+            elevatorPresenter.Hide();
         }
     }
 }

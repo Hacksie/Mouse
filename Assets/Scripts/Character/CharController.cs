@@ -4,102 +4,111 @@ using UnityEngine.Events;
 
 namespace HackedDesign
 {
-    public class CharController : MonoBehaviour
+    public class CharController : MonoBehaviour, ICharacterExecute
     {
         [Header("Actions")]
         [SerializeField] public UnityEvent dieActions;
         [SerializeField] public UnityEvent hitActions;
         [Header("Game Objects")]
         [SerializeField] private OperatingSystem operatingSystem;
-        //[SerializeField] private CharacterData characterData;
         [SerializeField] private PhysicsController body = null;
         [SerializeField] private Animator animator = null;
-        [SerializeField] private new CapsuleCollider2D collider = null;
-        [SerializeField] private Transform bulletStart;
+        [SerializeField] private new Collider2D collider = null;
+        [SerializeField] private Transform head;
         [Header("Settings")]
         [SerializeField] private CharacterSettings settings = null;
-        [SerializeField] private LayerMask attackMask;
-        [Header("State")]
-        [SerializeField] private CharacterState state = CharacterState.Idle;
 
 
-        private bool jumpTriggered = false;
         private bool jumpFlag = false;
-        private float nextAttackTimer = int.MinValue;
         private bool knockback = false;
 
-        private bool inAir = false;
+        #region State
+        private ICharacterState currentState;
 
-        public CharacterState State { get => state; set => state = value; }
-
-        public bool IsAttacking
+        public ICharacterState CurrentState
         {
-            get
-            {
-                var clipName = Animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
-                return clipName == "Shoot" || clipName == "Gun Melee" || clipName == "Punch" || clipName == "Kick";
-            }
-        }
-        public bool Crouched { get; set; }
-        public float Movement { get; private set; }
-        public float Climb { get; private set; }
-
-        public bool Jump
-        {
-            get => jumpFlag;
+            get { return currentState; }
             set
             {
-                if (!jumpFlag && value)
-                {
-                    jumpTriggered = true;
-                }
-                jumpFlag = value;
-
+                currentState?.End();
+                currentState = value;
+                currentState?.Begin();
             }
         }
-        public bool JumpHoldFlag { get; set; }
 
-        public OperatingSystem OperatingSystem { get => operatingSystem; set => operatingSystem = value; }
+        public void SetIdleState() { CurrentState = new CharacterIdleState(this, Animator); }
+        public void SetBattleState() { CurrentState = new CharacterBattleState(this, Animator); }
+        public void SetSitState() { CurrentState = new CharacterSittingState(Animator); }
+        public void SetDeadState() { CurrentState = new CharacterDeadState(Animator); }
+        #endregion State
+
+        public OperatingSystem OperatingSystem { get => operatingSystem; private set => operatingSystem = value; }
         public Animator Animator { get => animator; set => animator = value; }
         public PhysicsController Body { get => body; set => body = value; }
         public CharacterSettings Settings { get => settings; set => settings = value; }
 
-        private Vector2 DesiredVelocity
+        public Transform Head { get => head; }
+
+        public bool IsAnimatingAttack { get => Animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"); }
+        public bool IsCrouched { get; private set; }
+
+        public bool JumpHoldFlag { get; set; }
+        public bool IsWalking { get; private set; } = false;
+
+        private bool Aiming { get; set; } = false;
+        private float DesiredMovement { get => InputDirection * Mathf.Max(CurrentState.CurrentSpeed(new CharacterSpeedContext() { crouched = IsCrouched, crouchSpeed = Settings.CrouchSpeed, walk = IsWalking, walkSpeed = Settings.WalkSpeed, runSpeed = Settings.RunSpeed }), 0f); }
+        //private bool JumpTriggered { get; set; }
+        private bool Jump
         {
-            get
+            get => jumpFlag;
+            set
             {
-                var speed = state switch
+                if (!IsDead && !jumpFlag && value)
                 {
-                    CharacterState.Idle => Crouched ? Settings.crouchSpeed : Settings.walkSpeed,
-                    CharacterState.Battle => Crouched ? Settings.crouchSpeed : Settings.runSpeed,
-                    _ => 0,
-                };
-                return new Vector2(Movement, 0.0f) * Mathf.Max(speed + operatingSystem.Momentum - Body.Friction, 0f);
+                    //JumpTriggered = true;
+                    Animator.SetTrigger(AnimatorParams.Jump);
+                }
+                jumpFlag = value;
             }
         }
-
+        private float InputDirection { get; set; }
+        private float InputClimb { get; set; }
 
         void Awake()
         {
             this.AutoBind(ref operatingSystem);
             this.AutoBind(ref body);
             this.AutoBind(ref collider);
-            if (bulletStart == null)
+            if (head == null)
             {
-                bulletStart = transform;
+                head = transform;
             }
-            operatingSystem.changeActions += Hit;
+            operatingSystem.hitActions += Hit;
+            operatingSystem.dieActions += Die;
+            SetIdleState();
         }
 
+        #region Commands
+        public void SetCrouch(bool flag) => IsCrouched = flag;
 
+        public void SetMovement(float inputDirection, float inputClimb)
+        {
+            InputDirection = inputDirection;
+            InputClimb = inputClimb;
+        }
+
+        public void SetJump() => Jump = true;
+        public void ClearJump() => Jump = false;
+
+        public void WalkToggle() => IsWalking = !IsWalking;
+        public void SetAim(bool flag) => Aiming = flag;
         public void Knockback(Vector3 direction)
         {
             knockback = true;
             body.Knockback(direction, Game.Instance.GameSettings.KnockbackAmount);
-            animator.SetTrigger("knockback");
-            operatingSystem.Momentum = 0;
+            animator.SetTrigger(AnimatorParams.Knockback);
+            //operatingSystem.Momentum = 0;
             StartCoroutine(KnockbackPause());
-            
         }
 
         private IEnumerator KnockbackPause()
@@ -112,271 +121,164 @@ namespace HackedDesign
         private IEnumerator KnockbackOver()
         {
             yield return new WaitForSeconds(Game.Instance.GameSettings.KnockbackFreezeTime);
-
             knockback = false;
         }
 
-        private void Hit()
-        {
-            if (operatingSystem.Health <= 0)
-            {
-                Debug.Log(transform.name + " is dead");
-                Die();
-            }
-            else
-            {
-                hitActions?.Invoke();
-            }
-        }
+        public void TriggerInteract() => animator.SetTrigger(AnimatorParams.Interact);
 
-        public void Reset()
+        public void Roll()
         {
-            //this.animator.Play("Idle");
-            UpdateSpriteDirection(1.0f, 1.0f);
-            Crouched = false;
-            Stop();
-            animator.SetBool("grounded", true);
-            //SetStateIdle();
-
+            if (Mathf.Abs(InputDirection) >= Mathf.Epsilon)
+            {
+                Animator.SetTrigger(AnimatorParams.Roll);
+            }
         }
 
         public void Stop()
         {
-            Body.Freeze();
+            Body.Stop();
         }
 
+        #endregion Commands
 
-        public void Attack(Vector3 target, bool aiming)
+
+        public void Reset()
         {
-            if (state != CharacterState.Battle)
-            {
-                return;
-            }
-
-            if (Time.time >= nextAttackTimer)
-            {
-                if (operatingSystem.HasAmmo && aiming && OperatingSystem.HasPistol)
-                {
-                    operatingSystem.DecreaseAmmo();
-                    operatingSystem.Momentum -= settings.attackMomentumLoss;
-                    Shoot(target);
-                    Animator.SetTrigger("basicAttack");
-
-                }
-                else
-                {
-                    operatingSystem.Momentum -= settings.attackMomentumLoss;
-                    Melee(target);
-                    switch (Random.Range(0, 2 + (operatingSystem.HasAmmo && OperatingSystem.HasPistol ? 1 : 0)))
-                    {
-                        case 0:
-                            Animator.SetTrigger("punch");
-                            break;
-                        case 1:
-                            Animator.SetTrigger("kick");
-                            break;
-                        case 2:
-                            Animator.SetTrigger("melee");
-                            break;
-                    }
-
-
-                }
-
-                nextAttackTimer = Time.time + Settings.attackRate;
-            }
+            Stop();
+            OperatingSystem.Reset(Settings);
+            animator.SetBool(AnimatorParams.Grounded, true);
+            SetCrouch(false);
+            UpdateSpriteDirection(1f, 1f);
         }
 
-        public void Roll()
+        public void Physics()
         {
-            if (Mathf.Abs(Movement) >= Mathf.Epsilon)
-            {
-                Animator.SetTrigger("roll");
-            }
-        }
-
-        public void MovePosition(Vector3 position)
-        {
-            transform.position = position;
-            //Body.Body.MovePosition(position);
-        }
-
-
-
-        public void UpdateBehaviour(float movement, float climb, float facing)
-        {
-            switch (state)
-            {
-                case CharacterState.Dead:
-                    UpdateDeadBehaviour();
-                    break;
-                case CharacterState.Battle:
-                    UpdateBattleBehaviour(movement, climb, facing);
-                    break;
-                case CharacterState.Idle:
-                    UpdateIdleBehaviour(movement, climb, facing);
-                    break;
-                case CharacterState.Seated:
-                    UpdateSeatedBehaviour(movement, climb, facing);
-                    break;
-            }
-        }
-
-        private void UpdateDeadBehaviour()
-        {
-            //Animator.ResetTrigger("dead");
-        }
-
-        private void UpdateBattleBehaviour(float movement, float climb, float facing)
-        {
-            Movement = movement;
-            Climb = climb;
-
-            UpdateSpriteDirection(Movement, facing);
-
-            if (this.jumpTriggered && Jump)
-            {
-                Animator.SetTrigger("jump");
-            }
-
-            if (Body.climbingLedge)
-            {
-                Animator.ResetTrigger("jump");
-            }
-
-            if (Body.OnGround && !Crouched)
-            {
-                operatingSystem.Momentum += Time.deltaTime * settings.baseMomentumFactor;
-            }
-            else
-            {
-                operatingSystem.Momentum -= Time.deltaTime * settings.momentumAirLoss;
-            }
-
-            Animator.SetBool("ledgeStart", Body.climbingLedge);
-
-            jumpTriggered = false;
-        }
-
-        private void UpdateIdleBehaviour(float movement, float climb, float facing)
-        {
-            Movement = movement;
-            Climb = climb;
-
-            UpdateSpriteDirection(Movement, facing);
-        }
-
-        private void UpdateSeatedBehaviour(float movement, float climb, float facing)
-        {
-        }
-
-        public void FixedUpdateBehaviour()
-        {
-            if(IsDead())
+            if (IsDead)
             {
                 return;
             }
 
             if (!knockback)
             {
-                //Debug.Log(DesiredVelocity);
-                Body.FixedMovement(DesiredVelocity, Climb, Jump, JumpHoldFlag);
+                Body.FixedMovement(DesiredMovement, InputClimb, Jump, JumpHoldFlag);
             }
 
             Jump = false;
             JumpHoldFlag = false;
         }
 
-        public void LateUpdateBehaviour()
+        public void Animate()
         {
-            Animate();
+            //JumpTriggered = false;
+
+            if (Body.currentlyClimbingLedge)
+            {
+                Animator.ResetTrigger(AnimatorParams.Jump);
+            }
+            //Animator.SetBool(AnimatorParams.LedgeStart, Body.currentlyClimbingLedge);
+            CurrentState.ResetAnimationTriggers();
+            CurrentState.Animate(new CharacterAnimationContext()
+            {
+                crouched = IsCrouched,
+                onGround = Body.OnGround,
+                onWall = Body.OnWall,
+                velocityY = Body.VelocityY,
+                movementMagnitude = Mathf.Abs(DesiredMovement),
+                rollOnLand = Body.LastFallTime > 1f,
+                aiming = Aiming,
+                isClimbingLedge = Body.currentlyClimbingLedge,
+            });
         }
 
-        public bool IsDead() => state == CharacterState.Dead;
-
-        public void Die()
+        public bool CanHear(Vector3 position)
         {
-            Debug.Log("char dead");
-            Animator.SetBool("dead", true);
-            Animator.SetTrigger("dying");
-            state = CharacterState.Dead;
-            dieActions?.Invoke();
+            var vectorToPlayer = Head.transform.position - position;
+            var hearDistance = IsCrouched ? 0f : IsWalking ? 1f : 4f;
+
+            return vectorToPlayer.magnitude < hearDistance;
+        }
+
+        public RaycastHit2D? CanSee(Vector3 position, float maxVisualRange, LayerMask lineOfSightMask)
+        {
+            var vectorToPlayer = Head.transform.position - position;
+
+            if (vectorToPlayer.sqrMagnitude > (maxVisualRange * maxVisualRange)) // Don't bother if they're well out of range
+            {
+                return null;
+            }
+
+            return Physics2D.Raycast(position, vectorToPlayer.normalized, Settings.ShootDistance, lineOfSightMask);
+        }
+
+
+        #region Death
+        public bool IsDead { get => !CurrentState.IsAlive; }
+        private void Die()
+        {
+            if (IsDead)
+            {
+                return;
+            }
+
+            Animator.SetBool(AnimatorParams.Dead, true);
+            Animator.SetTrigger(AnimatorParams.Dying);
+            SetDeadState();
+            //state = CharacterState.Dead;
+            Body.Stop();
             Body.Freeze();
-            //collider.enabled = false;
+            collider.enabled = false;
+            dieActions?.Invoke();
         }
 
         public void Splat()
         {
-            //collider.enabled = false;
-            Animator.SetBool("dead", true);
-            Animator.SetTrigger("splat");
-            state = CharacterState.Dead;
+            Animator.SetBool(AnimatorParams.Dead, true);
+            Animator.SetTrigger(AnimatorParams.Splat);
+            SetDeadState();
 
             StartCoroutine(EndFall());
-            //Body.Freeze();
-
         }
 
         private IEnumerator EndFall()
         {
-            yield return new WaitForSeconds(settings.splatFallTime);
-            Debug.Log("End fall");
-            Body.Freeze();
-            //collider.enabled = false;
+            yield return new WaitUntil(() => Animator.GetCurrentAnimatorStateInfo(0).IsTag(AnimatorParams.IsDeadTag));
             dieActions?.Invoke();
         }
+        #endregion Death
 
-        private void Shoot(Vector3 target)
+        #region Attack
+        public void Attack(Vector3 target, bool aiming) => CurrentState.Attack(new CharacterAttackContext()
         {
-            if (target != null)
-            {
-                Debug.DrawLine(bulletStart.position, bulletStart.position + ((target - bulletStart.position).normalized * operatingSystem.settings.shootDistance), Color.red, 1);
-                var result = Physics2D.Raycast(bulletStart.position, target - bulletStart.position, operatingSystem.settings.shootDistance, attackMask);
+            pivot = Head.position,
+            target = target,
+            aiming = aiming,
+            isPlayer = CompareTag(Tags.Player),
+            operatingSystem = OperatingSystem,
+            settings = Settings,
+        });
+             
 
-                if (result)
-                {
-                    if (result.transform.TryGetComponent<BreakGlass>(out var glass))
-                    {
-                        glass.Break(bulletStart.position);
-                    }
+        #endregion Attack
 
-                    if (result.transform.TryGetComponent<Enemy>(out var enemy))
-                    {
-                        var damage = Random.Range(operatingSystem.settings.minBulletDamage, operatingSystem.settings.maxBulletDamage);
-                        enemy.TakeDamage(damage, result.point);
-                    }
+        #region Health
 
-                    Debug.Log(result.transform.name);
-                }
-            }
+        public void TakeDamage(int minAmount, int maxAmount, Vector3 contact)
+        {
+            var amount = Random.Range(minAmount, maxAmount);
+            FXPool.Instance.Spawn(FXType.Blood, contact, transform.position - contact);
+            OperatingSystem.Health -= amount;
         }
 
-        private void Melee(Vector3 target)
+        private void Hit() => hitActions?.Invoke();
+
+        #endregion Health
+
+        #region Animation
+        public void UpdateSpriteDirection(float movementDirection, float facingDirection)
         {
-            var result = Physics2D.OverlapCircle(bulletStart.position, operatingSystem.settings.meleeDistance, attackMask);
-
-            //var result = Physics2D.Raycast(bulletStart.position, target - bulletStart.position, operatingSystem.settings.meleeDistance, attackMask);
-            if (result)
+            if (Body.OnWall)
             {
-                if (result.transform.TryGetComponent<BreakGlass>(out var glass))
-                {
-                    glass.Break(bulletStart.position);
-                }
-
-                if (result.transform.TryGetComponent<Enemy>(out var enemy))
-                {
-                    var damage = Random.Range(operatingSystem.settings.minBulletDamage, operatingSystem.settings.maxBulletDamage);
-                    enemy.TakeDamage(damage, result.ClosestPoint(bulletStart.position));
-                }
-
-                Debug.Log(result.transform.name);
-            }
-        }
-
-        private void UpdateSpriteDirection(float movementDirection, float facingDirection)
-        {
-            if(Body.OnWall)
-            {
+                transform.right = Body.ContactNormal.x < 0 ? Vector3.right : Vector3.left;
                 return;
             }
 
@@ -390,43 +292,127 @@ namespace HackedDesign
             }
         }
 
-        private void Animate()
+        #endregion Animation
+
+        public void ExecuteCommand(ICharacterCommand cmd)
         {
-            switch (state)
-            {
-                case CharacterState.Dead:
-                    Animator.SetBool("dead", true);
-                    break;
-                case CharacterState.Seated:
-                    Animator.SetBool("sit", true);
-                    Animator.SetBool("grounded", true);
-                    Animator.SetBool("dead", false);
-                    break;
-                default:
-                    Animator.SetBool("sit", false);
-                    Animator.ResetTrigger("roll");
-                    Animator.ResetTrigger("melee");
-                    Animator.ResetTrigger("basicAttack");
-                    Animator.ResetTrigger("strongAttack");
-                    Animator.SetBool("dead", false);
-                    Animator.SetBool("crouched", Crouched);
-                    Animator.SetBool("grounded", Body.OnGround);
-                    Animator.SetBool("hang", !Body.OnGround && Body.OnWall);
-                    Animator.SetFloat("battleMode", state == CharacterState.Battle ? 1 : 0);
-                    Animator.SetFloat("velocityY", Body.Body.linearVelocityY);
-                    Animator.SetFloat("velocityX", DesiredVelocity.magnitude);
-                    Animator.SetFloat("fallingTime", Body.FallTime);
-                    Animator.SetBool("rollOnLand", Body.FallTime > 0.66f);
-                    break;
-            }
+            cmd.Execute(this);
         }
+
     }
 
-    public enum CharacterState
+    public struct CharacterAttackContext
     {
-        Seated,
-        Idle,
-        Battle,
-        Dead
+        public Vector3 pivot;
+        public Vector3 target;
+        public bool aiming;
+        public bool isPlayer;
+        public OperatingSystem operatingSystem;
+        public CharacterSettings settings;
+    }
+
+    public struct CharacterSpeedContext
+    {
+        public bool crouched;
+        public float crouchSpeed;
+        public bool walk;
+        public float walkSpeed;
+        public float runSpeed;
+    }
+
+    public struct CharacterAnimationContext
+    {
+        public bool crouched;
+        public bool onGround;
+        public bool onWall;
+        public float velocityY;
+        public float movementMagnitude;
+        public bool rollOnLand;
+        public bool aiming;
+        public bool isClimbingLedge;
+    }
+
+    public interface ICharacterExecute
+    {
+        public void ExecuteCommand(ICharacterCommand cmd);
+    }
+
+    public interface ICharacterCommand
+    {
+        void Execute(CharController controller);
+    }
+
+    public class AimCommand: ICharacterCommand
+    {
+        private readonly bool state;
+
+        public AimCommand(bool state) => this.state = state;
+        public void Execute(CharController controller) => controller.SetAim(state);
+    }
+
+    public class InteractCommand: ICharacterCommand
+    {
+        public void Execute(CharController controller) => controller.TriggerInteract();
+    }
+
+    public class FacingCommand: ICharacterCommand
+    {
+        private readonly float movementDirection;
+        private readonly float facingDirection;
+        public FacingCommand(float movementDirection, float facingDirection)
+        {
+            this.movementDirection = movementDirection;
+            this.facingDirection = facingDirection;
+        }
+
+        public void Execute(CharController controller) => controller.UpdateSpriteDirection(movementDirection, facingDirection);
+    }
+
+    public class CrouchCommand: ICharacterCommand
+    {
+        private readonly bool state;
+        public CrouchCommand(bool state) => this.state = state;
+        public void Execute(CharController controller) => controller.SetCrouch(state);
+    }
+
+    public class WalkToggleCommand: ICharacterCommand
+    {
+        public void Execute(CharController controller) => controller.WalkToggle();
+
+    }
+
+    public class RolLCommand: ICharacterCommand
+    {
+        public void Execute(CharController controller) => controller.Roll();
+    }
+
+    public class JumpCommand: ICharacterCommand
+    {
+        public void Execute(CharController controller) => controller.SetJump();
+    }
+
+    public class MoveCommand : ICharacterCommand
+    {
+        private readonly float movementDirection;
+        private readonly float climb;
+        public MoveCommand(float movementDirection, float climb)
+        {
+            this.movementDirection = movementDirection;
+            this.climb = climb;
+        }
+        public void Execute(CharController controller) => controller.SetMovement(movementDirection, climb);
+    }
+
+    public class KnockbackCommand: ICharacterCommand
+    {
+        private Vector3 direction;
+        public KnockbackCommand(Vector3 direction) => this.direction = direction;
+        public void Execute(CharController controller) => controller.Knockback(direction);
+
+    }
+
+    public class StopCommand : ICharacterCommand
+    {
+        public void Execute(CharController controller) => controller.Stop();
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 namespace HackedDesign
@@ -22,6 +23,7 @@ namespace HackedDesign
         private InputAction climbAction;
         private InputAction jumpAction;
         private InputAction crouchToggleAction;
+        private InputAction walkToggleAction;
         private InputAction crouchAction;
         private InputAction rollAction;
         private InputAction attackAction;
@@ -30,19 +32,16 @@ namespace HackedDesign
         private InputAction lookPosAction;
         private InputAction interactAction;
         private InputAction selectAction;
-
-
         private InputAction aimAction;
 
         public CharController Character { get => character; set => character = value; }
 
         void Awake()
         {
-            BindInputs();
-
             this.AutoBind(ref character);
             this.AutoBind(ref camo);
             character.dieActions.AddListener(Die);
+            BindInputs();
         }
 
         private void BindInputs()
@@ -53,6 +52,7 @@ namespace HackedDesign
             jumpAction = playerInput.actions["Jump"];
             crouchAction = playerInput.actions["Crouch"];
             crouchToggleAction = playerInput.actions["Crouch Toggle"];
+            walkToggleAction = playerInput.actions["Walk Toggle"];
             rollAction = playerInput.actions["Roll"];
             attackAction = playerInput.actions["Attack"];
             interactAction = playerInput.actions["Interact"];
@@ -63,6 +63,7 @@ namespace HackedDesign
 
             selectAction.performed += SelectEvent;
             menuAction.performed += MenuEvent;
+            interactAction.performed += InteractEvent;
         }
 
         void Start() => Reset();
@@ -75,13 +76,8 @@ namespace HackedDesign
 
         public void Stop()
         {
-            character.Stop();
+            character.ExecuteCommand(new StopCommand());
         }
-
-        public void Idle() { character.State = CharacterState.Idle; }
-        public void Battle() { character.State = CharacterState.Battle; }
-
-        public void Sit() { character.State = CharacterState.Seated; }
 
         public void MenuEvent(InputAction.CallbackContext context)
         {
@@ -101,35 +97,11 @@ namespace HackedDesign
             targeter.TriggerInteract();
         }
 
-        public void Die()
-        {
-            Game.Instance.SetDeath();
-        }
-
-        public void UpdateBehavior()
-        {
-
-            switch (character.State)
-            {
-                case CharacterState.Seated:
-                    UpdateSitBehaviour();
-                    break;
-                case CharacterState.Idle:
-                    UpdateIdleBehaviour();
-                    break;
-                case CharacterState.Battle:
-                    UpdateBattleBehaviour();
-                    break;
-                case CharacterState.Dead:
-                    break;
-            }
-        }
+        public void Die() => Game.Instance.SetDeath();
 
         public void UpdateSitBehaviour()
         {
             //targeter.UpdateInteractors();
-            //Vector3 targetPos = GetTargetingPosition();
-            targeter.UpdateInteractors();
             UpdateAimLine(false);
 
             if(this.attackAction.triggered)
@@ -140,17 +112,15 @@ namespace HackedDesign
 
         public void UpdateIdleBehaviour()
         {
-            float movement = 0;
-            float climb = 0;
-            movement = moveAction.ReadValue<float>();
-            climb = climbAction.ReadValue<float>();
-            //character.Jump |= this.jumpAction.triggered;
-            //character.JumpHoldFlag |= this.jumpAction.IsPressed();
-            Vector3 targetPos = GetTargetingPosition();
-            targeter.UpdateInteractors();
-            UpdateAimLine(crouchToggle || this.crouchAction.IsPressed());
-            character.UpdateBehaviour(movement, climb, CalcForward(targetPos));
+            float movement = moveAction.ReadValue<float>(); ;
+            float climb = climbAction.ReadValue<float>();
 
+            Vector3 targetPos = GetTargetingPosition();
+            //targeter.UpdateInteractors();
+            UpdateAimLine(crouchToggle || this.crouchAction.IsPressed());
+
+            character.ExecuteCommand(new FacingCommand(movement, CalcForward(targetPos)));
+            character.ExecuteCommand(new MoveCommand(movement, climb));
         }
 
         public void UpdateBattleBehaviour()
@@ -160,20 +130,15 @@ namespace HackedDesign
 
             Vector3 targetPos = GetTargetingPosition();
 
+            UpdateCrouchToggle();
+            UpdateWalkToggle();
 
-            if (this.crouchToggleAction.triggered)
-            {
-                crouchToggle = !crouchToggle;
-            }
+            character.ExecuteCommand(new CrouchCommand(crouchToggle || this.crouchAction.IsPressed()));
 
-            character.Crouched = crouchToggle || this.crouchAction.IsPressed();
-
-            targeter.UpdateInteractors();
             UpdateAimLine(crouchToggle || this.crouchAction.IsPressed());
 
 
-
-            if (character.IsAttacking) // If we're playing the attacking animation, don't let the player take another action
+            if (character.IsAnimatingAttack) // If we're playing the attacking animation, don't let the player take another action
             {
                 //Debug.Log("Attacking");
             }
@@ -183,35 +148,57 @@ namespace HackedDesign
             }
             else if (this.rollAction.triggered)
             {
-                character.Roll();
+                character.ExecuteCommand(new RolLCommand());
             }
             else
             {
-                if (Game.Instance.GameSettings.Autorun)
+                movement = Game.Instance.GameSettings.Autorun ? 1 : moveAction.ReadValue<float>();
+                climb = Game.Instance.GameSettings.Autorun ? 1: climbAction.ReadValue<float>();
+
+                if (this.jumpAction.triggered)
                 {
-                    movement = 1;
-                    climb = 1;
+                    character.ExecuteCommand(new JumpCommand());
                 }
-                else
-                {
-                    movement = moveAction.ReadValue<float>();
-                    climb = climbAction.ReadValue<float>();
-                }
-                character.Jump |= this.jumpAction.triggered;
+
+                //character.Jump |= this.jumpAction.triggered;
+                //character.ExecuteCommand(new JumpCommand(this.jumpAction.triggered));
                 character.JumpHoldFlag |= this.jumpAction.IsPressed();
             }
 
-            character.UpdateBehaviour(movement, climb, CalcForward(targetPos));
+            character.ExecuteCommand(new FacingCommand(movement, CalcForward(targetPos)));
+            character.ExecuteCommand(new MoveCommand(movement, climb));
         }
+
+        public void Teleport(Vector3 position)
+        {
+            transform.position = position;
+        }
+
+        private void UpdateCrouchToggle()
+        {
+            if (this.crouchToggleAction.triggered)
+            {
+                crouchToggle = !crouchToggle;
+            }
+        }
+
+        private void UpdateWalkToggle()
+        {
+            if (this.walkToggleAction.triggered)
+            {
+                character.ExecuteCommand(new WalkToggleCommand());
+            }
+        }
+
 
         public void FixedUpdateBehaviour()
         {
-            character.FixedUpdateBehaviour();
+            character.Physics();
         }
 
         public void LateUpdateBehaviour()
         {
-            character.LateUpdateBehaviour();
+            character.Animate();
         }
 
         private bool IsAiming()
@@ -227,6 +214,7 @@ namespace HackedDesign
             }
         }
 
+        // FIXME: Update for crouched
         private void UpdateAimLine(bool crouched)
         {
 

@@ -13,18 +13,23 @@ namespace HackedDesign.UI
         [Header("UI")]
         [SerializeField] private UnityEngine.UI.Text nameLabel;
         [SerializeField] private UnityEngine.UI.Slider targetHealthbar;
-
+        [SerializeField] private Targeter targeter;
 
 
         private new void Awake()
         {
             base.Awake();
-
-            //Repaint();
+            targeter.targetChangedAction += Repaint;
         }
 
         public void Repaint(Interactable interactable)
         {
+            if (interactable == null)
+            {
+                Repaint();
+                return;
+            }
+
             Show();
             nameLabel.text = string.IsNullOrEmpty(interactable.Label) ? interactable.name : interactable.Label;
             if (interactable.TryGetComponent<CharController>(out var character))

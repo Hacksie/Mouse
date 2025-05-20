@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEditor.U2D.Animation;
 using UnityEngine;
 
 namespace HackedDesign
@@ -17,13 +18,14 @@ namespace HackedDesign
         private List<OSTask> puTaskList = new List<OSTask>();
         public List<OSTask> PuTaskList { get => puTaskList; set => puTaskList = value; }
         public string saveName;
+        public int maxHealth = 100;
         public int health = 0;
         public int ammo = 0;
         public int ram = 100;
         public int maxRam = 100;
         public int pingRadius = 10;
-        public bool infAmmo = false;
-        public bool infHealth = false;
+        public bool infiniteAmmo = false;
+        public bool infinityHealth = false;
         public int currentMission = 2;
         public bool hasPistol = true;
         public float momentumFactor = 0.05f;
@@ -38,6 +40,16 @@ namespace HackedDesign
 
 
         public Dictionary<int, int> hacks = new Dictionary<int, int>();
+
+        public void Reset(CharacterSettings settings)
+        {
+            health = settings.startingHealth;
+            ammo = settings.startingAmmo;
+            infiniteAmmo = settings.infiniteAmmo;
+            infinityHealth = settings.infiniteHealth;
+            currentWeapon = settings.weaponSettings.Count > 0 ? settings.weaponSettings[0] : null;
+            maxHealth = settings.startingHealth;
+        }
     }
 
     public class OSTask

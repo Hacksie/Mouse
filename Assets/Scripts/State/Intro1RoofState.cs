@@ -21,7 +21,7 @@ namespace HackedDesign
         public void Begin()
         {
             this.level.ShowNamedRoom("Rooftop", true, false, this.player);
-            this.player.Sit();
+            this.player.Character.SetSitState();
             DialogManager.Instance.ShowDialog("IntroRoof1", new UnityEngine.Events.UnityAction(DialogOver));
         }
 

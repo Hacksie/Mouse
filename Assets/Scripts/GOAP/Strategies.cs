@@ -130,7 +130,7 @@ namespace HackedDesign
 
     public class IdleStrategy : IActionStrategy
     {
-        public bool CanPerform => true; // Agent can always Idle
+        public bool CanPerform => true; // Agent can always SetIdleState
         public bool Complete { get; private set; }
 
         readonly CountdownTimer timer;

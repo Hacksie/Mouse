@@ -26,7 +26,6 @@ namespace HackedDesign.UI
         }
 
 
-
         public void OptionsClick()
         {
             Debug.Log("Main Menu Options", this);
@@ -40,8 +39,7 @@ namespace HackedDesign.UI
         public void ExitClick()
         {
             Debug.Log("Exit Click", this);
-            Application.Quit();
+            Game.Instance.SetQuit();
         }
-
     }
 }

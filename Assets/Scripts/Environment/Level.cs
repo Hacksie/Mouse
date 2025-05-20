@@ -17,15 +17,11 @@ namespace HackedDesign
         [Header("Dungeon")]
         [SerializeField] RuntimeDungeon runtimeDungeon;
         [Header("Prefabs")]
-        //[SerializeField] Transform intermission;
-        //[SerializeField] Transform bedroom1;
-        //[SerializeField] Transform bedroom2;
-        //[SerializeField] Transform roof1;
-        //[SerializeField] Transform roof2;
         [SerializeField] List<Transform> namedRooms;
         [SerializeField] List<GameObject> namedRoomPrefabs;
 
         private GameObject namedRoom;
+        
 
         void Start()
         {
@@ -87,7 +83,7 @@ namespace HackedDesign
             var spawn = this.namedRoom.transform.Find("Spawn");
             if (spawn)
             {
-                player.Character.MovePosition(this.namedRoom.transform.Find("Spawn").transform.position);
+                player.Teleport(this.namedRoom.transform.Find("Spawn").transform.position);
             }
 
             this.rain.gameObject.SetActive(rain);
@@ -110,9 +106,12 @@ namespace HackedDesign
                 }
             );
 
-            //runtimeDungeon.Generator.Root = runtimeDungeon.gameObject;
-            //runtimeDungeon.Generator.Seed = level;
-            //runtimeDungeon.Generator.Generate();
+            runtimeDungeon.Generator.Root = runtimeDungeon.gameObject;
+            runtimeDungeon.Generator.Seed = level;
+            runtimeDungeon.Generator.Generate();
+
+            ElevatorManager.Instance.Refresh();
+            SpawnEnemies(3);
 
             //Debug.Log("Seed:" + level);
 
@@ -129,15 +128,18 @@ namespace HackedDesign
 
         public void SpawnEnemies(int count)
         {
-            var spawns = GameObject.FindGameObjectsWithTag("EnemySpawn");
+            EnemyPool.Instance.Reset();
+            var spawns = EnemyPool.Instance.GetSpawnLocationsOnLevel();
 
-            for(int i = 0;i < count;i++)
+            Debug.Log(Mathf.Min(count, spawns.Count), this);
+
+            for (int i = 0; i < Mathf.Min(count, spawns.Count); i++)
             {
-                if(spawns.Length == 0)
-                {
-                    break;
-                }
+                Debug.Log("Spawn " + i.ToString(), this);
+                EnemyPool.Instance.Spawn(spawns[i]);
             }
+            
+
         }
     }
 }

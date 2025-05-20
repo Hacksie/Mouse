@@ -4,7 +4,7 @@ using UnityEngine;
 namespace HackedDesign
 {
     [CustomEditor(typeof(GoapAgent))]
-    public class GOAPAgentInspector : Editor
+    public class GOAPAgentInspector : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {

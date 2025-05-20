@@ -20,21 +20,13 @@ namespace HackedDesign
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (collision.collider.CompareTag("Player"))
+            if (collision.collider.CompareTag(Tags.Player))
             {
                 if (collision.collider.TryGetComponent<CharController>(out var character))
                 {
-                    Debug.Log("Trigger" + character.tag);
                     var direction = (character.transform.position - transform.position).normalized;
-                    Debug.Log(direction);
-                    character.Knockback(direction);
-                    /*
-                    if (rb != null)
-                    {
-                        rb.AddForce(direction * -5, ForceMode2D.Impulse);
-                    }*/
+                    character.ExecuteCommand(new KnockbackCommand(direction));
                     StartCoroutine(AnimateFlash());
-                    //character.Body.Body.MovePosition(character.transform.position + (direction * 3));
                 }
             }
 

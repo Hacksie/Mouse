@@ -7,16 +7,11 @@ using UnityEngine.Pool;
 
 namespace HackedDesign
 {
-    public interface IEnemyPool
+    public class EnemyPool : AutoSingleton<EnemyPool>
     {
-        void Reset();
-    }
+        [SerializeField] private List<EnemyController> prefabList;
 
-    public class EnemyPool : MonoBehaviour, IEnemyPool
-    {
-        [SerializeField] private List<Enemy> prefabList;
-
-        private List<Enemy> pool = new List<Enemy>(1000);
+        private readonly List<EnemyController> pool = new(1000);
 
         public void Reset()
         {
@@ -27,29 +22,27 @@ namespace HackedDesign
             }
         }
 
-        public Enemy Spawn(EnemyType type, Vector3 position, Quaternion rotation)
+        public List<EnemySpawn> GetSpawnLocationsOnLevel() => FindObjectsByType<EnemySpawn>(FindObjectsInactive.Exclude, FindObjectsSortMode.None).ToList();
+
+        public EnemyController Spawn(EnemySpawn spawn)
         {
-            var activePool = Active();
+            var activePool = Inactive();
 
 
-             var enemy = activePool.FirstOrDefault(e => e.type == type);
+             var enemy = activePool.FirstOrDefault();
 
 
             if(enemy == null)
             {
-                var prefab = prefabList.FirstOrDefault(e => e.type == type);
+                var prefab = prefabList.FirstOrDefault();
                 if (prefab == null)
                 {
-                    Debug.LogError("Could not prefab of type " + type);
+                    Debug.LogError("Could not prefab of type ");
                 }
 
-
-
-                enemy = GameObject.Instantiate(prefab, position, rotation, this.transform);
+                enemy = Instantiate(prefab,  spawn.transform.position, Quaternion.identity, this.transform);
 
                 pool.Add(enemy);
-
-
             }
 
             enemy.gameObject.SetActive(true);
@@ -58,9 +51,9 @@ namespace HackedDesign
             return enemy;
         }
 
-        public Enemy Spawn(Vector3 position, Quaternion rotation)
+        public EnemyController Spawn(Vector3 position, Quaternion rotation)
         {
-            var activePool = Active();
+            var activePool = Inactive();
 
 
             var enemy = activePool.ElementAtOrDefault(Random.Range(0, activePool.Count));
@@ -73,21 +66,22 @@ namespace HackedDesign
                     Debug.LogError("Could not prefab");
                 }
 
-                enemy = GameObject.Instantiate(prefab, position, rotation, this.transform);
+                enemy = Instantiate(prefab, position, rotation, this.transform);
 
                 pool.Add(enemy);
 
             }
 
             enemy.gameObject.SetActive(true);
+            enemy.Reset();
 
 
             return enemy;
         }
 
-        public List<Enemy> Active()
+        public List<EnemyController> Inactive()
         {
-            return pool.Where(e => e.gameObject.activeInHierarchy).ToList();
+            return pool.Where(e => !e.gameObject.activeInHierarchy).ToList();
         }
 
         public void UpdateAllBehaviour()
@@ -95,6 +89,22 @@ namespace HackedDesign
             foreach (var enemy in pool.Where(e => e.gameObject.activeInHierarchy))
             {
                 enemy.UpdateBehaviour();
+            }
+        }
+
+        public void UpdateAllFixedBehaviour()
+        {
+            foreach (var enemy in pool.Where(e => e.gameObject.activeInHierarchy))
+            {
+                enemy.FixedUpdateBehaviour();
+            }
+        }
+
+        public void UpdateAllLateBehaviour()
+        {
+            foreach (var enemy in pool.Where(e => e.gameObject.activeInHierarchy))
+            {
+                enemy.LateUpdateBehaviour();
             }
         }
     }

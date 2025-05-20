@@ -15,9 +15,6 @@ namespace HackedDesign
         [SerializeField] private SpriteRenderer spriteRenderer;
         [SerializeField] private bool playOnce = true;
         
-
-        private float shatterMagnitude = 6.0f;
-
         private bool hasPlayed = false;
         private void Awake()
         {
@@ -45,25 +42,11 @@ namespace HackedDesign
             
             if(collision.gameObject.CompareTag("Player") && !(playOnce && hasPlayed))
             {
-                Debug.Log(collision.relativeVelocity.magnitude);
-                //var pc = collision.gameObject.GetComponent<PhysicsController>();
-                if (collision.relativeVelocity.magnitude > shatterMagnitude)
+                Debug.Log($" {collision.relativeVelocity.magnitude} {collision.relativeVelocity.x} ");
+                if (collision.relativeVelocity.magnitude > Game.Instance.GameSettings.ShatterMagnitude)
                 {
-                    
-
                     Break(collision.otherCollider.transform.position);
-
-                    //var x = collision.otherCollider.transform.position.x - collision.collider.transform.position.x;
-
-                    //glassBreakEffect.transform.right = x < 0 ? Vector3.right : Vector3.left;
-
-                    //glassBreakEffect.Play();
-                    //spriteRenderer.active = false;
-                    //hasPlayed = true;
                 }
-
-
-
             }
         }
     }

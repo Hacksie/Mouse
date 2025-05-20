@@ -23,7 +23,7 @@ namespace HackedDesign
         public void Begin()
         {
             this.level.Reset();
-            this.level.Generate(player.Character.OperatingSystem.CurrentMission);
+            this.level.Generate(new System.Random().Next()); // player.Character.OperatingSystem.CurrentMission);
             var spawn = GameObject.FindGameObjectWithTag("Respawn");
 
             if (spawn != null)

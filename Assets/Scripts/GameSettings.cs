@@ -19,6 +19,10 @@ namespace HackedDesign
         [SerializeField] private float minBasePropGap = 10f;
         [SerializeField] private float maxBasePropGap = 20f;
         [SerializeField] private float buildingGapChance = 0.66f;
+        [SerializeField] private float fallDeathHeight = 27f;
+        [SerializeField] private float fallDamageHeight = 20f;
+        [SerializeField] private float shatterMagnitude = 10.1f;
+        [SerializeField] private float interactDistance = 2.0f;
 
         public bool SkipIntro { get => skipIntro; }
         public bool Autorun { get => autorun; }
@@ -29,5 +33,9 @@ namespace HackedDesign
         public float MinBasePropGap { get => minBasePropGap; }
         public float MaxBasePropGap { get => maxBasePropGap; }
         public float BuildingGapChance { get => buildingGapChance; }
+        public float FallDeathHeight { get => fallDeathHeight; }
+        public float FallDamageHeight { get => fallDamageHeight; }
+        public float ShatterMagnitude { get => shatterMagnitude; }
+        public float InteractDistance { get => interactDistance; }
     }
 }

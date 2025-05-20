@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using UnityEngine;
+
+namespace HackedDesign
+{
+    public class Elevator: MonoBehaviour
+    {
+        public void Interact()
+        {
+            Game.Instance.SetElevator();
+        }
+    }
+}

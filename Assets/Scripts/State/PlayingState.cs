@@ -27,26 +27,20 @@ namespace HackedDesign
 
         public void Begin()
         {
-            Game.Instance.LevelTimer.Timer.Start();
-            Game.Instance.LevelTimer.Timer.OnTimerStop += TimeOut;
+            //Game.Instance.LevelTimer.Timer.Start();
+            //Game.Instance.LevelTimer.Timer.OnTimerStop += TimeOut;
             //this.level.Reset();
             //this.level.Generate(1);
-            //var spawn = GameObject.FindGameObjectWithTag("Respawn");
 
-            //if (spawn != null)
-            //{
-            //    this.player.transform.position = spawn.transform.position;
-            //}
-
-            this.player.Battle();
+            this.player.Character.SetBattleState();
             this.actionBar.Show();
-            this.traceBar.Show();
+            //this.traceBar.Show();
         }
 
         public void End()
         {
             this.player.Stop();
-            this.traceBar.Hide();
+            //this.traceBar.Hide();
             this.actionBar.Hide();
         }
 
@@ -60,19 +54,18 @@ namespace HackedDesign
             Game.Instance.LevelTimer.Timer.Tick(Time.deltaTime);
             this.player.UpdateBattleBehaviour();
             this.enemyPool.UpdateAllBehaviour();
-            this.traceBar.Repaint();
-            //this.actionBarPresenter.Repaint();
-  
         }
 
         public void FixedUpdate()
         {
             this.player.FixedUpdateBehaviour();
+            this.enemyPool.UpdateAllFixedBehaviour();
         }
 
         public void LateUpdate()
         {
             this.player.LateUpdateBehaviour();
+            this.enemyPool.UpdateAllLateBehaviour();
             
         }
 

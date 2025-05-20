@@ -23,7 +23,7 @@ namespace HackedDesign
         {
             this.level.Reset();
             this.level.ShowNamedRoom("Mouse Starting Room", false, true, this.player);
-            this.player.Sit();
+            this.player.Character.SetSitState();
         }
 
         public void End()

@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 
 namespace HackedDesign
 {
+    [RequireComponent(typeof(Collider2D))]
     public class Interactable : MonoBehaviour
     {
         [SerializeField] private Outlinable outlinable;
@@ -45,8 +46,10 @@ namespace HackedDesign
 
         public void TriggerInteract()
         {
+
             Debug.Log("Invoke interact");
             interactAction?.Invoke();
+
         }
 
         private void Update()
@@ -62,14 +65,16 @@ namespace HackedDesign
 
                 if ((Game.Instance.Player.transform.position - this.transform.position).magnitude < 2.5f)
                 {
-                    outlinable.OutlineParameters.Color = Color.yellow;
+                    //FDAC3D
+                    ColorUtility.TryParseHtmlString("FDAC3D", out var color);
+                    outlinable.OutlineParameters.Color = color;
                 }
                 else
                 {
-                    outlinable.OutlineParameters.Color = Color.red;
+                    outlinable.OutlineParameters.Color = Color.grey;
                 }
 
-                
+
             }
             else if (ping)
             {
@@ -79,7 +84,16 @@ namespace HackedDesign
             else if (target)
             {
                 outlinable.enabled = true;
-                outlinable.OutlineParameters.Color = Color.grey;
+                if ((Game.Instance.Player.transform.position - this.transform.position).magnitude < 2.5f)
+                {
+                    ColorUtility.TryParseHtmlString("#FDAC3D", out var color);
+                    outlinable.OutlineParameters.Color = color;
+                }
+                else
+                {
+
+                    outlinable.OutlineParameters.Color = Color.grey;
+                }
             }
             else
             {

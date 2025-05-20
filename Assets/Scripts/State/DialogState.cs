@@ -21,7 +21,7 @@ namespace HackedDesign
 
         public void Begin()
         {
-            this.player.Sit();
+            this.player.Character.SetSitState();
             this.dialogPresenter.Show();
         }
 

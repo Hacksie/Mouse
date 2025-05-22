@@ -11,7 +11,6 @@ namespace HackedDesign
     public class GameSettings : ScriptableObject
     {
         [SerializeField] private bool skipIntro = false;
-        [SerializeField] private bool autorun = true;
         [SerializeField] private bool startPistol = false;
         [SerializeField] private float knockbackTime = 0.15f;
         [SerializeField] private float knockbackFreezeTime = 0.20f;
@@ -25,7 +24,6 @@ namespace HackedDesign
         [SerializeField] private float interactDistance = 2.0f;
 
         public bool SkipIntro { get => skipIntro; }
-        public bool Autorun { get => autorun; }
         public bool StartPistol { get => startPistol; }
         public float KnockbackTime { get => knockbackTime; }
         public float KnockbackFreezeTime { get => knockbackFreezeTime; }

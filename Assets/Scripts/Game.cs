@@ -103,7 +103,8 @@ namespace HackedDesign
             }
             else
             {
-                SetRoof1();
+                SetIntermission();
+                //SetRoof1();
             }
         }     
 

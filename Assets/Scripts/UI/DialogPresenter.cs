@@ -36,7 +36,7 @@ namespace HackedDesign.UI
         {
             currentPage++;
 
-            Debug.Log("Page" + currentPage + "/" + DialogManager.Instance.CurrentDialog.pages.Count, this);
+            Debug.Log("Page " + currentPage + "/" + DialogManager.Instance.CurrentDialog.pages.Count, this);
 
             if (currentPage >= DialogManager.Instance.CurrentDialog.pages.Count)
             {
@@ -48,7 +48,6 @@ namespace HackedDesign.UI
             }
             else
             {
-                Debug.Log("Next Page", this);
                 Repaint();
             }
         }

@@ -152,8 +152,8 @@ namespace HackedDesign
             }
             else
             {
-                movement = Game.Instance.GameSettings.Autorun ? 1 : moveAction.ReadValue<float>();
-                climb = Game.Instance.GameSettings.Autorun ? 1: climbAction.ReadValue<float>();
+                movement = moveAction.ReadValue<float>();
+                climb = climbAction.ReadValue<float>();
 
                 if (this.jumpAction.triggered)
                 {

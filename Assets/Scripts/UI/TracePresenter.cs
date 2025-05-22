@@ -1,4 +1,3 @@
-using HackedDesign.UI;
 using UnityEngine;
 
 namespace HackedDesign.UI

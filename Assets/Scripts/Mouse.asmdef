@@ -1,0 +1,25 @@
+{
+    "name": "Mouse",
+    "rootNamespace": "",
+    "references": [
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:41524c21c95e5fe4dbc5b48bd21995a4",
+        "GUID:c3352a8bbbe14fb4ab52ae7bfff927ea",
+        "GUID:516a5277b8c3b4f4c8cc86b77b1591ff",
+        "GUID:a3f03c9583fe48945847f904f8c78b92",
+        "GUID:4311f2463a24eca4dba0f36e4cb72dd7",
+        "GUID:482f0aa12758aa74494c5b4c31adb820",
+        "GUID:b951047c7735a8e40b8322a33cd29c76",
+        "GUID:0b715940e34f0104c80959e935411eb1",
+        "GUID:4307f53044263cf4b835bd812fc161a4"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

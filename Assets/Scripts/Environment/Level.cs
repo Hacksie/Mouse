@@ -19,6 +19,7 @@ namespace HackedDesign
         [Header("Prefabs")]
         [SerializeField] List<Transform> namedRooms;
         [SerializeField] List<GameObject> namedRoomPrefabs;
+        [SerializeField] Transform levelStart;
 
         private GameObject namedRoom;
         

@@ -1,7 +1,4 @@
-﻿using HackedDesign.UI;
-
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 

@@ -9,14 +9,13 @@ namespace HackedDesign
 {
     public class SecCam: MonoBehaviour
     {
-        [SerializeField] private List<ISensor> sensors;
+        //[SerializeField] private List<ISensor> sensors;
         private void Awake()
         {
-            foreach (var sensor in GetComponentsInChildren<ISensor>())
-            {
-                sensor.OnTargetChanged += Alert;
-            }
-            ;
+            //foreach (var sensor in GetComponentsInChildren<ISensor>())
+            //{
+            //    sensor.OnTargetChanged += Alert;
+            //};
 
             /*
             this.AutoBind(ref sensor);

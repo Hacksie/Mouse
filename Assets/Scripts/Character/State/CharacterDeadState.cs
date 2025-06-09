@@ -20,11 +20,19 @@ namespace HackedDesign
         }
         public void Animate(CharacterAnimationContext ctx)
         {
+            if(this.animator == null)
+            {
+                return;
+            }
             this.animator.SetBool(AnimatorParams.Dead, true);
         }
 
         public void ResetAnimationTriggers()
         {
+            if (this.animator == null)
+            {
+                return;
+            }
             this.animator.ResetTrigger(AnimatorParams.Interact);
             this.animator.ResetTrigger(AnimatorParams.Roll);
             this.animator.ResetTrigger(AnimatorParams.Melee);

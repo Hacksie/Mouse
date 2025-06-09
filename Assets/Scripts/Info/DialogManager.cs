@@ -1,97 +1,101 @@
-﻿using HackedDesign.UI;
+﻿using CsvHelper;
+using CsvHelper.Configuration;
+using HackedDesign.UI;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Networking;
 
 namespace HackedDesign
 {
     public class DialogManager: AutoSingleton<DialogManager>
     {
-        [SerializeField] DialogPresenter presenter;
-        [SerializeField] List<Speaker> speakers;
-        [SerializeField] List<Dialog> dialogs = new List<Dialog>();
-        [SerializeField] List<Dialog> hotdogAdvice = new List<Dialog>();
+        [SerializeField] private DialogPresenter presenter;
+        [SerializeField] private List<Speaker> speakers;
+        [SerializeField] private Dictionary<string, List<DialogLine>> dialog = new();
+
+        public List<DialogLine> CurrentDialog { get; set; }
+        public List<Speaker> Speakers { get => speakers; set => speakers = value; }
 
         private UnityAction dialogOverCallback;
 
-
-        public Dialog CurrentDialog { get; set; }
-        public List<Speaker> Speakers { get => speakers; set => speakers = value; }
-
-        //public int CurrentPage { get; set; } = 0;
-
-        private void Start()
+        new void Awake()
         {
-            presenter.finishedEvent.AddListener(new UnityAction(DialogFinished));
+            base.Awake();
+            LoadDialog();
         }
 
-        public Sprite GetSpeakerSprite(Page page)
-        {
-            return GetSpeakerSprite(page.speaker, page.speakerFrame);
-        }
+        void Start() => presenter.finishedEvent.AddListener(new UnityAction(DialogFinished));
 
-        public Sprite GetSpeakerSprite(string name, int frame)
-        {
-            return speakers.FirstOrDefault(x => x.name == name).sprites[frame];
-        }
+        public Sprite GetSpeakerSprite(DialogLine page) => GetSpeakerSprite(page.Speaker, page.Emotion);
 
-        public void SetDialogByName(string name)
-        {
-            CurrentDialog = dialogs.First(x => x.name == name);
-        }
+        public Sprite GetSpeakerSprite(string name, string emotion) => speakers.FirstOrDefault(x => x.name == name).GetEmotion(emotion);
 
-        public void SetHotdogDialogByName(string name)
-        {
-            CurrentDialog = hotdogAdvice.First(x => x.name == name);
-        }
-
-        public void SetRandomHotdogDialog()
-        {
-            if (hotdogAdvice.Count > 0)
-            {
-                CurrentDialog = hotdogAdvice[Random.Range(0, hotdogAdvice.Count)];
-            }
-            else
-            {
-                CurrentDialog = null;
-            }
-        }
-
-        public void ShowDialog(string name)
-        {
-            ShowDialog(name, null);
-        }
-
+        public void ShowDialog(string name) => ShowDialog(name, null);
 
         public void ShowDialog(string name, UnityAction dialogOverAction)
         {
+
             Debug.Log("Show Dialog", this);
             this.dialogOverCallback = dialogOverAction;
-            //CurrentPage = 0;
             SetDialogByName(name);
             presenter.Show();
             presenter.Repaint();
         }
 
-        public void ShowHotdogDialog(string name)
+        public void HideDialog() => presenter.Hide();
+
+        #region Load
+        private void LoadDialog()
         {
-            ShowHotdogDialog(name, null);
+            string path = Path.Combine(Application.streamingAssetsPath, "dialog.en.csv");
+            StartCoroutine(LoadDialogCSV(path));
         }
 
-        public void ShowHotdogDialog(string name, UnityAction dialogOverAction)
+        private IEnumerator LoadDialogCSV(string path)
         {
+            var request = UnityWebRequest.Get(path);
+            yield return request.SendWebRequest();
 
-            this.dialogOverCallback = dialogOverAction;
-            //CurrentPage = 0;
-            SetHotdogDialogByName(name);
-            presenter.Show();
-            presenter.Repaint();
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                string csvText = request.downloadHandler.text;
+                ParseCSV(csvText);
+            }
+            else
+            {
+                Debug.LogError("Failed to load dialog CSV: " + request.error);
+            }
         }
 
-        public void DialogFinished()
+        private void ParseCSV(string csvText)
+        {
+            using var reader = new StringReader(csvText);
+            using var csv = new CsvReader(reader,new CsvConfiguration(CultureInfo.InvariantCulture) { PrepareHeaderForMatch = args => args.Header.ToLower()});
+            var records = csv.GetRecords<DialogLine>();
+
+            foreach (DialogLine record in records)
+            {
+                if(!dialog.ContainsKey(record.Sequence))
+                {
+                    dialog.Add(record.Sequence, new List<DialogLine>());
+                }
+
+                dialog[record.Sequence].Add(record);
+            }
+        }
+        #endregion Load
+
+        private void SetDialogByName(string name) => CurrentDialog = dialog[name];
+
+        private void DialogFinished()
         {
             presenter.Hide();
             this.dialogOverCallback?.Invoke();

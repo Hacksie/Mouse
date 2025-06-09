@@ -1,9 +1,9 @@
 
 using DunGen;
+using log4net.Core;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
 
 namespace HackedDesign
 {
@@ -19,19 +19,16 @@ namespace HackedDesign
         [Header("Prefabs")]
         [SerializeField] List<Transform> namedRooms;
         [SerializeField] List<GameObject> namedRoomPrefabs;
-        [SerializeField] Transform levelStart;
+        [SerializeField] GameObject levelStartPrefab;
 
         private GameObject namedRoom;
-        
+        private GameObject levelStart;
 
         void Start()
         {
             Reset();
             runtimeDungeon.Generator.ShouldRandomizeSeed = false;
-            backgroundLevels.ForEach(bg =>
-            {
-                bg.Generator.ShouldRandomizeSeed = false;
-            });
+            backgroundLevels.ForEach(bg => bg.Generator.ShouldRandomizeSeed = false);
         }
 
         public void Reset()
@@ -47,19 +44,13 @@ namespace HackedDesign
             runtimeDungeon.Generator.Clear(true);
         }
 
-        public void RainOff()
-        {
-            this.rain.gameObject.SetActive(false);
-        }
+        public void RainOff() => this.rain.gameObject.SetActive(false);
 
-        public void RainOn()
-        {
-            this.rain.gameObject.SetActive(true);
-        }
+        public void RainOn() => this.rain.gameObject.SetActive(true);
         public void ShowNamedRoom(string name, bool cityBg, bool rain, PlayerController player)
         {
             Reset();
-
+            Random.seed = 1;
 
             if (cityBg)
             {
@@ -104,15 +95,16 @@ namespace HackedDesign
                 {
                     Debug.LogWarning("Failed to generate bg level");
                 }
-                }
-            );
+            });
 
             runtimeDungeon.Generator.Root = runtimeDungeon.gameObject;
             runtimeDungeon.Generator.Seed = level;
             runtimeDungeon.Generator.Generate();
 
+            this.levelStart = Instantiate(levelStartPrefab , Vector3.zero, Quaternion.identity, this.transform);
+
             ElevatorManager.Instance.Refresh();
-            SpawnEnemies(3);
+            SpawnEnemies(6);
 
             //Debug.Log("Seed:" + level);
 
@@ -124,13 +116,15 @@ namespace HackedDesign
             //    spawner.SpawnBackgroundProps(random, level);
             //    spawner.SpawnProps(random, level);
             //}
-
         }
+
+        public List<EnemySpawn> GetSpawnLocationsOnLevel() => FindObjectsByType<EnemySpawn>(FindObjectsInactive.Exclude, FindObjectsSortMode.None).OrderBy(_ => Random.value).ToList();
+        public List<EnemySpawn> GetSpawnLocationsOnLevel(EnemyType type) => FindObjectsByType<EnemySpawn>(FindObjectsInactive.Exclude, FindObjectsSortMode.None).Where(x => x.CanSpawn(type)).OrderBy(_ => Random.value).ToList();
 
         public void SpawnEnemies(int count)
         {
             EnemyPool.Instance.Reset();
-            var spawns = EnemyPool.Instance.GetSpawnLocationsOnLevel();
+            var spawns = GetSpawnLocationsOnLevel();
 
             Debug.Log(Mathf.Min(count, spawns.Count), this);
 
@@ -139,8 +133,6 @@ namespace HackedDesign
                 Debug.Log("Spawn " + i.ToString(), this);
                 EnemyPool.Instance.Spawn(spawns[i]);
             }
-            
-
         }
     }
 }

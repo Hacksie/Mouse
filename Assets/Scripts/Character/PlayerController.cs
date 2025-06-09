@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 
 namespace HackedDesign
 {
+    [RequireComponent(typeof(CharController))]
     public class PlayerController : MonoBehaviour
     {
         [Header("Game Objects")]
@@ -17,7 +18,6 @@ namespace HackedDesign
         [SerializeField] private Targeter targeter = null;
         [SerializeField] private Transform aimPivot = null;
         [SerializeField] private bool crouchToggle = false;
-
 
         private InputAction moveAction;
         private InputAction climbAction;
@@ -40,7 +40,7 @@ namespace HackedDesign
         {
             this.AutoBind(ref character);
             this.AutoBind(ref camo);
-            character.dieActions.AddListener(Die);
+            character.DieActions.AddListener(Die);
             BindInputs();
         }
 
@@ -74,10 +74,7 @@ namespace HackedDesign
             targeter.ShowTarget(Vector3.zero, false, false);
         }
 
-        public void Stop()
-        {
-            character.ExecuteCommand(new StopCommand());
-        }
+        public void Stop() => character.ExecuteCommand(new StopCommand());
 
         public void MenuEvent(InputAction.CallbackContext context)
         {
@@ -102,7 +99,7 @@ namespace HackedDesign
         public void UpdateSitBehaviour()
         {
             //targeter.UpdateInteractors();
-            UpdateAimLine(false);
+            UpdateAimLine();
 
             if(this.attackAction.triggered)
             {
@@ -112,12 +109,12 @@ namespace HackedDesign
 
         public void UpdateIdleBehaviour()
         {
-            float movement = moveAction.ReadValue<float>(); ;
+            float movement = moveAction.ReadValue<float>();
             float climb = climbAction.ReadValue<float>();
 
             Vector3 targetPos = GetTargetingPosition();
             //targeter.UpdateInteractors();
-            UpdateAimLine(crouchToggle || this.crouchAction.IsPressed());
+            UpdateAimLine();
 
             character.ExecuteCommand(new FacingCommand(movement, CalcForward(targetPos)));
             character.ExecuteCommand(new MoveCommand(movement, climb));
@@ -135,8 +132,7 @@ namespace HackedDesign
 
             character.ExecuteCommand(new CrouchCommand(crouchToggle || this.crouchAction.IsPressed()));
 
-            UpdateAimLine(crouchToggle || this.crouchAction.IsPressed());
-
+            UpdateAimLine();
 
             if (character.IsAnimatingAttack) // If we're playing the attacking animation, don't let the player take another action
             {
@@ -169,10 +165,7 @@ namespace HackedDesign
             character.ExecuteCommand(new MoveCommand(movement, climb));
         }
 
-        public void Teleport(Vector3 position)
-        {
-            transform.position = position;
-        }
+        public void Teleport(Vector3 position) => transform.position = position;
 
         private void UpdateCrouchToggle()
         {
@@ -190,16 +183,9 @@ namespace HackedDesign
             }
         }
 
+        public void FixedUpdateBehaviour() => character.Physics();
 
-        public void FixedUpdateBehaviour()
-        {
-            character.Physics();
-        }
-
-        public void LateUpdateBehaviour()
-        {
-            character.Animate();
-        }
+        public void LateUpdateBehaviour() => character.Animate();
 
         private bool IsAiming()
         {
@@ -214,8 +200,7 @@ namespace HackedDesign
             }
         }
 
-        // FIXME: Update for crouched
-        private void UpdateAimLine(bool crouched)
+        private void UpdateAimLine()
         {
 
             if (playerInput.currentControlScheme == "Gamepad")
@@ -236,10 +221,7 @@ namespace HackedDesign
             }
         }
 
-        private Vector3 CalcGamepadDirection(ref Vector2 lookPos)
-        {
-            return lookPos.normalized;
-        }
+        private Vector3 CalcGamepadDirection(ref Vector2 lookPos) => lookPos.normalized;
 
         private Vector3 CalcMouseDirection()
         {

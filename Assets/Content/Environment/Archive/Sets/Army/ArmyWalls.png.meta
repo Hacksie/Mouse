@@ -478,13 +478,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls_16
+      name: OrigElevator
       rect:
         serializedVersion: 2
-        x: 256
+        x: 255
         y: 0
-        width: 16
-        height: 64
+        width: 17
+        height: 36
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -500,13 +500,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls_17
+      name: OrigDoor
       rect:
         serializedVersion: 2
-        x: 272
+        x: 271
         y: 0
-        width: 16
-        height: 64
+        width: 17
+        height: 28
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -566,13 +566,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls_20
+      name: Orig Window
       rect:
         serializedVersion: 2
-        x: 320
-        y: 0
-        width: 16
-        height: 64
+        x: 319
+        y: 15
+        width: 17
+        height: 17
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -689,6 +689,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
+      Orig Window: -1823163316
+      OrigDoor: -481306167
+      OrigElevator: 2088649400
       Walls_0: -3218248262026354849
       Walls_1: -1995512852
       Walls_10: -835218049
@@ -697,12 +700,9 @@ TextureImporter:
       Walls_13: 482287830
       Walls_14: 1440450947
       Walls_15: -1560644061
-      Walls_16: 2088649400
-      Walls_17: -481306167
       Walls_18: 1727976535
       Walls_19: 1469042013
       Walls_2: 751329872
-      Walls_20: -1823163316
       Walls_21: -539677922
       Walls_22: -1854292172
       Walls_23: -633598404

@@ -13,7 +13,6 @@ namespace HackedDesign
 
         public bool IsAlive => true;
 
-
         public CharacterSittingState(Animator animator)
         {
             this.animator = animator;
@@ -21,6 +20,10 @@ namespace HackedDesign
 
         public void Animate(CharacterAnimationContext ctx)
         {
+            if (this.animator == null)
+            {
+                return;
+            }
             this.animator.SetBool(AnimatorParams.Sit, true);
             this.animator.SetBool(AnimatorParams.Grounded, true);
             this.animator.SetBool(AnimatorParams.Dead, false);
@@ -28,6 +31,10 @@ namespace HackedDesign
 
         public void ResetAnimationTriggers()
         {
+            if (this.animator == null)
+            {
+                return;
+            }
             this.animator.ResetTrigger(AnimatorParams.Interact);
             this.animator.ResetTrigger(AnimatorParams.Roll);
             this.animator.ResetTrigger(AnimatorParams.Melee);

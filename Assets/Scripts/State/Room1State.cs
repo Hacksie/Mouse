@@ -33,7 +33,7 @@ namespace HackedDesign
 
         public void Update()
         {
-            this.player.UpdateSitBehaviour();
+            this.player.UpdateIdleBehaviour();
         }
 
         public void FixedUpdate()

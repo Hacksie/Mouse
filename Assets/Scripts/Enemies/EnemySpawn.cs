@@ -1,31 +1,16 @@
 ﻿
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace HackedDesign
 {
     public class EnemySpawn : MonoBehaviour
     {
-        [SerializeField] public float radius = 1f;
-        [SerializeField] public bool air = true;
+        [SerializeField] private List<EnemyType> allowedEnemies = new();
 
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = new Color(1, 0, 0, 0.2f);
-            Gizmos.DrawSphere(transform.position, radius);
-        }
+        public List<EnemyType> AllowedEnemies => this.allowedEnemies;
 
-        public Vector3 GetAirSpawnPosition()
-        {
-            var position = Random.insideUnitCircle * radius;
-            position.y = Mathf.Abs(position.y);
+        public bool CanSpawn(EnemyType enemyType) => allowedEnemies.Contains(enemyType);
 
-            return position;
-        }
-
-        public Vector3 GetGroundSpawnPosition()
-        {
-            var positionX = Random.Range(-radius, radius);
-            return new Vector3(positionX, transform.position.y, 0);
-        }
     }
 }

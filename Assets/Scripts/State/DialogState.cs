@@ -25,10 +25,7 @@ namespace HackedDesign
             this.dialogPresenter.Show();
         }
 
-        public void End()
-        {
-            this.dialogPresenter.Hide();
-        }
+        public void End() => this.dialogPresenter.Hide();
 
         public void Update()
         {

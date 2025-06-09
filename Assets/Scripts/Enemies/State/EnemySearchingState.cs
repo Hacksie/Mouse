@@ -9,18 +9,17 @@ namespace HackedDesign
 {
     public class EnemySearchingState : IEnemyState
     {
-        //private readonly EnemyController enemyController;
-        private readonly AI ai;
+        private readonly IAI ai;
 
         private float reactionStartTime = 0f;
 
 
         private bool sawPlayer = false;
 
-        public EnemySearchingState(AI ai)
+        public EnemySearchingState(IAI ai)
         {
-            //this.enemyController = enemyController;
             this.ai = ai;
+            ai.Character.ExecuteCommand(new WalkCommand(false));
         }
 
         public void UpdateBehaviour(AIContext ctx)
@@ -42,7 +41,6 @@ namespace HackedDesign
                 reactionStartTime = Time.time;
             }
 
-
             if(Time.time >= reactionStartTime + ctx.settings.ReactionTime)
             {
                 if(sawPlayer)
@@ -58,18 +56,20 @@ namespace HackedDesign
                 }
             }
 
-            ai.Character.ExecuteCommand(new FacingCommand(0, ctx.facing));
-            ai.Character.ExecuteCommand(new MoveCommand(0, 0));
+            if (!ctx.settings.Stationary)
+            {
+                float move = 0;
+                if (!ctx.wallInFront && !ctx.dropInFront)
+                {
+                    move = Mathf.Sign((ctx.position - ctx.lastKnownPlayerPosition).x) < 0 ? 1 : -1;
+                }
+
+                ai.Character.ExecuteCommand(new MoveCommand(move, 0));
+            }
         }
 
-        public void Begin()
-        {
-            ai.Icon.Searching();
-        }
+        public void Begin() => ai.Icon.Searching();
 
-        public void End()
-        {
-            ai.Icon.Hide();
-        }
+        public void End() => ai.Icon.Hide();
     }
 }

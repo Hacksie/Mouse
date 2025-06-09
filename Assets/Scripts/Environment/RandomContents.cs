@@ -6,16 +6,16 @@ namespace HackedDesign
 {
     public class RandomContents : MonoBehaviour
     {
-        [SerializeField] private List<GameObject> randomPrefabs = new List<GameObject>();
+        [SerializeField] private List<GameObject> randomPrefabs = new();
 
-        void Awake()
-        {
-            PickPrefab();
-        }
+        void Awake() => PickPrefab();
 
         private void PickPrefab()
         {
-            if (randomPrefabs.Count == 0) return;
+            if (randomPrefabs.Count == 0)
+            {
+                return;
+            }
 
             var idx = Random.Range(0, randomPrefabs.Count);
 

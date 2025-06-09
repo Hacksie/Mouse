@@ -8,7 +8,6 @@ namespace HackedDesign
     {
         [SerializeField] private Animator animator;
         [SerializeField] private float lookaroundTime = 300f;
-        [SerializeField] private float randomFlyingChance = 0.05f;
         [SerializeField] private float flyingDelay = 120f;
         [SerializeField] private float minFlyingSpeedX = 10f;
         [SerializeField] private float maxFlyingSpeedX = 10f;
@@ -20,18 +19,14 @@ namespace HackedDesign
         private float flyingStart = 0;
         private float flyingX = 0;
         private float flyingY = 0;
- 
-        void Awake()
-        {
-            this.AutoBind(ref animator);
-         }
+
+        void Awake() => this.AutoBind(ref animator);
 
         void OnEnable()
         {
             StartAtRandomIdleFrame();
             StartCoroutine(PlayLookaround());
             flyingStart = Time.time;
-
         }
 
         void Update()
@@ -46,11 +41,6 @@ namespace HackedDesign
             {
                 return;
             }
-
-            //if (Random.value < randomFlyingChance)
-            //{
-            //    StartFlyAway();
-            //}
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
@@ -61,23 +51,20 @@ namespace HackedDesign
             }
         }
 
-        private void StartAtRandomIdleFrame()
-        {
-            animator.Play("Idle", -1, Random.value);
-        }
+        private void StartAtRandomIdleFrame() => animator.Play(AnimatorParams.Idle, -1, Random.value);
 
         private IEnumerator PlayLookaround()
         {
             yield return new WaitForSeconds(Random.Range(0, lookaroundTime));
             Debug.Log("Bird Lookaround", this);
-            animator.SetTrigger("Lookaround");
+            animator.SetTrigger(AnimatorParams.LookAround);
             StartCoroutine(PlayLookaround());
         }
 
         private void StartFlyAway()
         {
             Debug.Log("Bird Flyaway", this);
-            animator.SetTrigger("FlyAway");
+            animator.SetTrigger(AnimatorParams.FlyAway);
             this.flying = true;
             this.flyingX = Random.Range(minFlyingSpeedX, maxFlyingSpeedX);
             this.flyingY = Random.Range(minFlyingSpeedY, maxFlyingSpeedY);

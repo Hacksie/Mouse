@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: EnemyCharacterSettings
   m_EditorClassIdentifier: 
   attackRate: 0.33
-  walkSpeed: 4
-  runSpeed: 9
+  walkSpeed: 3
+  runSpeed: 8
   crouchSpeed: 3.5
   movementSmoothing: 0.05
   shootDistance: 20

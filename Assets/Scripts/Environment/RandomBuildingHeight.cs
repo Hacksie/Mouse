@@ -4,8 +4,8 @@ namespace HackedDesign
 {
     public class RandomBuildingHeight : MonoBehaviour
     {
-        [SerializeField] private int minX = -4;
-        [SerializeField] private int maxX = 4;
+        //[SerializeField] private int minX = -4;
+        //[SerializeField] private int maxX = 4;
         [SerializeField] private int minY = -4;
         [SerializeField] private int maxY = 4;
 

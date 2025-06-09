@@ -1,16 +1,18 @@
 ﻿
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace HackedDesign
 {
-    [CreateAssetMenu(fileName = "InfoRepository", menuName = "Mouse/Info/Repository")]
-    public class InfoRepository : ScriptableObject
+    public class InfoRepository : AutoSingleton<InfoRepository>
     {
-        public List<Dialog> dialogs;
+        public List<WeaponSettings> weapons;
         public List<Faction> factions;
         public List<Corp> corps;
         public List<Actor> actors;
+
+        public WeaponSettings GetWeaponByName(string name) => weapons.FirstOrDefault(w => w.name == name);
     }
 
     [CreateAssetMenu(fileName = "Faction", menuName = "Mouse/Info/Faction")]

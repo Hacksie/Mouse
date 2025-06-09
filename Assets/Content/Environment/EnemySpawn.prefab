@@ -44,5 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33844105b86de9c469121f8ad4456a97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 1
-  air: 1
+  allowedEnemies: 0100000002000000

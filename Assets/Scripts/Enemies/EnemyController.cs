@@ -13,15 +13,20 @@ using UnityEngine.TextCore.Text;
 namespace HackedDesign
 {
     [RequireComponent(typeof(CharController))]
-    public class EnemyController : MonoBehaviour, AI
+    public class EnemyController : MonoBehaviour, IAI
     {
-        [SerializeField] public UnityAction hitBehaviour;
-        [SerializeField] public UnityAction deathBehaviour;
+        [Header("Actions")]
+        [SerializeField] private UnityAction hitBehaviour;
+        [SerializeField] private UnityAction deathBehaviour;
+        [Header("Game Objects")]
         [SerializeField] private CharController character;
-        [SerializeField] public LayerMask lineOfSightMask;
-        [SerializeField] private EnemySettings enemySettings;
         [SerializeField] private StatusIcon characterStatusIcon;
         [SerializeField] private Transform aimPivot = null;
+        [Header("Settings")]
+        [SerializeField] private EnemyType enemyType;
+        [SerializeField] private LayerMask lineOfSightMask;
+        [SerializeField] private LayerMask movementMask;
+        [SerializeField] private EnemySettings enemySettings;
 
         private PlayerController player = null;
 
@@ -29,7 +34,7 @@ namespace HackedDesign
 
         public IEnemyState CurrentState
         {
-            get { return currentState; }
+            get => this.currentState;
             set
             {
                 currentState?.End();
@@ -38,9 +43,7 @@ namespace HackedDesign
             }
         }
 
-        public StatusIcon Icon { get => characterStatusIcon; }
-
-        public int Facing { get; set; } = 1;
+        public StatusIcon Icon => characterStatusIcon;
 
         public bool HasSeenPlayer
         {
@@ -49,17 +52,9 @@ namespace HackedDesign
 
         public Vector3 LastKnownPlayerPosition { get; private set; }
 
+        public bool CanSeePlayer { get; private set; }
 
-        public bool CanSeePlayer 
-        {
-            get; private set;
-        }
-
-        public bool CanHearPlayer
-        {
-            get; private set;
-            
-        }
+        public bool CanHearPlayer { get; private set; }
 
         public bool PlayerInFrontOfUs
         {
@@ -74,12 +69,48 @@ namespace HackedDesign
         public EnemySettings EnemySettings { get => enemySettings; private set => enemySettings = value; }
         public CharController Character { get => character; private set => character = value; }
 
+        public bool WallInFront
+        {
+            get
+            {
+                var boxA =  new Vector2(transform.position.x + (transform.right.x * 0.25f), transform.position.y + 0.25f);
+                var boxB = new Vector2(boxA.x + (transform.right.x * 0.5f), boxA.y + (2f - 0.5f));
+#if UNITY_EDITOR
+                if (Application.isPlaying && Application.isEditor)
+                {
+                    Debug.DrawLine(boxA, boxB, Color.green);
+                }
+#endif
+                return Physics2D.OverlapArea(boxA, boxB, movementMask);
+            }
+        }
+
+        public bool DropInFront
+        {
+            get
+            {
+                var boxA = new Vector2(transform.position.x + (transform.right.x * 0.25f), transform.position.y);
+                var boxB = new Vector2(boxA.x + (transform.right.x * 0.5f), boxA.y - 0.25f);
+#if UNITY_EDITOR
+                if (Application.isPlaying && Application.isEditor)
+                {
+                    Debug.DrawLine(boxA, boxB, Color.green);
+                }
+#endif
+                return !Physics2D.OverlapArea(boxA, boxB, movementMask);
+            }
+        }
+
+        public UnityAction HitBehaviour { get => this.hitBehaviour; set => this.hitBehaviour = value; }
+        public UnityAction DeathBehaviour { get => this.deathBehaviour; set => this.deathBehaviour = value; }
+        public EnemyType EnemyType { get => this.enemyType; set => this.enemyType = value; }
+
         void Awake()
         {
             this.AutoBind(ref character);
             this.characterStatusIcon = GetComponentInChildren<StatusIcon>();
-            Character.dieActions.AddListener(Die);
-            Character.hitActions.AddListener(Hit);
+            Character.DieActions.AddListener(Die);
+            Character.HitActions.AddListener(Hit);
             CurrentState = new EnemyIdleState(this);
         }
 
@@ -91,8 +122,6 @@ namespace HackedDesign
 
         private void UpdatePlayerDetect()
         {
-            var vectorToPlayer = this.player.Character.Head.transform.position - aimPivot.position;
-
             CanHearPlayer = this.player.Character.CanHear(aimPivot.position);
 
             var hit = this.player.Character.CanSee(aimPivot.position, EnemySettings.MaxVisualRange, lineOfSightMask);
@@ -108,7 +137,6 @@ namespace HackedDesign
                 CanSeePlayer = false;
             }
         }
-
 
         public void Reset()
         {
@@ -126,56 +154,58 @@ namespace HackedDesign
 
             CurrentState.UpdateBehaviour(new AIContext()
             {
+                name = this.name,
+                position = transform.position,
                 canHearPlayer = CanHearPlayer,
                 canSeePlayer = CanSeePlayer,
                 hasSeenPlayer = HasSeenPlayer,
-                facing = Facing,
+                facing = Mathf.RoundToInt(Character.transform.right.x),
+                //facing = Facing,
                 settings = EnemySettings,
                 playerInFrontOfUs = PlayerInFrontOfUs,
                 lastKnownPlayerPosition = LastKnownPlayerPosition,
+                wallInFront = WallInFront,
+                dropInFront = DropInFront,
             });
 
             Character.Physics();
         }
 
-        public void LateUpdateBehaviour()
-        {
-            Character.Animate();
-        }
+        public void LateUpdateBehaviour() => Character.Animate();
 
-        public float DistanceToPlayer()
-        {
-            return (this.player.transform.position - transform.position).magnitude;
-        }
-
-
+        public float DistanceToPlayer() => (this.player.transform.position - transform.position).magnitude;
 
         private void Hit()
         {
             //Debug.Log("took a hit", this);
         }
 
-        private void Die()
-        {
-            CurrentState = new EnemyDeadState();
-        }
+        private void Die() => CurrentState = new EnemyDeadState();
     }
 
     public struct AIContext
     {
+        public string name;
+        public Vector3 position;
         public bool canSeePlayer;
         public bool canHearPlayer;
         public bool hasSeenPlayer;
         public bool playerInFrontOfUs;
         public int facing;
         public Vector3 lastKnownPlayerPosition;
+        public bool wallInFront;
+        public bool dropInFront;
         public EnemySettings settings;
     }
 
-    public interface AI
+    public interface IAI
     {
         IEnemyState CurrentState { get; set; }
         CharController Character { get; }
         StatusIcon Icon { get; }
+
+        bool WallInFront { get; }
+
+        bool DropInFront { get; }
     }
 }

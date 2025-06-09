@@ -9,7 +9,7 @@ namespace HackedDesign
         //[SerializeField] public Action hitActions;
         //[SerializeField] public CharacterSettings settings;
 
-        private List<OSTask> puTaskList = new List<OSTask>();
+        private List<OSTask> puTaskList = new();
         public List<OSTask> PuTaskList { get => puTaskList; set => puTaskList = value; }
         public string saveName;
         public int maxHealth = 100;
@@ -32,8 +32,7 @@ namespace HackedDesign
 
         public OSTab currentTab;
 
-
-        public Dictionary<int, int> hacks = new Dictionary<int, int>();
+        public Dictionary<int, int> hacks = new();
 
         public void Reset(CharacterSettings settings)
         {
@@ -71,5 +70,4 @@ namespace HackedDesign
         Music,
         Info
     }
-
 }

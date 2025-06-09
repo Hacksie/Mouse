@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.IO;
 
 namespace HackedDesign
 {
@@ -9,10 +10,7 @@ namespace HackedDesign
 
         private float timerStart = 0;
 
-        private void Awake()
-        {
-            this.AutoBind(ref animator);
-        }
+        private void Awake() => this.AutoBind(ref animator);
 
         public bool IsOpen { get; private set; } = false;
 
@@ -31,31 +29,34 @@ namespace HackedDesign
         private void Open()
         {
             IsOpen = true;
-            animator.SetTrigger("open");
-            timerStart = Time.time;
+            if(animator != null)
+            {
+                animator.SetTrigger("open");
+            }
+            this.timerStart = Time.time;
             StartCoroutine(AutoClose());
         }
 
         private void Close()
         {
             IsOpen = false;
-            animator.SetTrigger("close");
+            if (animator != null)
+            {
+                animator.SetTrigger("close");
+            }
         }
 
         private IEnumerator AutoClose()
         {
-            if(Time.time < (timerStart + 5))
+            //yield return new WaitForSeconds(6);
+            while (Time.time < (this.timerStart + 2))
             {
                 yield return null;
             }
 
             Close();
-
         }
 
-        private void OnCollisionStay(Collision collision)
-        {
-            timerStart = Time.time;
-        }
+        private void OnCollisionStay(Collision collision) => this.timerStart = Time.time;
     }
 }

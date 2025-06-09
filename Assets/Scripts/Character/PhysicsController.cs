@@ -27,15 +27,17 @@ namespace HackedDesign
 
         [Header("Settings")]
         [SerializeField] private Transform ledgeDetectionPoint;
-        [SerializeField] public Vector3 ledgeOffsetEnd;
+        [SerializeField] private Vector3 ledgeOffsetEnd;
 
         public bool OnGround { get => onGround; private set => onGround = value; }
         public bool OnWall { get => onWall; private set => onWall = value; }
         public float Friction { get; private set; }
         public Vector2 ContactNormal { get => contactNormal; private set => contactNormal = value; }
         public bool WallJumping { get; private set; }
-        public float VelocityY { get => body.linearVelocityY; }
-        public float LastFallTime { get ; private set; }
+        public float VelocityY => body.linearVelocityY;
+        public float LastFallTime { get; private set; }
+
+        public bool Static => body.bodyType == RigidbodyType2D.Static;
 
         private float fallingTime = 0;
         private float fallingStartY = 0;
@@ -51,7 +53,7 @@ namespace HackedDesign
 
         private bool canGrabLedge = true;
 
-        private float jumpAnticipationTime = 0.10f;
+        private readonly float jumpAnticipationTime = 0.10f;
         private float jumpAnticipationTimer = 0f;
         private bool queuedJump = false;
 
@@ -64,7 +66,6 @@ namespace HackedDesign
             this.AutoBind(ref bodyCollider);
             Physics2D.queriesStartInColliders = true;
         }
-
 
         #region Freeze
         public void Stop() => body.linearVelocity = Vector2.zero;
@@ -90,7 +91,10 @@ namespace HackedDesign
 
         private bool LedgeEdgeStart()
         {
-            if (currentlyClimbingLedge) return false;
+            if (currentlyClimbingLedge)
+            {
+                return false;
+            }
 
             //https://www.youtube.com/watch?v=Kh5n63A-YBw
             return DetectEnvForLedgeGrab() && DetectClearAirForLedgeGrab();
@@ -108,16 +112,18 @@ namespace HackedDesign
             Invoke(nameof(ClearCanGrabLedge), 0.1f); // FIXME:
         }
 
-        private void ClearCanGrabLedge()
-        {
-            canGrabLedge = true;
-        }
+        private void ClearCanGrabLedge() => this.canGrabLedge = true;
 
         #endregion LedgeGrab
 
         #region Movement
         public void FixedMovement(float desiredVelocity, float climbVelocity, bool jumpFlag, bool jumpHoldFlag)
         {
+            if(Static)
+            {
+                return;
+            }
+
             UpdateContacts(desiredVelocity);
             UpdateFalling();
 
@@ -162,7 +168,6 @@ namespace HackedDesign
 
             if (jumpFlag && OnWall && !OnGround)
             {
-
                 if (-wallDirectionX == desiredVelocity)
                 {
                     velocity = new Vector2(settings.wallJumpClimb.x * wallDirectionX, settings.wallJumpClimb.y);
@@ -245,15 +250,9 @@ namespace HackedDesign
             body.linearVelocity = velocity;
         }
 
-        private float ApplyFriction(float desiredVelocity)
-        {
-            return desiredVelocity * Mathf.Clamp01(1.0f - Friction);
-        }
+        private float ApplyFriction(float desiredVelocity) => desiredVelocity * Mathf.Clamp01(1.0f - Friction);
 
-        private Vector2 CalcContactPerp()
-        {
-            return -1 * Vector2.Perpendicular(ContactNormal).normalized;
-        }
+        private Vector2 CalcContactPerp() => -1 * Vector2.Perpendicular(ContactNormal).normalized;
 
         private float DefaultGravityScale() => settings.fly ? 0 : settings.defaultGravityScale;
 
@@ -285,7 +284,6 @@ namespace HackedDesign
 
             Vector2 summedNormal = Vector2.zero;
             int validHitCount = 0;
-
 
             for (int i = 0; i < hits; i++)
             {
@@ -354,7 +352,10 @@ namespace HackedDesign
             if (jumpAnticipationTimer > 0f)
             {
                 jumpAnticipationTimer -= Time.fixedDeltaTime;
-                if (jumpAnticipationTimer > 0f) return currentVelocity; // still anticipating
+                if (jumpAnticipationTimer > 0f)
+                {
+                    return currentVelocity; // still anticipating
+                }
             }
 
             queuedJump = false;

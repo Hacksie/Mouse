@@ -11,9 +11,6 @@ namespace HackedDesign
         /// <param name="mask"></param>
         /// <param name="layer"></param>
         /// <returns>True if the layer mask contains a layer</returns>
-        public static bool Contains(this LayerMask mask, int layer)
-        {
-            return mask == (mask | (1 << layer));
-        }
+        public static bool Contains(this LayerMask mask, int layer) => mask == (mask | (1 << layer));
     }
 }

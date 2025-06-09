@@ -165,7 +165,7 @@ TextureImporter:
         width: 1
         height: 23
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -179,13 +179,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls - Orig_3
+      name: Orig Door
       rect:
         serializedVersion: 2
         x: 160
         y: 4
         width: 15
-        height: 44
+        height: 28
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -215,10 +215,10 @@ TextureImporter:
       entries: []
     nameFileIdTable:
       Building7_0: -8620379434723948954
+      Orig Door: -628491634
       Walls - Orig_0: -641444021
       Walls - Orig_1: -2007517938
       Walls - Orig_2: 975246214
-      Walls - Orig_3: -628491634
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

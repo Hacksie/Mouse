@@ -7,8 +7,8 @@ namespace HackedDesign
     public class CharController : MonoBehaviour, ICharacterExecute
     {
         [Header("Actions")]
-        [SerializeField] public UnityEvent dieActions;
-        [SerializeField] public UnityEvent hitActions;
+        [SerializeField] private UnityEvent dieActions;
+        [SerializeField] private UnityEvent hitActions;
         [Header("Game Objects")]
         [SerializeField] private OperatingSystem operatingSystem;
         [SerializeField] private PhysicsController body = null;
@@ -18,7 +18,6 @@ namespace HackedDesign
         [Header("Settings")]
         [SerializeField] private CharacterSettings settings = null;
 
-
         private bool jumpFlag = false;
         private bool knockback = false;
 
@@ -27,7 +26,7 @@ namespace HackedDesign
 
         public ICharacterState CurrentState
         {
-            get { return currentState; }
+            get => currentState;
             set
             {
                 currentState?.End();
@@ -36,10 +35,10 @@ namespace HackedDesign
             }
         }
 
-        public void SetIdleState() { CurrentState = new CharacterIdleState(this, Animator); }
-        public void SetBattleState() { CurrentState = new CharacterBattleState(this, Animator); }
-        public void SetSitState() { CurrentState = new CharacterSittingState(Animator); }
-        public void SetDeadState() { CurrentState = new CharacterDeadState(Animator); }
+        public void SetIdleState() => CurrentState = new CharacterIdleState(this, Animator);
+        public void SetBattleState() => CurrentState = new CharacterBattleState(this, Animator);
+        public void SetSitState() => CurrentState = new CharacterSittingState(Animator);
+        public void SetDeadState() => CurrentState = new CharacterDeadState(Animator);
         #endregion State
 
         public OperatingSystem OperatingSystem { get => operatingSystem; private set => operatingSystem = value; }
@@ -47,16 +46,16 @@ namespace HackedDesign
         public PhysicsController Body { get => body; set => body = value; }
         public CharacterSettings Settings { get => settings; set => settings = value; }
 
-        public Transform Head { get => head; }
+        public Transform Head => head;
 
-        public bool IsAnimatingAttack { get => Animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"); }
+        public bool IsAnimatingAttack => Animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack");
         public bool IsCrouched { get; private set; }
 
         public bool JumpHoldFlag { get; set; }
         public bool IsWalking { get; private set; } = false;
 
         private bool Aiming { get; set; } = false;
-        private float DesiredMovement { get => InputDirection * Mathf.Max(CurrentState.CurrentSpeed(new CharacterSpeedContext() { crouched = IsCrouched, crouchSpeed = Settings.CrouchSpeed, walk = IsWalking, walkSpeed = Settings.WalkSpeed, runSpeed = Settings.RunSpeed }), 0f); }
+        private float DesiredMovement => InputDirection * Mathf.Max(CurrentState.CurrentSpeed(new CharacterSpeedContext() { crouched = IsCrouched, crouchSpeed = Settings.CrouchSpeed, walk = IsWalking, walkSpeed = Settings.WalkSpeed, runSpeed = Settings.RunSpeed }), 0f);
         //private bool JumpTriggered { get; set; }
         private bool Jump
         {
@@ -100,11 +99,17 @@ namespace HackedDesign
         public void SetJump() => Jump = true;
         public void ClearJump() => Jump = false;
 
+        public void SetWalk(bool flag) => IsWalking = flag;
         public void WalkToggle() => IsWalking = !IsWalking;
         public void SetAim(bool flag) => Aiming = flag;
         public void Knockback(Vector3 direction)
         {
-            knockback = true;
+            if (body == null)
+            {
+                return;
+            }
+
+            this.knockback = true;
             body.Knockback(direction, Game.Instance.GameSettings.KnockbackAmount);
             animator.SetTrigger(AnimatorParams.Knockback);
             //operatingSystem.Momentum = 0;
@@ -136,24 +141,29 @@ namespace HackedDesign
 
         public void Stop()
         {
-            Body.Stop();
+            if (Body != null)
+            {
+                Body.Stop();
+            }
         }
 
         #endregion Commands
-
 
         public void Reset()
         {
             Stop();
             OperatingSystem.Reset(Settings);
-            animator.SetBool(AnimatorParams.Grounded, true);
+            if (Animator != null)
+            {
+                Animator.SetBool(AnimatorParams.Grounded, true);
+            }
             SetCrouch(false);
             UpdateSpriteDirection(1f, 1f);
         }
 
         public void Physics()
         {
-            if (IsDead)
+            if (IsDead || Body == null || Body.Static)
             {
                 return;
             }
@@ -171,7 +181,7 @@ namespace HackedDesign
         {
             //JumpTriggered = false;
 
-            if (Body.currentlyClimbingLedge)
+            if (Body != null && Body.currentlyClimbingLedge && Animator != null)
             {
                 Animator.ResetTrigger(AnimatorParams.Jump);
             }
@@ -180,13 +190,13 @@ namespace HackedDesign
             CurrentState.Animate(new CharacterAnimationContext()
             {
                 crouched = IsCrouched,
-                onGround = Body.OnGround,
-                onWall = Body.OnWall,
-                velocityY = Body.VelocityY,
+                onGround = Body == null || Body.OnGround,
+                onWall = Body != null && Body.OnWall,
+                velocityY = Body == null ? 0 : Body.VelocityY,
                 movementMagnitude = Mathf.Abs(DesiredMovement),
-                rollOnLand = Body.LastFallTime > 1f,
+                rollOnLand = Body != null && Body.LastFallTime > 1f,
                 aiming = Aiming,
-                isClimbingLedge = Body.currentlyClimbingLedge,
+                isClimbingLedge = Body != null && Body.currentlyClimbingLedge,
             });
         }
 
@@ -202,17 +212,17 @@ namespace HackedDesign
         {
             var vectorToPlayer = Head.transform.position - position;
 
-            if (vectorToPlayer.sqrMagnitude > (maxVisualRange * maxVisualRange)) // Don't bother if they're well out of range
-            {
-                return null;
-            }
-
-            return Physics2D.Raycast(position, vectorToPlayer.normalized, Settings.ShootDistance, lineOfSightMask);
+            return vectorToPlayer.sqrMagnitude > (maxVisualRange * maxVisualRange)
+                ? null
+                : Physics2D.Raycast(position, vectorToPlayer.normalized, Settings.ShootDistance, lineOfSightMask);
         }
 
-
         #region Death
-        public bool IsDead { get => !CurrentState.IsAlive; }
+        public bool IsDead => !CurrentState.IsAlive;
+
+        public UnityEvent DieActions { get => this.dieActions; set => this.dieActions = value; }
+        public UnityEvent HitActions { get => this.hitActions; set => this.hitActions = value; }
+
         private void Die()
         {
             if (IsDead)
@@ -220,14 +230,21 @@ namespace HackedDesign
                 return;
             }
 
-            Animator.SetBool(AnimatorParams.Dead, true);
-            Animator.SetTrigger(AnimatorParams.Dying);
+            if(Animator != null)
+            {
+                Animator.SetBool(AnimatorParams.Dead, true);
+                Animator.SetTrigger(AnimatorParams.Dying);
+            }
+
             SetDeadState();
             //state = CharacterState.Dead;
-            Body.Stop();
-            Body.Freeze();
+            if (Body != null)
+            {
+                Body.Stop();
+                Body.Freeze();
+            }
             collider.enabled = false;
-            dieActions?.Invoke();
+            DieActions?.Invoke();
         }
 
         public void Splat()
@@ -242,7 +259,7 @@ namespace HackedDesign
         private IEnumerator EndFall()
         {
             yield return new WaitUntil(() => Animator.GetCurrentAnimatorStateInfo(0).IsTag(AnimatorParams.IsDeadTag));
-            dieActions?.Invoke();
+            DieActions?.Invoke();
         }
         #endregion Death
 
@@ -256,27 +273,25 @@ namespace HackedDesign
             operatingSystem = OperatingSystem,
             settings = Settings,
         });
-             
 
         #endregion Attack
 
         #region Health
 
-        public void TakeDamage(int minAmount, int maxAmount, Vector3 contact)
+        public void TakeDamage(int amount, Vector3 contact)
         {
-            var amount = Random.Range(minAmount, maxAmount);
+            //var amount = Random.Range(minAmount, maxAmount);
             FXPool.Instance.Spawn(FXType.Blood, contact, transform.position - contact);
             OperatingSystem.Health -= amount;
         }
-
-        private void Hit() => hitActions?.Invoke();
+        private void Hit() => HitActions?.Invoke();
 
         #endregion Health
 
         #region Animation
         public void UpdateSpriteDirection(float movementDirection, float facingDirection)
         {
-            if (Body.OnWall)
+            if (Body != null && Body.OnWall)
             {
                 transform.right = Body.ContactNormal.x < 0 ? Vector3.right : Vector3.left;
                 return;
@@ -294,11 +309,9 @@ namespace HackedDesign
 
         #endregion Animation
 
-        public void ExecuteCommand(ICharacterCommand cmd)
-        {
-            cmd.Execute(this);
-        }
-
+        #region Commands
+        public void ExecuteCommand(ICharacterCommand cmd) => cmd.Execute(this);
+        #endregion Commands
     }
 
     public struct CharacterAttackContext
@@ -375,10 +388,17 @@ namespace HackedDesign
         public void Execute(CharController controller) => controller.SetCrouch(state);
     }
 
+    public class WalkCommand : ICharacterCommand
+    {
+        private readonly bool state;
+        public WalkCommand(bool state) => this.state = state;
+
+        public void Execute(CharController controller) => controller.SetWalk(this.state);
+    }
+
     public class WalkToggleCommand: ICharacterCommand
     {
         public void Execute(CharController controller) => controller.WalkToggle();
-
     }
 
     public class RolLCommand: ICharacterCommand
@@ -408,7 +428,6 @@ namespace HackedDesign
         private Vector3 direction;
         public KnockbackCommand(Vector3 direction) => this.direction = direction;
         public void Execute(CharController controller) => controller.Knockback(direction);
-
     }
 
     public class StopCommand : ICharacterCommand

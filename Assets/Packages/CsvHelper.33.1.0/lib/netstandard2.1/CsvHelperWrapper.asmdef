@@ -1,0 +1,12 @@
+{
+  "name": "CsvHelperWrapper",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [
+    "CsvHelper.dll"
+  ],
+  "autoReferenced": true
+}

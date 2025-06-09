@@ -27,5 +27,8 @@ namespace HackedDesign
         public static readonly int LedgeStart = Animator.StringToHash("ledgeStart");
         public static readonly int Punch = Animator.StringToHash("punch");
         public static readonly int Kick = Animator.StringToHash("kick");
+        public static readonly int Idle = Animator.StringToHash("idle");
+        public static readonly int FlyAway = Animator.StringToHash("flyaway");
+        public static readonly int LookAround = Animator.StringToHash("lookaround");
     }
 }

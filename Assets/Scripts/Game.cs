@@ -24,6 +24,10 @@ namespace HackedDesign
         [SerializeField] private MissionPresenter missionPresenter = null;
         [SerializeField] private TargetPresenter targetPresenter = null;
         [SerializeField] private ElevatorPresenter elevatorPresenter = null;
+        [SerializeField] private ActPresenter act0Presenter = null;
+        [SerializeField] private ActPresenter act1Presenter = null;
+        [SerializeField] private ActPresenter act2Presenter = null;
+        [SerializeField] private ActPresenter act3Presenter = null;
 
         [Header("Data")]
         //[SerializeField] private float levelTime = 64;
@@ -83,6 +87,10 @@ namespace HackedDesign
         public void SetPaused() => CurrentState = new PausedState(pausePresenter);
         public void SetOS() => CurrentState = new OSState(osPresenter);
         public void SetElevator() => CurrentState = new ElevatorState(elevatorPresenter);
+        public void SetAct0() => CurrentState = new Act0State(act0Presenter);
+        public void SetAct1() => CurrentState = new Act1State(act1Presenter);
+        public void SetAct2() => CurrentState = new Act2State(act2Presenter);
+        public void SetAct3() => CurrentState = new Act3State(act3Presenter);
         public void SetQuit() => Application.Quit();
 
         #endregion
@@ -96,16 +104,21 @@ namespace HackedDesign
             //DataManager.Instance.NewGame(levels[0], GetRandomCorp(), GetRandomCorpName());
             player.Reset();
 
-            if (gameSettings.SkipIntro)
-            {
-                player.Character.OperatingSystem.CurrentMission = 1; // Random.Range(int.MinValue, int.MaxValue);
-                SetLoading();
-            }
-            else
-            {
-                SetIntermission();
-                //SetRoof1();
-            }
+            player.Character.OperatingSystem.CurrentMission = 1;
+
+            SetAct0();
+
+
+            //if (gameSettings.SkipIntro)
+            //{
+            //     // Random.Range(int.MinValue, int.MaxValue);
+            //    SetLoading();
+            //}
+            //else
+            //{
+            //    //SetIntermission();
+            //    SetRoof1();
+            //}
         }     
 
         private void Initialization()
@@ -126,6 +139,10 @@ namespace HackedDesign
             missionPresenter.Hide();
             targetPresenter.Hide();
             elevatorPresenter.Hide();
+            act0Presenter.Hide();
+            act1Presenter.Hide();
+            act2Presenter.Hide();
+            act3Presenter.Hide();
         }
     }
 }

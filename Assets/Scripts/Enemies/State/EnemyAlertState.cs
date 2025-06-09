@@ -10,16 +10,17 @@ namespace HackedDesign
     public class EnemyAlertState: IEnemyState
     {
         //private readonly EnemyController enemyController;
-        private readonly AI ai;
+        private readonly IAI ai;
         private float startTriggerTime = 0;
 
         private bool sawPlayer = false;
         private float lastSawPlayer = 0;
 
-        public EnemyAlertState(AI ai)
+        public EnemyAlertState(IAI ai)
         {
             //this.enemyController = enemyController;
             this.ai = ai;
+            this.ai.Character.ExecuteCommand(new WalkCommand(false));
         }
 
         public void UpdateBehaviour(AIContext ctx)
@@ -30,17 +31,17 @@ namespace HackedDesign
                 // FIXME: Go to a post game state
             }
 
-            if (ctx.canSeePlayer)
+            if (!ctx.settings.Stationary && ctx.canSeePlayer)
             {
-                ai.Character.ExecuteCommand(new FacingCommand(0, Game.Instance.Player.transform.position.x <= ai.Character.transform.position.x ? -1 : 1));
+                this.ai.Character.ExecuteCommand(new FacingCommand(0, Game.Instance.Player.transform.position.x <= this.ai.Character.transform.position.x ? -1 : 1));
             }
-            ai.Character.ExecuteCommand(new AimCommand(true));
+            this.ai.Character.ExecuteCommand(new AimCommand(true));
 
             var canSeePlayer = ctx.canSeePlayer;
 
             if(!canSeePlayer && lastSawPlayer + ctx.settings.GiveUpTime <= Time.time)
             {
-                ai.CurrentState = new EnemySearchingState(ai);
+                this.ai.CurrentState = new EnemySearchingState(this.ai);
                 return;
             }
 
@@ -54,13 +55,12 @@ namespace HackedDesign
                 sawPlayer = true;
                 if (startTriggerTime + ctx.settings.RecognitionTime <= Time.time)
                 {
-                    Debug.Log("Enemy Attack " + ctx.lastKnownPlayerPosition);
-                    ai.Character.Attack(ctx.lastKnownPlayerPosition, true);
-                    startTriggerTime = Time.time + ai.Character.Settings.AttackRate;
+                    this.ai.Character.Attack(ctx.lastKnownPlayerPosition, true);
+                    startTriggerTime = Time.time + this.ai.Character.Settings.AttackRate;
                 }
             }
 
-            ai.Character.ExecuteCommand(new MoveCommand(0, 0));
+            this.ai.Character.ExecuteCommand(new MoveCommand(0, 0));
         }
 
 
@@ -69,12 +69,9 @@ namespace HackedDesign
             startTriggerTime = Time.time;
             lastSawPlayer = Time.time;
             sawPlayer = true;
-            ai.Icon.Alert();
+            this.ai.Icon.Alert();
         }
 
-        public void End()
-        {
-            ai.Icon.Hide();
-        }
+        public void End() => this.ai.Icon.Hide();
     }
 }

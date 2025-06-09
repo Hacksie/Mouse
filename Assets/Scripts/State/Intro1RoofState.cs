@@ -5,12 +5,13 @@ namespace HackedDesign
 {
     public class Intro1RoofState : IState
     {
-        private PlayerController player;
-        private Level level;
+        private const string DialogId = "intro_roof1";
+        private const string LevelName = "Rooftop";
+        private readonly PlayerController player;
+        private readonly Level level;
 
         public bool PlayerActionAllowed => false;
         public bool Battle => false;
-
 
         public Intro1RoofState(PlayerController player, Level level)
         {
@@ -20,37 +21,21 @@ namespace HackedDesign
 
         public void Begin()
         {
-            this.level.ShowNamedRoom("Rooftop", true, false, this.player);
+            this.player.Character.ExecuteCommand(new FacingCommand(0, 1f));
             this.player.Character.SetSitState();
-            DialogManager.Instance.ShowDialog("IntroRoof1", new UnityEngine.Events.UnityAction(DialogOver));
+            this.level.ShowNamedRoom(LevelName, true, false, this.player);
+            DialogManager.Instance.ShowDialog(DialogId, new UnityEngine.Events.UnityAction(DialogOver));
         }
 
-        private void DialogOver()
-        {
-            Debug.Log("Dialog over");
-            Game.Instance.SetRoom1();
-        }
+        private void DialogOver() => Game.Instance.SetRoom1();
 
-        public void End()
-        {
-            
-        }
+        public void End() => DialogManager.Instance.HideDialog();
 
-        public void Update()
-        {
-            this.player.UpdateSitBehaviour();
-        }
+        public void Update() => this.player.UpdateSitBehaviour();
 
-        public void FixedUpdate()
-        {
-            this.player.FixedUpdateBehaviour();
-        }
+        public void FixedUpdate() => this.player.FixedUpdateBehaviour();
 
-        public void LateUpdate()
-        {
-            this.player.LateUpdateBehaviour();
-            
-        }
+        public void LateUpdate() => this.player.LateUpdateBehaviour();
 
         public void Menu()
         {

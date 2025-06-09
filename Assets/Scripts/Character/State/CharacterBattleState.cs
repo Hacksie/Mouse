@@ -5,6 +5,8 @@ namespace HackedDesign
 {
     public class CharacterBattleState : ICharacterState
     {
+        private const float ShootShakeIntensity = 0.7f;
+        private const float ShootShakeTime = 0.1f;
         private readonly ICharacterExecute characterExecute;
         private readonly Animator animator;
         private float nextAttackTimer = int.MinValue;
@@ -19,6 +21,10 @@ namespace HackedDesign
 
         public void Animate(CharacterAnimationContext ctx)
         {
+            if (this.animator == null)
+            {
+                return;
+            }
             this.animator.SetBool(AnimatorParams.Sit, false);
             this.animator.SetBool(AnimatorParams.Dead, false);
             this.animator.SetBool(AnimatorParams.Crouched, ctx.crouched);
@@ -33,6 +39,10 @@ namespace HackedDesign
 
         public void ResetAnimationTriggers()
         {
+            if (this.animator == null)
+            {
+                return;
+            }
             this.animator.ResetTrigger(AnimatorParams.Interact);
             this.animator.ResetTrigger(AnimatorParams.Roll);
             this.animator.ResetTrigger(AnimatorParams.Melee);
@@ -44,8 +54,6 @@ namespace HackedDesign
         public void Begin()
         {
         }
-
-
         public void End()
         {
         }
@@ -78,8 +86,6 @@ namespace HackedDesign
                             this.animator.SetTrigger(AnimatorParams.Melee);
                             break;
                     }
-
-
                 }
 
                 nextAttackTimer = Time.time + ctx.settings.AttackRate;
@@ -90,7 +96,7 @@ namespace HackedDesign
         {
             if (ctx.isPlayer)
             {
-                CameraShake.Instance.Shake(0.7f, 0.1f);
+                CameraShake.Instance.Shake(ShootShakeIntensity, ShootShakeTime);
             }
 
             if (ctx.target != null)
@@ -108,7 +114,11 @@ namespace HackedDesign
                     }
                     if (result.transform.TryGetComponent<CharController>(out var targetChar))
                     {
-                        targetChar.TakeDamage(ctx.settings.minBulletDamage, ctx.settings.maxBulletDamage, result.point);
+
+                        var weapon = ctx.operatingSystem.CurrentWeapon;
+                        var damage = Random.Range(weapon.minShootDamage, weapon.maxShootDamage + 1);
+                        Debug.Log("Shoot " + targetChar.name + " " + damage);
+                        targetChar.TakeDamage(damage, result.point);
                     }
                     else
                     {
@@ -137,7 +147,9 @@ namespace HackedDesign
 
                 if (result.transform.TryGetComponent<CharController>(out var targetChar))
                 {
-                    targetChar.TakeDamage(ctx.settings.minBulletDamage, ctx.settings.maxBulletDamage, result.ClosestPoint(ctx.pivot));
+                    var weapon = ctx.operatingSystem.CurrentWeapon;
+                    var damage = Random.Range(weapon.minMeleeDamage, weapon.maxMeleeDamage);
+                    targetChar.TakeDamage(damage, result.ClosestPoint(ctx.pivot));
                 }
             }
         }

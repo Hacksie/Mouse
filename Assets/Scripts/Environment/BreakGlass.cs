@@ -27,9 +27,11 @@ namespace HackedDesign
             {
                 return;
             }
-            var x = other.x - transform.position.x;
+            var x = transform.position.x - other.x;
 
-            glassBreakEffect.transform.right = x < 0 ? Vector3.right : Vector3.left;
+            glassBreakEffect.transform.right = x > 0 ? Vector3.right : Vector3.left;
+
+            Debug.Log(glassBreakEffect.transform.right);
 
             glassBreakEffect.Play();
             spriteRenderer.enabled = false;
@@ -40,12 +42,12 @@ namespace HackedDesign
         private void OnCollisionEnter2D(Collision2D collision)
         {
             
-            if(collision.gameObject.CompareTag("Player") && !(playOnce && hasPlayed))
+            if(collision.gameObject.CompareTag(Tags.Player) && !(playOnce && hasPlayed))
             {
                 Debug.Log($" {collision.relativeVelocity.magnitude} {collision.relativeVelocity.x} ");
                 if (collision.relativeVelocity.magnitude > Game.Instance.GameSettings.ShatterMagnitude)
                 {
-                    Break(collision.otherCollider.transform.position);
+                    Break(collision.gameObject.transform.position);
                 }
             }
         }

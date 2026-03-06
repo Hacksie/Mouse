@@ -1,52 +1,84 @@
+#nullable enable
 using HackedDesign.UI;
-using System.Collections;
-using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
 namespace HackedDesign
 {
-    public class Game : AutoSingleton<Game>
+    public interface IGame
+    {
+        IState CurrentState { get; }
+        GameData GameData { get; }
+        GameSettings GameSettings { get; }
+        MissionTimer? LevelTimer { get; }
+        PlayerController Player { get; }
+        int RandomSeed { get; set; }
+        Level Level { get; }
+        EnemyManager EnemyManager { get; }
+
+        bool HackMode { get; set; }
+
+        void NewGame();
+        void SetStateAct0();
+        void SetStateAct1();
+        void SetStateAct2();
+        void SetStateAct3();
+        void SetStateDeath();
+        void SetStateElevator();
+        void SetStateIntermission();
+        void SetStateLevelEnd();
+        void SetStateLoading();
+        void SetStateMainMenu();
+        void SetStateMissionSelect();
+        void SetStateOS();
+        void SetStatePaused();
+        void SetStatePlaying();
+        void SetStateQuit();
+        void SetStateRoof1();
+        void SetStateRoom1();
+    }
+
+    public class Game : AutoSingleton<Game>, IGame
     {
         public const string GameVersion = "1.0";
         [Header("Game")]
-        [SerializeField] private PlayerController player = null;
-        [SerializeField] private Level level = null;
-        [SerializeField] private EnemyPool enemyPool = null;
-        [SerializeField] private LevelTimer levelTimer = null;
+        [field: SerializeField, NotNull] public PlayerController Player { get; private set; } = null!;
+        [field: SerializeField, NotNull] public Level Level { get; private set; } = null!;
+        [field: SerializeField, NotNull] public EnemyManager EnemyManager { get; private set; } = null!;
+        [SerializeField] private MissionTimer? levelTimer = null;
+        [SerializeField] private DialogManager? dialogManager = null;
         [Header("UI")]
-        [SerializeField] private MainMenuPresenter mainMenuPresenter = null;
-        [SerializeField] private DeathPresenter deathPresenter = null;
-        [SerializeField] private PausePresenter pausePresenter = null;
-        [SerializeField] private ActionBarPresenter actionBarPresenter = null;
-        [SerializeField] private OSPresenter osPresenter = null;
-        [SerializeField] private TracePresenter tracePresenter = null;
-        [SerializeField] private DialogPresenter dialogPresenter = null;
-        [SerializeField] private MissionPresenter missionPresenter = null;
-        [SerializeField] private TargetPresenter targetPresenter = null;
-        [SerializeField] private ElevatorPresenter elevatorPresenter = null;
-        [SerializeField] private ActPresenter act0Presenter = null;
-        [SerializeField] private ActPresenter act1Presenter = null;
-        [SerializeField] private ActPresenter act2Presenter = null;
-        [SerializeField] private ActPresenter act3Presenter = null;
+        [SerializeField] private DebugPresenter? debugPresenter = null;
+        [SerializeField] private MainMenuPresenter? mainMenuPresenter = null;
+        [SerializeField] private DeathPresenter? deathPresenter = null;
+        [SerializeField] private PausePresenter? pausePresenter = null;
+        [SerializeField] private ActionBarPresenter? actionBarPresenter = null;
+        [SerializeField] private OSPresenter? osPresenter = null;
+        [SerializeField] private TracePresenter? tracePresenter = null;
+        [SerializeField] private DialogPresenter? dialogPresenter = null;
+        [SerializeField] private MissionPresenter? missionPresenter = null;
+        [SerializeField] private TargetPresenter? targetPresenter = null;
+        [SerializeField] private ElevatorPresenter? elevatorPresenter = null;
+        [SerializeField] private ActPresenter? act0Presenter = null;
+        [SerializeField] private ActPresenter? act1Presenter = null;
+        [SerializeField] private ActPresenter? act2Presenter = null;
+        [SerializeField] private ActPresenter? act3Presenter = null;
 
         [Header("Data")]
-        //[SerializeField] private float levelTime = 64;
-        [SerializeField] private GameData gameData = new();
-        [SerializeField] private int randomSeed = 2;
+        [field: SerializeField, NotNull] public GameData GameData { get; private set; } = new();
 
         [Header("Settings")]
-        [SerializeField] private GameSettings gameSettings = null;
+        [field: SerializeField, NotNull] public GameSettings GameSettings { get; private set; } = null!;
 
         #region Properties
-        public PlayerController Player { get => player; private set => player = value; }
-        public LevelTimer LevelTimer { get => levelTimer; private set => levelTimer = value; }
-        public GameSettings GameSettings { get => gameSettings; set => gameSettings = value; }
-        public int RandomSeed { get => randomSeed; set => randomSeed = value; }
+        public MissionTimer? LevelTimer { get => levelTimer; private set => levelTimer = value; }
+        public int RandomSeed { get; set; } = 2;
+
+        public bool HackMode { get; set; } = false;
         #endregion
 
         #region Unity Messages
         void Start() => Initialization();
-
         private void Update() => CurrentState.Update();
         private void LateUpdate() => CurrentState.LateUpdate();
         private void FixedUpdate() => CurrentState.FixedUpdate();
@@ -54,95 +86,88 @@ namespace HackedDesign
 
         #region State
 
-        private IState currentState;
+        private IState currentState = new EmptyState();
 
         public IState CurrentState
         {
-            get
-            {
-                return this.currentState;
-            }
+            get => this.currentState;
             private set
             {
                 this.currentState?.End();
-                Debug.Log("Start" + value.ToString());
+                Debug.Log($"Entering state: {value.GetType().Name}");
                 this.currentState = value;
                 this.currentState?.Begin();
             }
         }
 
-        public GameData GameData { get => gameData; set => gameData = value; }
-
-
-        public void SetRoof1() => CurrentState = new Intro1RoofState(player, level);
-        public void SetRoom1() => CurrentState = new Room1State(player, level);
-        public void SetDialog() => CurrentState = new DialogState(player, dialogPresenter);
-        public void SetMissionSelect() => CurrentState = new MissionSelectState(missionPresenter);
-        public void SetIntermission() => CurrentState = new IntermissionState(player, level, actionBarPresenter);
-        public void SetPlaying() => CurrentState = new PlayingState(player, level, enemyPool, actionBarPresenter, tracePresenter);
-        public void SetLoading() => CurrentState = new LoadingState(player, level, enemyPool);
-        public void SetMainMenu() => CurrentState = new MainMenuState(mainMenuPresenter);
-        public void SetDeath() => CurrentState = new DeathState(deathPresenter);
-        public void SetLevelEndState() => CurrentState = new LevelEndState(player);
-        public void SetPaused() => CurrentState = new PausedState(pausePresenter);
-        public void SetOS() => CurrentState = new OSState(osPresenter);
-        public void SetElevator() => CurrentState = new ElevatorState(elevatorPresenter);
-        public void SetAct0() => CurrentState = new Act0State(act0Presenter);
-        public void SetAct1() => CurrentState = new Act1State(act1Presenter);
-        public void SetAct2() => CurrentState = new Act2State(act2Presenter);
-        public void SetAct3() => CurrentState = new Act3State(act3Presenter);
-        public void SetQuit() => Application.Quit();
+        public void SetStateRoof1() => CurrentState = new Intro1RoofState(Player, Level, dialogManager);
+        public void SetStateRoom1() => CurrentState = new Room1State(Player, Level, dialogManager);
+        public void SetStateMissionSelect() => CurrentState = new MissionSelectState(missionPresenter);
+        public void SetStateIntermission() => CurrentState = new IntermissionState(this, Player, Level, dialogManager, actionBarPresenter);
+        public void SetStatePlaying() => CurrentState = new PlayingState(this, Player, EnemyManager, LevelTimer, actionBarPresenter, tracePresenter, debugPresenter, GameSettings.Debug);
+        public void SetStateLoading() => CurrentState = new LoadingState(this, Player, Level, EnemyManager);
+        public void SetStateMainMenu() => CurrentState = new MainMenuState(mainMenuPresenter);
+        public void SetStateDeath() => CurrentState = new DeathState(deathPresenter);
+        public void SetStateLevelEnd() => CurrentState = new LevelEndState(Player);
+        public void SetStatePaused() => CurrentState = new PausedState(pausePresenter);
+        public void SetStateOS() => CurrentState = new OSState(this, osPresenter);
+        public void SetStateElevator() => CurrentState = new ElevatorState(this, elevatorPresenter);
+        public void SetStateAct0() => CurrentState = new Act0State(this, act0Presenter, GameSettings.SkipIntro);
+        public void SetStateAct1() => CurrentState = new Act1State(act1Presenter);
+        public void SetStateAct2() => CurrentState = new Act2State(act2Presenter);
+        public void SetStateAct3() => CurrentState = new Act3State(act3Presenter);
+        public void SetStateQuit() => Application.Quit();
 
         #endregion
 
-
-
         public void NewGame()
         {
-            gameData.Reset();
-            
-            //DataManager.Instance.NewGame(levels[0], GetRandomCorp(), GetRandomCorpName());
-            player.Reset();
+            GameData.Reset();
+            Player.Reset();
 
-            player.Character.OperatingSystem.CurrentMission = 1;
+            Player.Character.OperatingSystem.CurrentMission = 1;
 
-            SetAct0();
-
-
-            //if (gameSettings.SkipIntro)
-            //{
-            //     // Random.Range(int.MinValue, int.MaxValue);
-            //    SetLoading();
-            //}
-            //else
-            //{
-            //    //SetIntermission();
-            //    SetRoof1();
-            //}
-        }     
+            SetStateAct0();
+        }
 
         private void Initialization()
         {
+            if (!Player.EnsureNotNull(this, nameof(Player)))
+            {
+                Debug.LogError("Player is null");
+                Application.Quit();
+                return;
+            }
+
+            if(!Player.Character.EnsureNotNull(this, nameof(Player.Character)))
+            {
+                Debug.LogError("Player Character is null");
+                Application.Quit();
+                return;
+            }
+
+            Player.Character.ExecuteCommand(new FreezeCommand());
             HideUI();
-            SetMainMenu();
-        } 
-        
+            SetStateMainMenu();
+        }
+
         private void HideUI()
         {
-            mainMenuPresenter.Hide();
-            deathPresenter.Hide();
-            pausePresenter.Hide();
-            actionBarPresenter.Hide();
-            osPresenter.Hide();
-            tracePresenter.Hide();
-            dialogPresenter.Hide();
-            missionPresenter.Hide();
-            targetPresenter.Hide();
-            elevatorPresenter.Hide();
-            act0Presenter.Hide();
-            act1Presenter.Hide();
-            act2Presenter.Hide();
-            act3Presenter.Hide();
+            debugPresenter.HideIfValid(this, nameof(debugPresenter));
+            mainMenuPresenter.HideIfValid(this, nameof(mainMenuPresenter));
+            deathPresenter.HideIfValid(this, nameof(deathPresenter));
+            pausePresenter.HideIfValid(this, nameof(pausePresenter));
+            actionBarPresenter.HideIfValid(this, nameof(actionBarPresenter));
+            osPresenter.HideIfValid(this, nameof(osPresenter));
+            tracePresenter.HideIfValid(this, nameof(tracePresenter));
+            dialogPresenter.HideIfValid(this, nameof(dialogPresenter));
+            missionPresenter.HideIfValid(this, nameof(missionPresenter));
+            targetPresenter.HideIfValid(this, nameof(targetPresenter));
+            elevatorPresenter.HideIfValid(this, nameof(elevatorPresenter));
+            act0Presenter.HideIfValid(this, nameof(act0Presenter));
+            act1Presenter.HideIfValid(this, nameof(act1Presenter));
+            act2Presenter.HideIfValid(this, nameof(act2Presenter));
+            act3Presenter.HideIfValid(this, nameof(act3Presenter));
         }
     }
 }

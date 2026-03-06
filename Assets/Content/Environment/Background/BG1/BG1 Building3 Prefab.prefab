@@ -39,6 +39,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6712475022309448057
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -57,6 +58,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -78,9 +81,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1332483603
   m_SortingLayer: -5
   m_SortingOrder: 1
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: edf98efaf56d2764d89851dfb739281f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -90,7 +95,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &588395871095160630
 MonoBehaviour:
@@ -104,8 +108,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e72ff7dcbcddd14794e0c9a5d80c064, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minX: -4
-  maxX: 4
   minY: -4
   maxY: 4
 --- !u!114 &1282598442820199570
@@ -123,8 +125,6 @@ MonoBehaviour:
   spriteRenderer: {fileID: 6712475022309448057}
   buildingSprites:
   - {fileID: 21300000, guid: edf98efaf56d2764d89851dfb739281f, type: 3}
-  - {fileID: 21300000, guid: ba7907bf9087be7468a80a6a6f8578bc, type: 3}
-  - {fileID: 21300000, guid: 5ff9c8b511c87104ab82c6ce7800f079, type: 3}
   - {fileID: 21300000, guid: 8f5ce40821eccfc4f901fb52e672afa1, type: 3}
   - {fileID: 21300000, guid: d5fc49a22c55c39438e42cdfbc2637e1, type: 3}
   - {fileID: 21300000, guid: 6ec690657d450cf499008894fb34f2e8, type: 3}
@@ -133,9 +133,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 5a68e977c184c994b8c47f9a2562eb99, type: 3}
   - {fileID: 21300000, guid: dee915f143171d74aa5ec1fa2a95032c, type: 3}
   - {fileID: 21300000, guid: 759836f26825e894faf53d1bac10ce7f, type: 3}
-  - {fileID: 21300000, guid: 3b81701fa3b7883429fbfe40458ff653, type: 3}
-  - {fileID: 21300000, guid: e394d50ed05b7824fbe27861db74aff3, type: 3}
-  - {fileID: 21300000, guid: 2fe972fe67aca534b93ca4015cba1827, type: 3}
   - {fileID: 21300000, guid: a6bae51d13992b644bde85d187b37c60, type: 3}
   - {fileID: 21300000, guid: 8cff355c1b66fe14e852e9d61a0edd33, type: 3}
   - {fileID: 21300000, guid: 6e713fe1b98ce2d47afc1cb4bd2e932d, type: 3}
@@ -145,8 +142,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 013b23931e0201346a2d403d7e3e8967, type: 3}
   - {fileID: 21300000, guid: 196a947181e08734bb72acd39ecc4692, type: 3}
   - {fileID: 21300000, guid: e19cf93148a3dbd479eb33b7a20de3bf, type: 3}
-  - {fileID: 21300000, guid: ac3773c04b64b4a4f86623230f92066d, type: 3}
-  - {fileID: 21300000, guid: 721a8129271c1b942a13948d9f02b41f, type: 3}
 --- !u!1 &6768238267040990639
 GameObject:
   m_ObjectHideFlags: 0
@@ -220,32 +215,40 @@ MonoBehaviour:
     branchId: -1
     isOnMainPath: 0
     localBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
+      m_Center: {x: 8.84375, y: -32, z: 0}
+      m_Extent: {x: 8.84375, y: 32, z: 0.1}
     worldBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    graphNode:
-      Graph: {fileID: 0}
-      TileSets: []
-      NodeType: 0
-      Position: 0
-      Label: 
-      Keys: []
-      Locks: []
-      LockPlacement: 0
-    graphLine:
-      Graph: {fileID: 0}
-      DungeonArchetypes: []
-      Position: 0
-      Length: 0
-      Keys: []
-      Locks: []
-    archetype: {fileID: 0}
+      m_Center: {x: 8.84375, y: -32, z: 0}
+      m_Extent: {x: 8.84375, y: 32, z: 0.1}
+    placementParameters:
+      archetype: {fileID: 0}
+      node:
+        Graph: {fileID: 0}
+        TileSets: []
+        NodeType: 0
+        Position: 0
+        Label: 
+        Keys: []
+        Locks: []
+        LockPlacement: 0
+        StraighteningSettings:
+          OverrideStraightenChance: 0
+          StraightenChance: 0
+          OverrideCanStraightenMainPath: 0
+          CanStraightenMainPath: 1
+          OverrideCanStraightenBranchPaths: 0
+          CanStraightenBranchPaths: 0
+      line:
+        Graph: {fileID: 0}
+        DungeonArchetypes: []
+        Position: 0
+        Length: 0
+        Keys: []
+        Locks: []
     tileSet: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-  fileVersion: 2
+  fileVersion: 3
 --- !u!1001 &4751145858791975383
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -297,6 +300,10 @@ PrefabInstance:
     - target: {fileID: 3178978213470937847, guid: a3fc99aa5497d9d419469710ffc7ba6b, type: 3}
       propertyPath: m_Name
       value: BuildingSeparator
+      objectReference: {fileID: 0}
+    - target: {fileID: 3178978213470937847, guid: a3fc99aa5497d9d419469710ffc7ba6b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -499,6 +506,10 @@ PrefabInstance:
     - target: {fileID: 3178978213470937847, guid: a3fc99aa5497d9d419469710ffc7ba6b, type: 3}
       propertyPath: m_Name
       value: BuildingSeparator (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3178978213470937847, guid: a3fc99aa5497d9d419469710ffc7ba6b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

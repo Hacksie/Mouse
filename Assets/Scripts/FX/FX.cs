@@ -1,39 +1,49 @@
-﻿using System.Collections;
+﻿#nullable enable
+using System.Collections;
 using UnityEngine;
 
 namespace HackedDesign
 {
+    [RequireComponent(typeof(ParticleSystem))]
     public class FX: MonoBehaviour
     {
-        [SerializeField] private float aliveTime = 0.5f;
-        [SerializeField] private Animator animator;
+        [SerializeField] private new ParticleSystem? particleSystem;
+        [SerializeField] private FXType fxType;
 
         void Awake()
         {
-            this.AutoBind(ref animator);
+            this.AutoBind(ref particleSystem);
         }
-        public void Spawn(FXType type)
+        public void Spawn(Vector3 position, Vector3 direction)
         {
-            this.gameObject.SetActive(true);
-            animator.SetFloat("Random", Random.value);
-            animator.SetTrigger(type.ToString());
-            StartCoroutine(Despawn(type));
+            this.transform.position = position;
+            this.transform.localRotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
+
+            if (particleSystem != null)
+            {
+                particleSystem.Play();
+            }
         }
 
-        private IEnumerator Despawn(FXType type)
+        public void Despawn()
         {
-            yield return new WaitForEndOfFrame();
-            animator.ResetTrigger(type.ToString());
-            yield return new WaitForSeconds(aliveTime);
-            FXOver();
+            if (particleSystem.EnsureNotNull(nameof(FX)))
+            {
+                particleSystem.Stop();
+                
+            }
+            this.gameObject.SetActive(false);
         }
 
-        void FXOver() => this.gameObject.SetActive(false);
+        public bool Playing => particleSystem != null && particleSystem.isPlaying;
+
+        public FXType FxType { get => this.fxType; set => this.fxType = value; }
     }
 
     public enum FXType
     {
         Blood,
-        EnvHit
+        EnvHit,
+        Machine
     }
 }

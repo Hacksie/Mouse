@@ -6,12 +6,6 @@ namespace HackedDesign.UI
 {
     public class PausePresenter : AbstractPresenter
     {
-
-        private new void Awake()
-        {
-            base.Awake();
-        }
-
         public override void Repaint()
         {
 
@@ -19,12 +13,12 @@ namespace HackedDesign.UI
 
         public void ContinueClick()
         {
-            Game.Instance.SetPlaying();
+            Game.Instance.SetStatePlaying();
         }
 
         public void ExitClick()
         {
-            Game.Instance.SetMainMenu();
+            Game.Instance.SetStateMainMenu();
         }
     }
 }

@@ -1,9 +1,6 @@
 ﻿using HackedDesign.UI;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 namespace HackedDesign
 {
@@ -16,19 +13,27 @@ namespace HackedDesign
         [SerializeField] private float targetRadius = 20f;
         [SerializeField] private LineRenderer lineRenderer;
         [SerializeField] private Animator animator;
+        [SerializeField] private TargetPresenter targetPresenter;
 
         public UnityAction<Interactable> targetChangedAction;
 
         private Interactable currentTarget;
         private ICharacterExecute charExecute;
 
+        private readonly Vector3[] linePoints = new Vector3[2];
 
-        private void Awake()
+        private readonly RaycastHit2D[] hitBuffer = new RaycastHit2D[1];
+
+        private readonly AimCommand falseAimCommand = new(false);
+        private readonly AimCommand trueAimCommand = new(true);
+
+        void Awake()
         {
             charExecute = GetComponent<ICharacterExecute>();
+            targetChangedAction += targetPresenter.Repaint;
         }
 
-        public bool IsTargetInRange { get => (pivot.position - currentTarget.transform.position).sqrMagnitude < (Game.Instance.GameSettings.InteractDistance * Game.Instance.GameSettings.InteractDistance); }
+        public bool IsTargetInRange => (pivot.position - currentTarget.transform.position).sqrMagnitude < (Game.Instance.GameSettings.InteractDistance * Game.Instance.GameSettings.InteractDistance);
 
         public void TriggerInteract()
         {
@@ -39,10 +44,13 @@ namespace HackedDesign
             }
         }
 
+        public void Reset() => ShowTarget(Vector3.zero, false, false);
 
         public void ShowTarget(Vector3 direction, bool aiming, bool hasPistol)
         {
-            var hit = Physics2D.Linecast(pivot.position, pivot.position + (direction.normalized * targetRadius), targetMask);
+            int hitCount = Physics2D.RaycastNonAlloc(pivot.position,direction.normalized,hitBuffer,targetRadius,targetMask);
+
+            var hit = hitCount > 0 ? hitBuffer[0] : default;
             UpdateHover(hit);
 
             if (aiming)
@@ -52,15 +60,15 @@ namespace HackedDesign
             }
             else
             {
-                lineRenderer.positionCount = 0;
-                AnimateAiming(false);
+                if (lineRenderer.positionCount > 0)
+                {
+                    lineRenderer.positionCount = 0;
+                    AnimateAiming(false);
+                }
             }
         }
 
-        private void AnimateAiming(bool flag)
-        {
-            charExecute.ExecuteCommand(new AimCommand(flag));
-        }
+        private void AnimateAiming(bool flag) => charExecute.ExecuteCommand(flag ? trueAimCommand : falseAimCommand);
 
         private void DrawAimLine(Vector3 direction)
         {
@@ -68,22 +76,27 @@ namespace HackedDesign
 
             var startPosition = pivot.position + (direction.normalized * lineInnerRadius);
 
-            var hit = Physics2D.Linecast(pivot.position, startPosition + (direction.normalized * targetRadius), laserMask);
+            int hitCount = Physics2D.RaycastNonAlloc(pivot.position,direction.normalized,hitBuffer,targetRadius,laserMask);
 
-            lineRenderer.SetPositions(new Vector3[2] { startPosition, hit ? hit.point : startPosition + (direction.normalized * targetRadius) });
+            Vector3 endPosition = hitCount > 0 ? hitBuffer[0].point : startPosition + (direction.normalized * targetRadius);
+
+            lineRenderer.SetPosition(0, startPosition);
+            lineRenderer.SetPosition(1, endPosition);
         }
-
 
         private void UpdateHover(RaycastHit2D hit)
         {
-            if (hit && hit.collider.gameObject.TryGetComponent<Interactable>(out var newTarget))
+            if (hit && hit.collider.TryGetComponent(out Interactable newTarget))
             {
-                ClearHighlightable();
-                currentTarget = newTarget;
-                currentTarget.Target(true);
-                targetChangedAction.Invoke(currentTarget);
+                if (currentTarget != newTarget)
+                {
+                    ClearHighlightable();
+                    currentTarget = newTarget;
+                    currentTarget.Target(true);
+                    targetChangedAction.Invoke(currentTarget);
+                }
             }
-            else
+            else if (currentTarget != null)
             {
                 ClearHighlightable();
             }

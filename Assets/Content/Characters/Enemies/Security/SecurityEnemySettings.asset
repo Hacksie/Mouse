@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 013efa53d65a1cd4d9770b49ee51b3cf, type: 3}
   m_Name: SecurityEnemySettings
   m_EditorClassIdentifier: 
-  reactionTime: 1
+  reactionTime: 0.5
   recognitionTime: 0.4
-  triggerTime: 0.2
   aggressive: 1
+  stationary: 0
   giveUpTime: 10
   maxVisualRange: 30
+  minRoamTime: 1
+  maxRoamTime: 10
+  roamTime: 7

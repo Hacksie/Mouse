@@ -6,12 +6,6 @@ namespace HackedDesign.UI
 {
     public class MainMenuPresenter : AbstractPresenter
     {
-
-        private new void Awake()
-        {
-            base.Awake();
-        }
-
         public override void Repaint()
         {
 
@@ -21,8 +15,8 @@ namespace HackedDesign.UI
         {
             Debug.Log("New Game", this);
             Game.Instance.NewGame();
-            //Game.Instance.SetIntermission();
-            //Game.Instance.SetRoom1();
+            //Game.Instance.SetStateIntermission();
+            //Game.Instance.SetStateRoom1();
         }
 
 
@@ -39,7 +33,7 @@ namespace HackedDesign.UI
         public void ExitClick()
         {
             Debug.Log("Exit Click", this);
-            Game.Instance.SetQuit();
+            Game.Instance.SetStateQuit();
         }
     }
 }

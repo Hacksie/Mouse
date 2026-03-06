@@ -5,56 +5,56 @@ namespace HackedDesign
 {
     public class LoadingState : IState
     {
-        private readonly PlayerController player;
-        private readonly Level level;
-        private readonly EnemyPool enemyPool;
+        private readonly IGame game;
+        private readonly IPlayerController player;
+        private readonly ILevelManager level;
+        private readonly IEnemyManager enemyManager;
 
         public bool PlayerActionAllowed => true;
         public bool Battle => true;
 
-
-        public LoadingState(PlayerController player, Level level, EnemyPool enemyPool)
+        public LoadingState(IGame game, IPlayerController player, ILevelManager level, IEnemyManager enemyManager)
         {
+            this.game = game;
             this.player = player;
             this.level = level;
-            this.enemyPool = enemyPool;
+            this.enemyManager = enemyManager;
         }
 
         public void Begin()
         {
-            this.level.Reset();
-            this.level.Generate(new System.Random().Next()); // player.Character.OperatingSystem.CurrentMission);
-            var spawn = GameObject.FindGameObjectWithTag("Respawn");
+            LoadLevel();
+            player.Reset();
+            player.Teleport(level.GetLevelPlayerSpawnLocation() + Vector3.up);
+            SpawnEnemies(10);
+        }
 
-            if (spawn != null)
+        private void LoadLevel()
+        {
+            level.Reset();
+            level.Generate(Random.Range(1, 1000), 50, 1);
+            level.RainOn();
+        }
+
+        public void SpawnEnemies(int count)
+        {
+            enemyManager.Reset();
+            var spawns = level.GetSpawnLocationsOnLevel();
+
+            Debug.Log("Spawning " + Mathf.Min(count, spawns.Count) + " enemies");
+
+            for (int i = 0; i < Mathf.Min(count, spawns.Count); i++)
             {
-                this.player.transform.position = spawn.transform.position;
+                enemyManager.Spawn(spawns[i]);
             }
-
-            //SpawnEnemies();
-
         }
 
-        private void SpawnEnemies()
-        {
-            //for (int i = 0; i < 5; i++)
-            //{
-            //    var posX = Random.Range(100, 500);
-            //    var pos = new Vector3(posX, 3, 0);
-
-            //    //this.enemyPool.Spawn(pos, Quaternion.identity);
-            //}
-        }
-
-        public void End()
-        {
-        }
+        public void End() => game.LevelTimer.Timer.Start();
 
         public void Update()
         {
-            Game.Instance.LevelTimer.Reset();
-            //Game.Instance.LevelTimer = new StopwatchTimer();
-            Game.Instance.SetPlaying();
+            game.LevelTimer.Reset();
+            game.SetStatePlaying();
         }
 
         public void FixedUpdate()
@@ -68,7 +68,6 @@ namespace HackedDesign
 
         public void Menu()
         {
-            //GameManager.Instance.SetStartMenu();
         }
 
         public void Select()

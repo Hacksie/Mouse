@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 
 namespace HackedDesign
@@ -9,17 +10,21 @@ namespace HackedDesign
         [SerializeField] private Camera mainCamera = null;
         [SerializeField] private float parallaxEffect = 0.0f;
 
+        CinemachinePixelPerfect pixelPerfect;
+
         void Start()
         {
             if (mainCamera == null)
             {
                 mainCamera = Camera.main;
-                Debug.LogWarning("cam not set", this);
+                Debug.LogWarning("Main camera not set", this);
             }
             startPosition = transform.position;
+
+            pixelPerfect = mainCamera.GetComponent<CinemachinePixelPerfect>();
         }
 
-        void Update()
+        void FixedUpdate()
         {
             Vector2 dist = new Vector2(mainCamera.transform.position.x * parallaxEffect, mainCamera.transform.position.y * parallaxEffect);
 

@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Linq;
-using System.Net.NetworkInformation;
+#nullable enable
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -10,12 +8,12 @@ namespace HackedDesign
     public class PhysicsController : MonoBehaviour
     {
         [Header("Game Objects")]
-        [SerializeField] private Rigidbody2D body = null;
-        [SerializeField] private Collider2D ledgeDetect = null;
-        [SerializeField] private Collider2D airDetect = null;
-        [SerializeField] private CapsuleCollider2D bodyCollider = null;
+        [SerializeField] private Rigidbody2D? body = null;
+        [SerializeField] private Collider2D? ledgeDetect = null;
+        [SerializeField] private Collider2D? airDetect = null;
+        [SerializeField] private CapsuleCollider2D? bodyCollider = null;
         [Header("Settings")]
-        [SerializeField] private PhysicsSettings settings = null;
+        [SerializeField] private PhysicsSettings? settings = null;
         [SerializeField] private LayerMask environmentMask;
 
         [Header("Events")]
@@ -27,27 +25,33 @@ namespace HackedDesign
 
         [Header("Settings")]
         [SerializeField] private Transform ledgeDetectionPoint;
-        [SerializeField] private Vector3 ledgeOffsetEnd;
+        [SerializeField] private Vector3 ledgeOffsetEnd = Vector3.zero;
+
+        private bool wallStick = false;
 
         public bool OnGround { get => onGround; private set => onGround = value; }
         public bool OnWall { get => onWall; private set => onWall = value; }
         public float Friction { get; private set; }
         public Vector2 ContactNormal { get => contactNormal; private set => contactNormal = value; }
         public bool WallJumping { get; private set; }
-        public float VelocityY => body.linearVelocityY;
+        public float VelocityY => body != null ? body.linearVelocityY : 0;
         public float LastFallTime { get; private set; }
 
-        public bool Static => body.bodyType == RigidbodyType2D.Static;
+        public bool Flying => false; // settings != null && settings.fly;
+
+        public bool Static => body != null && body.bodyType == RigidbodyType2D.Static;
+
+        public bool CurrentlyClimbingLedge { get => this.currentlyClimbingLedge; set => this.currentlyClimbingLedge = value; }
 
         private float fallingTime = 0;
         private float fallingStartY = 0;
         private int jumpPhase;
         private float coyoteCounter, jumpBufferCounter;
         private bool isJumping;
-        private float wallDirectionX;
+        private float wallDirectionX; // FIXME: We don't need this anymore
         private float movementSpeed = 0;
 
-        public bool currentlyClimbingLedge = false;
+        private bool currentlyClimbingLedge = false;
 
         public bool currentlyKnockback = false;
 
@@ -68,22 +72,40 @@ namespace HackedDesign
         }
 
         #region Freeze
-        public void Stop() => body.linearVelocity = Vector2.zero;
+        public void Stop()
+        {
+            if (body.EnsureNotNull(this, nameof(body)))
+            {
+                body.linearVelocity = Vector2.zero;
+            }
+        }
 
         public void Freeze()
         {
             Stop();
-            body.gravityScale = 0;
+            if (body.EnsureNotNull(this, nameof(body)))
+            {
+                body.gravityScale = 0;
+            }
         }
 
-        public void Unfreeze() => body.gravityScale = DefaultGravityScale();
+        public void Unfreeze()
+        {
+            if (body.EnsureNotNull(this, nameof(body)))
+            {
+                body.gravityScale = DefaultGravityScale();
+            }
+        }
         #endregion
 
         #region Knockback
         public void Knockback(Vector3 direction, float amount)
         {
             Stop();
-            body.AddForce(direction.normalized * amount, ForceMode2D.Impulse);
+            if (body.EnsureNotNull(this, nameof(body)))
+            {
+                body.AddForce(direction.normalized * amount, ForceMode2D.Impulse);
+            }
         }
         #endregion Knockback
 
@@ -91,7 +113,7 @@ namespace HackedDesign
 
         private bool LedgeEdgeStart()
         {
-            if (currentlyClimbingLedge)
+            if (CurrentlyClimbingLedge)
             {
                 return false;
             }
@@ -106,9 +128,12 @@ namespace HackedDesign
 
         void LedgeEdgeEnd()
         {
-            body.transform.position = transform.position + new Vector3(ledgeOffsetEnd.x * Mathf.Sign(transform.right.x), ledgeOffsetEnd.y, 0);
-            body.gravityScale = DefaultGravityScale();
-            currentlyClimbingLedge = false;
+            if (body.EnsureNotNull(this, nameof(body)))
+            {
+                body.transform.position = transform.position + new Vector3(ledgeOffsetEnd.x * Mathf.Sign(transform.right.x), ledgeOffsetEnd.y, 0);
+                Unfreeze();
+            }
+            CurrentlyClimbingLedge = false;
             Invoke(nameof(ClearCanGrabLedge), 0.1f); // FIXME:
         }
 
@@ -117,30 +142,40 @@ namespace HackedDesign
         #endregion LedgeGrab
 
         #region Movement
-        public void FixedMovement(float desiredVelocity, float climbVelocity, bool jumpFlag, bool jumpHoldFlag)
+        public void FixedMovement(float desiredVelocity, float climbVelocity, bool jumpFlag, bool jumpHoldFlag, float momentum)
         {
-            if(Static)
+            wallStick = momentum > 0;
+
+            if (Static || !body.EnsureNotNull(this, nameof(body)))
             {
                 return;
             }
 
             UpdateContacts(desiredVelocity);
+
+            if (Flying)
+            {
+                body.linearVelocity = new Vector2(desiredVelocity, climbVelocity);
+                return;
+            }
+
+
             UpdateFalling();
 
             // If we're going through a currentlyKnockback, do nothing else
             // If we're climbing a ledge, do nothing else
-            if (currentlyKnockback || currentlyClimbingLedge)
+            if (currentlyKnockback || (CurrentlyClimbingLedge && wallStick))
             {
                 return;
             }
 
             // Check if we can start grabbing a ledge
             // This must be before the next check
-            if (canGrabLedge && LedgeEdgeStart())
+            if (wallStick && canGrabLedge && LedgeEdgeStart())
             {
                 canGrabLedge = false;
-                currentlyClimbingLedge = true;
-                // FIXME: I think this is causing popping inside the collider
+                CurrentlyClimbingLedge = true;
+                // FIXME: I think this causes popping inside the collider, so commented out for the moment
                 //body.transform.position = ledgeDetectionPoint.position + new Vector3(ledgeOffsetStart.x * Mathf.Sign(transform.right.x), ledgeOffsetStart.y, 0);
                 body.linearVelocity = Vector3.zero;
                 body.gravityScale = 0;
@@ -156,9 +191,9 @@ namespace HackedDesign
                 velocity = Vector2.zero;
             }
 
-            if (OnWall && !OnGround)
+            if (OnWall && !OnGround && wallStick)
             {
-                velocity.y = climbVelocity * settings.wallClimbSpeed;
+                velocity.y = climbVelocity * (settings != null ? settings.wallClimbSpeed : 0);
             }
 
             if ((OnWall && velocity.x == 0) || OnGround)
@@ -170,19 +205,19 @@ namespace HackedDesign
             {
                 if (-wallDirectionX == desiredVelocity)
                 {
-                    velocity = new Vector2(settings.wallJumpClimb.x * wallDirectionX, settings.wallJumpClimb.y);
+                    velocity = new Vector2((settings != null ? settings.wallJumpClimb.x : 0) * wallDirectionX, (settings != null ? settings.wallJumpClimb.y : 0));
                     WallJumping = true;
                     jumpFlag = false;
                 }
                 else if (desiredVelocity == 0)
                 {
-                    velocity = new Vector2(settings.wallJumpBounce.x * wallDirectionX, settings.wallJumpBounce.y);
+                    velocity = new Vector2((settings != null ? settings.wallJumpBounce.x : 0) * wallDirectionX, (settings != null ? settings.wallJumpBounce.y : 0));
                     WallJumping = true;
                     jumpFlag = false;
                 }
                 else
                 {
-                    velocity = new Vector2(settings.wallJumpLeap.x * wallDirectionX, settings.wallJumpLeap.y);
+                    velocity = new Vector2((settings != null ? settings.wallJumpLeap.x : 0) * wallDirectionX, (settings != null ? settings.wallJumpLeap.y : 0));
                     WallJumping = true;
                     jumpFlag = false;
                 }
@@ -195,7 +230,7 @@ namespace HackedDesign
                 if (!queuedJump)
                 {
                     jumpPhase = 0;
-                    coyoteCounter = settings.coyoteTime;
+                    coyoteCounter = (settings != null ? settings.coyoteTime : 0);
                     isJumping = false;
                 }
             }
@@ -208,7 +243,7 @@ namespace HackedDesign
             {
                 // The jump buffer prevents the player from jumping too soon after jumping once
                 // However, if they let go of the button, then mash it again before it hits 0, we don't want to reset the buffer to the full amount
-                jumpBufferCounter = jumpBufferCounter > 0 ? jumpBufferCounter : settings.jumpBufferTime;
+                jumpBufferCounter = jumpBufferCounter > 0 ? jumpBufferCounter : (settings != null ? settings.jumpBufferTime : 0);
             }
             else if (!jumpFlag && jumpBufferCounter > 0)
             {
@@ -222,11 +257,11 @@ namespace HackedDesign
 
             if (OnWall && !jumpHoldFlag && !DetectClearAirForLedgeGrab())
             {
-                body.gravityScale = 0;
+                velocity.x = 0;
             }
             else if (jumpHoldFlag && body.linearVelocity.y > 0)
             {
-                body.gravityScale = settings.risingGravityScale;
+                body.gravityScale = settings != null ? settings.risingGravityScale : 1;
             }
             else if (body.linearVelocity.y == 0)
             {
@@ -238,12 +273,13 @@ namespace HackedDesign
             }
             else if (!OnWall && (!jumpHoldFlag || body.linearVelocity.y < Mathf.Epsilon))
             {
-                body.gravityScale = settings.fallingGravityScale;
+                body.gravityScale = (settings != null ? settings.fallingGravityScale : 1);
             }
 
-            var acceleration = OnGround ? settings.maxAcceleration : settings.maxAirAcceleration;
+            //var acceleration = OnGround ? settings.maxAcceleration : settings.maxAirAcceleration;
+            //movementSpeed = Mathf.MoveTowards(movementSpeed, desiredVelocity, acceleration * Time.fixedDeltaTime);
 
-            movementSpeed = Mathf.MoveTowards(movementSpeed, desiredVelocity, acceleration * Time.fixedDeltaTime);
+            movementSpeed = desiredVelocity;
 
             velocity.x = OnGround && !OnWall && !jumpFlag ? CalcContactPerp().x * movementSpeed : movementSpeed;
 
@@ -254,11 +290,19 @@ namespace HackedDesign
 
         private Vector2 CalcContactPerp() => -1 * Vector2.Perpendicular(ContactNormal).normalized;
 
-        private float DefaultGravityScale() => settings.fly ? 0 : settings.defaultGravityScale;
+        private float DefaultGravityScale() => (settings != null && settings.fly) ? 0 : (settings != null ? settings.defaultGravityScale : 0);
 
         private void UpdateContacts(float desiredVelocity)
         {
             Friction = 0;
+
+            if(Flying)
+            {
+                ContactNormal = Vector2.zero;
+                OnGround = true;
+                OnWall = false;
+                return;
+            }
 
             Vector2 hitDirection = new Vector2(desiredVelocity, 0).normalized;
             if (hitDirection == Vector2.zero)
@@ -301,8 +345,10 @@ namespace HackedDesign
             }
 
             ContactNormal = validHitCount > 0 ? (summedNormal / validHitCount).normalized : Vector2.zero;
-            OnGround = ContactNormal.y >= 0.5f;
-            OnWall = Mathf.Abs(ContactNormal.x) >= 0.75f;
+            // If we fly, we're always touching the ground for simplicities sake
+            OnGround = settings.fly ? true : ContactNormal.y >= 0.5f;
+            // If we fly, we're never wall climbing for simplicities sake
+            OnWall = wallStick && (settings.fly ? false : Mathf.Abs(ContactNormal.x) >= 0.75f); 
         }
         #endregion Movement
 
@@ -337,7 +383,7 @@ namespace HackedDesign
         #region Jump
         private Vector2 CalcJumpVelocity(Vector2 currentVelocity)
         {
-            if ((coyoteCounter > 0 || (jumpPhase < settings.maxAirJumps && isJumping)) && !queuedJump)
+            if ((coyoteCounter > 0 || (jumpPhase < (settings != null ? settings.maxAirJumps : 0) && isJumping)) && !queuedJump)
             {
                 jumpAnticipationTimer = jumpAnticipationTime;
                 queuedJump = true;
@@ -366,7 +412,7 @@ namespace HackedDesign
 
             jumpBufferCounter = 0;
             coyoteCounter = 0;
-            var jumpSpeed = Mathf.Sqrt(-2f * Physics2D.gravity.y * settings.jumpHeight);
+            var jumpSpeed = Mathf.Sqrt(-2f * Physics2D.gravity.y * (settings != null ? settings.jumpHeight : 0));
             isJumping = true;
 
             if (currentVelocity.y > 0f)
@@ -375,7 +421,7 @@ namespace HackedDesign
             }
             else if (currentVelocity.y < 0f)
             {
-                jumpSpeed += Mathf.Abs(body.linearVelocity.y);
+                jumpSpeed += Mathf.Abs(body != null ? body.linearVelocity.y : 0);
             }
             currentVelocity.y += jumpSpeed;
             jumpAnticipationTimer = 0f;

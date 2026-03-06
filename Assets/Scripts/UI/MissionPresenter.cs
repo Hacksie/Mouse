@@ -14,11 +14,6 @@ namespace HackedDesign.UI
         [SerializeField] RectTransform selectMission;
         [SerializeField] UnityEngine.UI.Button missionButtonPrefab;
 
-        private new void Awake()
-        {
-            base.Awake();
-        }
-
         public override void Repaint()
         {
             var mission = Game.Instance.GameData.CurrentMission;
@@ -32,7 +27,7 @@ namespace HackedDesign.UI
 
         public void SelectClick()
         {
-            Game.Instance.SetIntermission();
+            Game.Instance.SetStateIntermission();
         }
 
         public void RejectClick()
@@ -42,8 +37,8 @@ namespace HackedDesign.UI
 
         public void ContinueClick()
         {
-            Game.Instance.SetLoading();
-            //Game.Instance.SetIntermission();
+            Game.Instance.SetStateLoading();
+            //Game.Instance.SetStateIntermission();
             //Game.Instance.GameData.SelectMission(mission);
         }
     }

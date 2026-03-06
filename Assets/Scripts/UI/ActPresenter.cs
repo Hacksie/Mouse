@@ -9,11 +9,6 @@ namespace HackedDesign.UI
     {
         [HideInInspector] public UnityEvent finishedEvent;
 
-        private new void Awake()
-        {
-            base.Awake();
-        }
-
         public override void Repaint()
         {
 

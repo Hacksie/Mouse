@@ -14,7 +14,7 @@ namespace HackedDesign
         public void HotDogManInteract()
         {
 
-            //Game.Instance.SetIntermission();
+            //Game.Instance.SetStateIntermission();
         }
 
         public void Intro1DialogOver()
@@ -24,7 +24,7 @@ namespace HackedDesign
 
         public void AnarchistInteract()
         {
-            Game.Instance.SetMissionSelect();
+            Game.Instance.SetStateMissionSelect();
         }
     }
 }

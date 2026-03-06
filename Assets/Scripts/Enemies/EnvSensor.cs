@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace HackedDesign
 {
@@ -18,21 +13,10 @@ namespace HackedDesign
             get; private set;
         }
 
-        private void OnCollisionEnter2D(Collision2D collision)
-        {
-            IsTouching = true;
-        }
+        private void OnCollisionEnter2D(Collision2D collision) => IsTouching = true;
 
-        private void OnCollisionStay2D(Collision2D collision)
-        {
-            IsTouching = true;
+        private void OnCollisionStay2D(Collision2D collision) => IsTouching = true;
 
-            
-        }
-
-        private void OnCollisionExit2D(Collision2D collision)
-        {
-            IsTouching = false;
-        }
+        private void OnCollisionExit2D(Collision2D collision) => IsTouching = false;
     }
 }

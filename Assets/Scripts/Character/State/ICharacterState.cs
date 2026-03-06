@@ -17,5 +17,7 @@ namespace HackedDesign
         public float CurrentSpeed(CharacterSpeedContext ctx);
 
         bool IsAlive {  get; }
+
+        bool CanAttack { get; }
     }
 }

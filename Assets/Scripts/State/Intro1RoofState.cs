@@ -1,41 +1,51 @@
 using HackedDesign.UI;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace HackedDesign
 {
     public class Intro1RoofState : IState
     {
         private const string DialogId = "intro_roof1";
-        private const string LevelName = "Rooftop";
-        private readonly PlayerController player;
-        private readonly Level level;
+        //private const string LevelName = "Rooftop";
+        private readonly IPlayerController player;
+        private readonly ILevelManager level;
+        private readonly IDialogManager dialog;
 
-        public bool PlayerActionAllowed => false;
+        public bool PlayerActionAllowed => true;
         public bool Battle => false;
 
-        public Intro1RoofState(PlayerController player, Level level)
+        public Intro1RoofState(IPlayerController player, ILevelManager level, IDialogManager dialog)
         {
             this.player = player;
             this.level = level;
+            this.dialog = dialog;
         }
 
         public void Begin()
         {
-            this.player.Character.ExecuteCommand(new FacingCommand(0, 1f));
-            this.player.Character.SetSitState();
-            this.level.ShowNamedRoom(LevelName, true, false, this.player);
-            DialogManager.Instance.ShowDialog(DialogId, new UnityEngine.Events.UnityAction(DialogOver));
+            level.ShowNamedRoom(NamedLevels.Rooftop, true, false, player);
+            player.Character.ExecuteCommand(new FacingCommand(0, 1f));
+            //player.Character.SetIdleState();
+            player.Character.SetSitState();
+            
+            dialog.ShowDialog(DialogId, new UnityAction(DialogOver));
         }
 
-        private void DialogOver() => Game.Instance.SetRoom1();
+        private void DialogOver()
+        {
+            Debug.Log("Dialog over roof state");
+            Game.Instance.SetStateIntermission();
+            //Game.Instance.SetStateRoom1();
+        }
 
-        public void End() => DialogManager.Instance.HideDialog();
+        public void End() => dialog.HideDialog();
 
-        public void Update() => this.player.UpdateSitBehaviour();
+        public void Update() => player.UpdateSitBehaviour();
 
-        public void FixedUpdate() => this.player.FixedUpdateBehaviour();
+        public void FixedUpdate() => player.FixedUpdateBehaviour();
 
-        public void LateUpdate() => this.player.LateUpdateBehaviour();
+        public void LateUpdate() => player.LateUpdateBehaviour();
 
         public void Menu()
         {

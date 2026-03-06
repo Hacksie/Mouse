@@ -7,12 +7,10 @@ namespace HackedDesign
 {
     public class ElevatorManager: AutoSingleton<ElevatorManager>
     {
+        [SerializeField] private PlayerController player;
         public List<GameObject> elevators;
 
-        public void Refresh()
-        {
-            elevators = GameObject.FindGameObjectsWithTag("Elevator").OrderBy(s => s.transform.position.y).ToList();
-        }
+        public void Refresh() => elevators = GameObject.FindGameObjectsWithTag("Elevator").OrderBy(s => s.transform.position.y).ToList();
 
         public void GoToFloor(int floor)
         {
@@ -26,7 +24,7 @@ namespace HackedDesign
                 return;
             }
 
-            Game.Instance.Player.Teleport(elevators[floor - 1].transform.position);
+            player.Teleport(elevators[floor - 1].transform.position);
         }
     }
 }

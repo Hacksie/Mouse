@@ -16,9 +16,8 @@ namespace HackedDesign.UI
         [SerializeField] private AbstractPresenter musicPanel;
         [SerializeField] private AbstractPresenter infoPanel;
 
-        private new void Awake()
+        void Awake()
         {
-            base.Awake();
             this.AutoBind(ref charPanel);
             this.AutoBind(ref invPanel);
             this.AutoBind(ref shopPanel);

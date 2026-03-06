@@ -37,6 +37,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &315489455703502417
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -55,6 +56,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -76,9 +79,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 981644287
   m_SortingLayer: -4
   m_SortingOrder: 1
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: edf98efaf56d2764d89851dfb739281f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -88,7 +93,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &3301286636184083215
 MonoBehaviour:
@@ -102,8 +106,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e72ff7dcbcddd14794e0c9a5d80c064, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minX: -4
-  maxX: 4
   minY: -4
   maxY: 4
 --- !u!114 &4282444502895818392
@@ -121,8 +123,6 @@ MonoBehaviour:
   spriteRenderer: {fileID: 315489455703502417}
   buildingSprites:
   - {fileID: 21300000, guid: edf98efaf56d2764d89851dfb739281f, type: 3}
-  - {fileID: 21300000, guid: ba7907bf9087be7468a80a6a6f8578bc, type: 3}
-  - {fileID: 21300000, guid: 5ff9c8b511c87104ab82c6ce7800f079, type: 3}
   - {fileID: 21300000, guid: 8f5ce40821eccfc4f901fb52e672afa1, type: 3}
   - {fileID: 21300000, guid: d5fc49a22c55c39438e42cdfbc2637e1, type: 3}
   - {fileID: 21300000, guid: 6ec690657d450cf499008894fb34f2e8, type: 3}
@@ -143,10 +143,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 013b23931e0201346a2d403d7e3e8967, type: 3}
   - {fileID: 21300000, guid: 196a947181e08734bb72acd39ecc4692, type: 3}
   - {fileID: 21300000, guid: e19cf93148a3dbd479eb33b7a20de3bf, type: 3}
-  - {fileID: 21300000, guid: ba7907bf9087be7468a80a6a6f8578bc, type: 3}
-  - {fileID: 21300000, guid: 5ff9c8b511c87104ab82c6ce7800f079, type: 3}
-  - {fileID: 21300000, guid: ac3773c04b64b4a4f86623230f92066d, type: 3}
-  - {fileID: 21300000, guid: 721a8129271c1b942a13948d9f02b41f, type: 3}
 --- !u!1 &8565534015069163225
 GameObject:
   m_ObjectHideFlags: 0
@@ -220,32 +216,40 @@ MonoBehaviour:
     branchId: -1
     isOnMainPath: 0
     localBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
+      m_Center: {x: 8.625, y: -32, z: 0}
+      m_Extent: {x: 15.375, y: 32, z: 0.1}
     worldBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    graphNode:
-      Graph: {fileID: 0}
-      TileSets: []
-      NodeType: 0
-      Position: 0
-      Label: 
-      Keys: []
-      Locks: []
-      LockPlacement: 0
-    graphLine:
-      Graph: {fileID: 0}
-      DungeonArchetypes: []
-      Position: 0
-      Length: 0
-      Keys: []
-      Locks: []
-    archetype: {fileID: 0}
+      m_Center: {x: 8.625, y: -32, z: 0}
+      m_Extent: {x: 15.375, y: 32, z: 0.1}
+    placementParameters:
+      archetype: {fileID: 0}
+      node:
+        Graph: {fileID: 0}
+        TileSets: []
+        NodeType: 0
+        Position: 0
+        Label: 
+        Keys: []
+        Locks: []
+        LockPlacement: 0
+        StraighteningSettings:
+          OverrideStraightenChance: 0
+          StraightenChance: 0
+          OverrideCanStraightenMainPath: 0
+          CanStraightenMainPath: 1
+          OverrideCanStraightenBranchPaths: 0
+          CanStraightenBranchPaths: 0
+      line:
+        Graph: {fileID: 0}
+        DungeonArchetypes: []
+        Position: 0
+        Length: 0
+        Keys: []
+        Locks: []
     tileSet: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-  fileVersion: 2
+  fileVersion: 3
 --- !u!1001 &853463912674105016
 PrefabInstance:
   m_ObjectHideFlags: 0

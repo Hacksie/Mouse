@@ -9,36 +9,36 @@ namespace HackedDesign
         public bool PlayerActionAllowed => false;
         public bool Battle => false;
 
+        private readonly IGame game;
+        private readonly bool skipIntro;
+        private readonly ActPresenter presenter;
 
-        private ActPresenter presenter;
-
-        public Act0State(ActPresenter presenter)
+        public Act0State(IGame game, ActPresenter presenter, bool skipIntro)
         {
+            this.game = game;
+            this.skipIntro = skipIntro;
             this.presenter = presenter;
             this.presenter.finishedEvent.AddListener(Continue);
         }
 
         public void Begin()
         {
-            this.presenter.Show();
+            presenter.Show();
         }
 
         private void Continue()
         {
-            if (Game.Instance.GameSettings.SkipIntro)
+            if (skipIntro)
             {
-                 // Random.Range(int.MinValue, int.MaxValue);
-                Game.Instance.SetLoading();
+                game.SetStateLoading();
             }
             else
             {
-                //SetIntermission();
-                Game.Instance.SetRoof1();
+                game.SetStateRoom1();
             }
-
         }
 
-        public void End() => this.presenter.Hide();
+        public void End() => presenter.Hide();
 
         public void Update() { }
 

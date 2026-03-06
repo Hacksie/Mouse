@@ -10,7 +10,7 @@ namespace HackedDesign
         public bool Battle => false;
 
 
-        private ActPresenter presenter;
+        private readonly ActPresenter presenter;
 
         public Act2State(ActPresenter presenter)
         {
@@ -18,16 +18,13 @@ namespace HackedDesign
             this.presenter.finishedEvent.AddListener(Continue);
         }
 
-        public void Begin()
-        {
-            this.presenter.Show();
-        }
+        public void Begin() => presenter.Show();
 
         private void Continue()
         {
         }
 
-        public void End() => this.presenter.Hide();
+        public void End() => presenter.Hide();
 
         public void Update() { }
 

@@ -13,6 +13,7 @@ namespace HackedDesign
         private readonly Animator animator;
 
         public bool IsAlive => false;
+        public bool CanAttack => false;
 
         public CharacterDeadState(Animator animator)
         {
@@ -36,9 +37,13 @@ namespace HackedDesign
             this.animator.ResetTrigger(AnimatorParams.Interact);
             this.animator.ResetTrigger(AnimatorParams.Roll);
             this.animator.ResetTrigger(AnimatorParams.Melee);
-            this.animator.ResetTrigger(AnimatorParams.BasicAttack);
+            this.animator.ResetTrigger(AnimatorParams.Shoot);
             this.animator.ResetTrigger(AnimatorParams.StrongAttack);
             this.animator.ResetTrigger(AnimatorParams.Jump);
+            this.animator.ResetTrigger(AnimatorParams.MeleeAnticipate);
+            this.animator.ResetTrigger(AnimatorParams.KickAnticipate);
+            this.animator.ResetTrigger(AnimatorParams.PunchAnticipate);
+            this.animator.ResetTrigger(AnimatorParams.ShootAnticipate);
         }
 
         public void Begin()

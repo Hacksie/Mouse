@@ -56,7 +56,6 @@ namespace HackedDesign
         private IEnumerator PlayLookaround()
         {
             yield return new WaitForSeconds(Random.Range(0, lookaroundTime));
-            Debug.Log("Bird Lookaround", this);
             animator.SetTrigger(AnimatorParams.LookAround);
             StartCoroutine(PlayLookaround());
         }

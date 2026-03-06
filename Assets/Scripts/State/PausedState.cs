@@ -5,7 +5,7 @@ namespace HackedDesign
 {
     public class PausedState : IState
     {
-        private IPresenter pauseMenu;
+        private readonly IPresenter pauseMenu;
         
         public bool PlayerActionAllowed => false;
         public bool Battle => false;
@@ -14,17 +14,16 @@ namespace HackedDesign
         public PausedState(IPresenter pauseMenu)
         {
             this.pauseMenu = pauseMenu;     
-            
         }
 
         public void Begin()
         {
-            this.pauseMenu.Show();
+            pauseMenu.Show();
         }
 
         public void End()
         {
-            this.pauseMenu.Hide();
+            pauseMenu.Hide();
         }
 
         public void Update()

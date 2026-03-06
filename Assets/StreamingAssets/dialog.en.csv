@@ -1,5 +1,7 @@
 sequence,speaker,emotion,text
 intro_roof1,Mouse,angry,"It was the night before christmas, and all through the city, not a creature was stirring... except for a Mouse."
+intro_room1,Mouse,Confused,"<color=""#999999"">Your computer flashes with a new messsage. Work.</color>"
+intro_room2,Boss,Glee,"M, work"
 intro_intermission1,Hotdog Vendor,Happy,"Take a seat, friend. You look down on your luck."
 intro_intermission1,Hotdog Vendor,Confused,"Another victim of the corp hegemony?"
 intro_intermission1,Mouse,Blink,"<color=""#999999"">You nod.</color>"

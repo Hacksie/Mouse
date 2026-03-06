@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fly: 0
   defaultGravityScale: 1
-  fallingGravityScale: 3
-  risingGravityScale: 1.7
-  jumpHeight: 4
-  maxAirJumps: 1
+  fallingGravityScale: 2.5
+  risingGravityScale: 2
+  jumpHeight: 7
+  maxAirJumps: 0
   coyoteTime: 0.2
   jumpBufferTime: 0.2
   fallingTimeDeath: 1

@@ -1,10 +1,12 @@
 ﻿using HackedDesign.UI;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace HackedDesign
 {
     public class ElevatorPresenter : AbstractPresenter
     {
+        [SerializeField] public UnityEvent done;
         [SerializeField] private UnityEngine.UI.Button elevatorButtonPrefab;
         [SerializeField] private RectTransform elevatorButtonGroup;
 
@@ -28,10 +30,15 @@ namespace HackedDesign
             }
         }
 
+        public void CloseEvent()
+        {
+            done.Invoke();
+        }
+
         public void ButtonClickEvent(int buttonId)
         {
             ElevatorManager.Instance.GoToFloor(buttonId);
-            Game.Instance.SetPlaying();
+            done.Invoke();
         }
     }
 }

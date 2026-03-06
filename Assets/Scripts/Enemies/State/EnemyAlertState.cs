@@ -10,23 +10,27 @@ namespace HackedDesign
     public class EnemyAlertState: IEnemyState
     {
         //private readonly EnemyController enemyController;
-        private readonly IAI ai;
+        private readonly IAi ai;
         private float startTriggerTime = 0;
 
         private bool sawPlayer = false;
         private float lastSawPlayer = 0;
 
-        public EnemyAlertState(IAI ai)
+        public bool IsAlive => true;
+
+        public EnemyAlertState(IAi ai)
         {
             //this.enemyController = enemyController;
             this.ai = ai;
             this.ai.Character.ExecuteCommand(new WalkCommand(false));
         }
 
-        public void UpdateBehaviour(AIContext ctx)
+        public void UpdateBehaviour(AiContext ctx)
         {
             if(Game.Instance.Player.Character.IsDead)
             {
+                Debug.Log("player is dead");
+                this.ai.CurrentState = new EnemyIdleState(this.ai);
                 return;
                 // FIXME: Go to a post game state
             }
@@ -35,7 +39,8 @@ namespace HackedDesign
             {
                 this.ai.Character.ExecuteCommand(new FacingCommand(0, Game.Instance.Player.transform.position.x <= this.ai.Character.transform.position.x ? -1 : 1));
             }
-            this.ai.Character.ExecuteCommand(new AimCommand(true));
+
+            this.ai.Character.ExecuteCommand(new AimCommand(ctx.bullets > 0));
 
             var canSeePlayer = ctx.canSeePlayer;
 
@@ -53,14 +58,45 @@ namespace HackedDesign
             else if(canSeePlayer)
             {
                 sawPlayer = true;
-                if (startTriggerTime + ctx.settings.RecognitionTime <= Time.time)
+
+                if (ctx.bullets > 0)
                 {
-                    this.ai.Character.Attack(ctx.lastKnownPlayerPosition, true);
-                    startTriggerTime = Time.time + this.ai.Character.Settings.AttackRate;
+
+                    this.ai.Character.ExecuteCommand(new MoveCommand(0, 0)); // We need to stop moving
+                    if (startTriggerTime + ctx.settings.RecognitionTime <= Time.time)
+                    {
+                        this.ai.Character.Attack(ctx.lastKnownPlayerPosition, true);
+                        startTriggerTime = Time.time + this.ai.Character.Settings.AttackRate;
+                    }
+                }
+                else
+                {
+                    // If we're out of bullets, let's try and move toward the player
+                    var distanceToPlayer = this.ai.Character.transform.position - Game.Instance.Player.transform.position;
+
+                    if (distanceToPlayer.magnitude > 1.5f)
+                    {
+                        Vector2 move = ctx.flying ? distanceToPlayer.normalized : new Vector2(distanceToPlayer.x > 0 ? -1 : 1, 0);
+
+                        if (ctx.wallInFront || ctx.dropInFront)
+                        {
+                            Debug.Log("drop");
+                            move = Vector2.zero;
+                        }
+                        ai.Character.ExecuteCommand(new MoveCommand(move.x, move.y));
+                    }
+                    else
+                    {
+
+                        ai.Character.ExecuteCommand(new MoveCommand(0, 0));
+                        if (startTriggerTime + ctx.settings.RecognitionTime <= Time.time)
+                        {
+                            this.ai.Character.Attack(ctx.lastKnownPlayerPosition, false);
+                            startTriggerTime = Time.time + this.ai.Character.Settings.AttackRate;
+                        }
+                    }
                 }
             }
-
-            this.ai.Character.ExecuteCommand(new MoveCommand(0, 0));
         }
 
 

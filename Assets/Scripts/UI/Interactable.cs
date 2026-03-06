@@ -9,7 +9,7 @@ namespace HackedDesign
     public class Interactable : MonoBehaviour
     {
         [SerializeField] private Outlinable outlinable;
-        [SerializeField] private UnityEvent interactAction;
+        [SerializeField] public UnityEvent interactAction;
         [SerializeField] private string label;
 
         private bool interact = false;
@@ -20,9 +20,8 @@ namespace HackedDesign
 
         public string Label { get => label; set => label = value; }
 
-        private void Awake()
+        void Awake()
         {
-
             this.AutoBind(ref outlinable);
             Target(false);
 

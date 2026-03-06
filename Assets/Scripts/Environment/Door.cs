@@ -1,16 +1,24 @@
-﻿using UnityEngine;
+﻿#nullable enable
+using UnityEngine;
 using System.Collections;
-using System.IO;
+using System.Diagnostics.CodeAnalysis;
 
 namespace HackedDesign
 {
+    [RequireComponent(typeof(Interactable))]
     public class Door : MonoBehaviour
     {
-        [SerializeField] private Animator animator;
+        [field: SerializeField, NotNull] private Animator animator;
+        [field: SerializeField, NotNull] private Interactable interactable;
 
         private float timerStart = 0;
 
-        private void Awake() => this.AutoBind(ref animator);
+        void Awake()
+        {
+            this.AutoBind(ref animator);
+            this.AutoBind(ref interactable);
+            interactable.interactAction.AddListener(Trigger);
+        }
 
         public bool IsOpen { get; private set; } = false;
 
@@ -57,6 +65,6 @@ namespace HackedDesign
             Close();
         }
 
-        private void OnCollisionStay(Collision collision) => this.timerStart = Time.time;
+        void OnCollisionStay(Collision collision) => this.timerStart = Time.time;
     }
 }

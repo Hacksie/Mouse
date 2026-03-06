@@ -12,15 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f36592afb11fcd47a75d1fa082b5a30, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
+  debug: 0
   skipIntro: 0
-  startPistol: 1
-  knockbackTime: 0.1
-  knockbackFreezeTime: 0.25
-  knockbackAmount: 10
-  minBasePropGap: 6
-  maxBasePropGap: 10
-  buildingGapChance: 0.66
+  startPistol: 0
+  infiniteMomentum: 0
   fallDeathHeight: 27
   fallDamageHeight: 20
   shatterMagnitude: 10.1
   interactDistance: 2
+  defaultLevelTime: 256

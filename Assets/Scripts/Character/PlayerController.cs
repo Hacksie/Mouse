@@ -1,123 +1,154 @@
+#nullable enable
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 namespace HackedDesign
 {
-    [RequireComponent(typeof(CharController))]
-    public class PlayerController : MonoBehaviour
+    public interface IPlayerController
     {
-        [Header("Game Objects")]
-        [SerializeField] private Camera mainCam;
-        [SerializeField] private PlayerInput playerInput;
-        [SerializeField] private CharController character = null;
-        [SerializeField] private Thermoptic camo = null;
-        [SerializeField] private Targeter targeter = null;
-        [SerializeField] private Transform aimPivot = null;
-        [SerializeField] private bool crouchToggle = false;
+        CharController Character { get; set; }
+        void Stop();
+        void FixedUpdateBehaviour();
+        void LateUpdateBehaviour();
+        void UpdateBattleBehaviour();
+        void UpdateSitBehaviour();
+        void Teleport(Vector3 position);
+        void UpdateIdleBehaviour();
+        void Reset();
+    }
 
-        private InputAction moveAction;
-        private InputAction climbAction;
-        private InputAction jumpAction;
-        private InputAction crouchToggleAction;
-        private InputAction walkToggleAction;
-        private InputAction crouchAction;
-        private InputAction rollAction;
-        private InputAction attackAction;
-        private InputAction menuAction;
-        private InputAction mousePosAction;
-        private InputAction lookPosAction;
-        private InputAction interactAction;
-        private InputAction selectAction;
-        private InputAction aimAction;
+    [RequireComponent(typeof(CharController))]
+    public class PlayerController : MonoBehaviour, IPlayerController
+    {
+        [Header("References")]
+        [field: SerializeField, NotNull] private Game Game { get; set; } = null!;
+        [field: SerializeField, NotNull] private Camera MainCamera { get; set; } = null!;
+        [field: SerializeField, NotNull] private PlayerInput PlayerInput { get; set; } = null!;
+        [field: SerializeField, NotNull] public CharController Character { get; set; } = null!;
+        [field: SerializeField, NotNull] private Targeter Targeter { get; set; } = null!;
+        [field: SerializeField, NotNull] private Transform AimPivot { get; set; } = null!;
 
-        public CharController Character { get => character; set => character = value; }
+        private const float LookMagnitude = 0.1f;
+        private const float DefaultTimeScale = 1f;
+        private const string GamepadControlMethod = "Gamepad";
+
+        private bool crouchToggle = false;
+        private bool timeToggle = false;
+
+        private InputAction? moveAction = null;
+        private InputAction? climbAction = null;
+        private InputAction? jumpAction = null;
+        private InputAction? crouchToggleAction = null;
+        private InputAction? walkToggleAction = null;
+        private InputAction? crouchAction = null;
+        private InputAction? rollAction = null;
+        private InputAction? attackAction = null;
+        private InputAction? menuAction = null;
+        private InputAction? mousePosAction = null;
+        private InputAction? lookPosAction = null;
+        private InputAction? interactAction = null;
+        private InputAction? selectAction = null;
+        private InputAction? hackAction = null;
+        private InputAction? action1Action = null;
 
         void Awake()
         {
-            this.AutoBind(ref character);
-            this.AutoBind(ref camo);
-            character.DieActions.AddListener(Die);
+            Character.Require(nameof(Character));
+            PlayerInput.Require(nameof(PlayerInput));
+            MainCamera.Require(nameof(MainCamera));
+            AimPivot.Require(nameof(AimPivot));
+            Targeter.Require(nameof(Targeter));
+
+            Character.DieActions.AddListener(Die);
+
             BindInputs();
+        }
+
+        void OnDestroy()
+        {
+            selectAction!.performed -= SelectEvent;
+            menuAction!.performed -= MenuEvent;
+            interactAction!.performed -= InteractEvent;
+            action1Action!.performed -= Action1Event;
         }
 
         private void BindInputs()
         {
-            menuAction = playerInput.actions["Menu"];
-            moveAction = playerInput.actions["Move"];
-            climbAction = playerInput.actions["Climb"];
-            jumpAction = playerInput.actions["Jump"];
-            crouchAction = playerInput.actions["Crouch"];
-            crouchToggleAction = playerInput.actions["Crouch Toggle"];
-            walkToggleAction = playerInput.actions["Walk Toggle"];
-            rollAction = playerInput.actions["Roll"];
-            attackAction = playerInput.actions["Attack"];
-            interactAction = playerInput.actions["Interact"];
-            mousePosAction = playerInput.actions["Mouse Position"];
-            lookPosAction = playerInput.actions["Look"];
-            selectAction = playerInput.actions["OperatingSystem"];
-            aimAction = playerInput.actions["Aim"];
+            menuAction = PlayerInput.actions["Menu"];
+            moveAction = PlayerInput.actions["Move"];
+            climbAction = PlayerInput.actions["Climb"];
+            jumpAction = PlayerInput.actions["Jump"];
+            crouchAction = PlayerInput.actions["Crouch"];
+            crouchToggleAction = PlayerInput.actions["Crouch Toggle"];
+            walkToggleAction = PlayerInput.actions["Walk Toggle"];
+            rollAction = PlayerInput.actions["Roll"];
+            attackAction = PlayerInput.actions["Attack"];
+            interactAction = PlayerInput.actions["Interact"];
+            mousePosAction = PlayerInput.actions["Mouse Position"];
+            lookPosAction = PlayerInput.actions["Look"];
+            selectAction = PlayerInput.actions["OperatingSystem"];
+            hackAction = PlayerInput.actions["Hack"];
+            action1Action = PlayerInput.actions["Action 1"];
 
             selectAction.performed += SelectEvent;
             menuAction.performed += MenuEvent;
             interactAction.performed += InteractEvent;
+            action1Action.performed += Action1Event;
         }
 
         void Start() => Reset();
         public void Reset()
         {
             Stop();
-            character.Reset();
-            targeter.ShowTarget(Vector3.zero, false, false);
+            Character.Reset();
+            Targeter.Reset();
+            SetStartingWeapon();
         }
 
-        public void Stop() => character.ExecuteCommand(new StopCommand());
+        public void Stop() => Character!.ExecuteCommand(new StopCommand());
 
-        public void MenuEvent(InputAction.CallbackContext context)
+        public void MenuEvent(InputAction.CallbackContext context) => Game.CurrentState.Menu();
+
+        public void SelectEvent(InputAction.CallbackContext context) => Game.CurrentState.Select();
+
+        public void InteractEvent(InputAction.CallbackContext context) => Targeter.TriggerInteract();
+
+        public void Action1Event(InputAction.CallbackContext context)
         {
-            Debug.Log("Menu Event", this);
-            Game.Instance.CurrentState.Menu();
+            timeToggle = !timeToggle;
+            Time.timeScale = timeToggle ? Character.Settings!.TimeSlowSpeed : DefaultTimeScale;
+            Character.ExecuteCommand(new GhostToggleCommand());
         }
 
-        public void SelectEvent(InputAction.CallbackContext context)
+        public void Die()
         {
-            Debug.Log("Select Event", this);
-            Game.Instance.CurrentState.Select();
+            Targeter.ShowTarget(Vector3.zero, false, false);
+            Game.SetStateDeath();
         }
-
-        public void InteractEvent(InputAction.CallbackContext context)
-        {
-            Debug.Log("Trigger interact", this);
-            targeter.TriggerInteract();
-        }
-
-        public void Die() => Game.Instance.SetDeath();
 
         public void UpdateSitBehaviour()
         {
-            //targeter.UpdateInteractors();
             UpdateAimLine();
 
-            if(this.attackAction.triggered)
+            if (attackAction!.triggered)
             {
-                targeter.TriggerInteract();
+                Targeter.TriggerInteract();
             }
         }
 
         public void UpdateIdleBehaviour()
         {
-            float movement = moveAction.ReadValue<float>();
-            float climb = climbAction.ReadValue<float>();
+            float movement = moveAction!.ReadValue<float>();
+            float climb = climbAction!.ReadValue<float>();
 
             Vector3 targetPos = GetTargetingPosition();
-            //targeter.UpdateInteractors();
-            UpdateAimLine();
+            //UpdateAimLine();
 
-            character.ExecuteCommand(new FacingCommand(movement, CalcForward(targetPos)));
-            character.ExecuteCommand(new MoveCommand(movement, climb));
+            Character.ExecuteCommand(new FacingCommand(movement, CalcForward(targetPos)));
+            Character.ExecuteCommand(new MoveCommand(movement, climb));
         }
 
         public void UpdateBattleBehaviour()
@@ -129,47 +160,62 @@ namespace HackedDesign
 
             UpdateCrouchToggle();
             UpdateWalkToggle();
+            UpdateHackMode();
 
-            character.ExecuteCommand(new CrouchCommand(crouchToggle || this.crouchAction.IsPressed()));
+            Character.ExecuteCommand(new CrouchCommand(crouchToggle || crouchAction!.IsPressed()));
+            Character.OperatingSystem.UpdateBehaviour();
 
             UpdateAimLine();
 
-            if (character.IsAnimatingAttack) // If we're playing the attacking animation, don't let the player take another action
+            if (Character.IsAnimatingAttack) // If we're playing the attacking animation, don't let the player take another action
             {
-                //Debug.Log("Attacking");
+                movement = 0;
+                climb = 0;
+                //Attacking
             }
-            else if (this.attackAction.triggered)
+            else if (attackAction!.triggered)
             {
-                character.Attack(targetPos, IsAiming());
+                movement = 0;
+                climb = 0;
+                //Character.OperatingSystem.momentum = 0;
+                //Character.Attack(targetPos, IsAiming());
+                Character.Attack(targetPos, true);
             }
-            else if (this.rollAction.triggered)
+            else if (rollAction!.triggered)
             {
-                character.ExecuteCommand(new RolLCommand());
+                Character.ExecuteCommand(new RollCommand());
             }
             else
             {
-                movement = moveAction.ReadValue<float>();
-                climb = climbAction.ReadValue<float>();
+                movement = moveAction!.ReadValue<float>();
+                climb = climbAction!.ReadValue<float>();
+                //movement = 1;
+                //climb = 1;
 
-                if (this.jumpAction.triggered)
+                if (jumpAction!.triggered)
                 {
-                    character.ExecuteCommand(new JumpCommand());
+                    Character.ExecuteCommand(new JumpCommand());
                 }
 
-                //character.Jump |= this.jumpAction.triggered;
-                //character.ExecuteCommand(new JumpCommand(this.jumpAction.triggered));
-                character.JumpHoldFlag |= this.jumpAction.IsPressed();
+                Character.JumpHoldFlag |= jumpAction!.IsPressed();
             }
 
-            character.ExecuteCommand(new FacingCommand(movement, CalcForward(targetPos)));
-            character.ExecuteCommand(new MoveCommand(movement, climb));
+            Character.ExecuteCommand(new FacingCommand(movement, CalcForward(targetPos)));
+            Character.ExecuteCommand(new MoveCommand(movement, climb));
+        }
+
+        private void UpdateHackMode()
+        {
+            //Game.Instance.HackMode = hackAction.IsPressed();
         }
 
         public void Teleport(Vector3 position) => transform.position = position;
 
+        private void SetStartingWeapon() => Character.OperatingSystem.SetWeapon(Character.OperatingSystem.GetWeaponSlotByName(Game.Instance.GameSettings.StartPistol ? "357 Magnum" : "Unarmed"));
+
         private void UpdateCrouchToggle()
         {
-            if (this.crouchToggleAction.triggered)
+            if (crouchToggleAction!.triggered)
             {
                 crouchToggle = !crouchToggle;
             }
@@ -177,85 +223,65 @@ namespace HackedDesign
 
         private void UpdateWalkToggle()
         {
-            if (this.walkToggleAction.triggered)
+            if (walkToggleAction!.triggered)
             {
-                character.ExecuteCommand(new WalkToggleCommand());
+                Character.ExecuteCommand(new WalkToggleCommand());
             }
         }
 
-        public void FixedUpdateBehaviour() => character.Physics();
+        public void FixedUpdateBehaviour() => Character.Physics();
 
-        public void LateUpdateBehaviour() => character.Animate();
-
-        private bool IsAiming()
-        {
-            if (playerInput.currentControlScheme == "Gamepad")
-            {
-                var lookPos = lookPosAction.ReadValue<Vector2>();
-                return lookPos.magnitude > 0.1f;
-            }
-            else
-            {
-                return aimAction.IsPressed();
-            }
-        }
+        public void LateUpdateBehaviour() => Character.Animate();
 
         private void UpdateAimLine()
         {
-
-            if (playerInput.currentControlScheme == "Gamepad")
+            if (PlayerInput.currentControlScheme == GamepadControlMethod)
             {
-                var lookPos = lookPosAction.ReadValue<Vector2>();
+                var lookPos = lookPosAction!.ReadValue<Vector2>();
 
                 if (lookPos.magnitude > 0.1f)
                 {
-                    Vector3 direction = CalcGamepadDirection(ref lookPos);
-                    targeter.ShowTarget(direction, true, character.OperatingSystem.HasPistol);
+                    Vector3 direction = GetGamepadLookDirection(ref lookPos);
+                    Targeter.ShowTarget(direction, true, Character.OperatingSystem.CurrentWeapon.weaponType == WeaponType.Gun);
 
+                }
+                else
+                {
+                    Targeter.Reset();
                 }
             }
             else
             {
-                Vector3 direction = CalcMouseDirection();
-                targeter.ShowTarget(direction, IsAiming(), character.OperatingSystem.HasPistol);
+                Vector3 direction = GetMouseLookDirection();
+                Targeter.ShowTarget(direction, true /*IsAiming()*/, Character.OperatingSystem.CurrentWeapon.weaponType == WeaponType.Gun);
             }
         }
 
-        private Vector3 CalcGamepadDirection(ref Vector2 lookPos) => lookPos.normalized;
+        private Vector3 GetGamepadLookDirection(ref Vector2 lookPos) => lookPos.normalized;
 
-        private Vector3 CalcMouseDirection()
+        private Vector3 GetMouseLookDirection() => (CalcMouseWorldPosition() - AimPivot.position).normalized;
+
+        private Vector3 CalcMouseWorldPosition()
         {
-            Vector3 worldPos = CalcMousePosition();
-
-            return (worldPos - aimPivot.position).normalized;
-        }
-
-        private Vector3 CalcMousePosition()
-        {
-            var mousePos = mousePosAction.ReadValue<Vector2>();
-            var worldPos = mainCam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 0));
-            worldPos = new Vector3(worldPos.x, worldPos.y, aimPivot.position.z);
+            var mousePos = mousePosAction!.ReadValue<Vector2>();
+            var worldPos = MainCamera.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 0));
+            worldPos = new Vector3(worldPos.x, worldPos.y, AimPivot.position.z);
             return worldPos;
         }
 
         private Vector3 GetTargetingPosition()
         {
-            Vector3 targetPos;
-            if (playerInput.currentControlScheme == "Gamepad")
+            if (PlayerInput.currentControlScheme == GamepadControlMethod)
             {
-                var look = lookPosAction.ReadValue<Vector2>();
-                targetPos = transform.position + new Vector3(look.x, look.y);
+                var look = lookPosAction!.ReadValue<Vector2>();
+                return transform.position + new Vector3(look.x, look.y);
             }
             else
             {
-                var mousePosScreen = mousePosAction.ReadValue<Vector2>();
-
-                var mousePosScreen3D = new Vector3(mousePosScreen.x, mousePosScreen.y, mainCam.transform.position.z);
-
-                targetPos = mainCam.ScreenToWorldPoint(mousePosScreen3D);
+                var mouseScreen = mousePosAction!.ReadValue<Vector2>();
+                var screenPoint = new Vector3(mouseScreen.x, mouseScreen.y, MainCamera.transform.position.z);
+                return MainCamera.ScreenToWorldPoint(screenPoint);
             }
-
-            return targetPos;
         }
 
         private float CalcForward(Vector3 targetPos) => Mathf.Clamp(targetPos.x - transform.position.x, -1, 1);

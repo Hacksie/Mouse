@@ -1,26 +1,18 @@
+#nullable enable
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;
 
 namespace HackedDesign.UI
 {
-    public interface IPresenter
-    {
-        void Show();
-        void Hide();
-        void Toggle();
-        void Repaint();
-    }
-
     public abstract class AbstractPresenter : MonoBehaviour, IPresenter
     {
-        public void Awake()
-        {
-            //Hide();
-        }
-        
         public virtual void Show()
         {
             if (!gameObject.activeInHierarchy)
             {
+                EventSystem.current.GetComponent<InputSystemUIInputModule>()?.actionsAsset.Disable();
+                EventSystem.current.GetComponent<InputSystemUIInputModule>()?.actionsAsset.Enable();
                 gameObject.SetActive(true);
             }
         }

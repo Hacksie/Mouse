@@ -25,9 +25,9 @@ namespace HackedDesign
         [Header("Wall Jump/Slide")]
         [SerializeField] public bool wallStick = true;
         [SerializeField][Range(0.0f, 5f)] public float wallSlideMaxSpeed = 0.25f;
-        [SerializeField] public Vector2 wallJumpClimb = new Vector2(4f, 12f);
-        [SerializeField] public Vector2 wallJumpBounce = new Vector2(10.7f, 10f);
-        [SerializeField] public Vector2 wallJumpLeap = new Vector2(14f, 12f);
+        [SerializeField] public Vector2 wallJumpClimb = new(4f, 12f);
+        [SerializeField] public Vector2 wallJumpBounce = new(10.7f, 10f);
+        [SerializeField] public Vector2 wallJumpLeap = new(14f, 12f);
 
     }
 }

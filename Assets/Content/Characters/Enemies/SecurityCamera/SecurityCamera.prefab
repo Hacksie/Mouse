@@ -197,7 +197,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   collider: {fileID: 4777490592579643934}
   head: {fileID: 1699118395466528132}
-  settings: {fileID: 11400000, guid: 6eed781316e911742b60fcc85e929dcf, type: 2}
+  settings: {fileID: 11400000, guid: a28c88834bfbf8c4ea931b7c1930452d, type: 2}
 --- !u!114 &2452907679330295500
 MonoBehaviour:
   m_ObjectHideFlags: 0

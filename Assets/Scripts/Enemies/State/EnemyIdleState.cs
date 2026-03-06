@@ -4,13 +4,15 @@ namespace HackedDesign
 {
     public class EnemyIdleState: IEnemyState
     {
-        private readonly IAI ai;
+        private readonly IAi ai;
         private bool isRoaming = false;
         private float startPhaseChange = 0;
 
         private const int MaxPhaseOffset = 10;
 
-        public EnemyIdleState(IAI ai)
+        public bool IsAlive => true;
+
+        public EnemyIdleState(IAi ai)
         {
             this.ai = ai;
             var facing = Random.value < 0.5f ? 1 : -1;
@@ -21,11 +23,11 @@ namespace HackedDesign
             this.startPhaseChange = Time.time + Random.Range(0, MaxPhaseOffset); 
         }
 
-        public void UpdateBehaviour(AIContext ctx)
+        public void UpdateBehaviour(AiContext ctx)
         {
             this.ai.Character.ExecuteCommand(new AimCommand(false));
 
-            if (ctx.canSeePlayer && (ctx.canHearPlayer || ctx.playerInFrontOfUs))
+            if (ctx.hasSeenDeadEnemies || (ctx.canSeePlayer && (ctx.canHearPlayer || ctx.playerInFrontOfUs)))
             {
                 this.ai.CurrentState = new EnemySearchingState(this.ai);
                 return;
@@ -57,6 +59,11 @@ namespace HackedDesign
             }
             this.ai.Character.ExecuteCommand(new MoveCommand(move, 0));
         }
+
+        //private bool HasSeenDeadEnemies(Vector3 position)
+        //{
+        //    var hits = Physics2D.OverlapCircleAll(position, 5f);
+        //}
 
         public void Begin()
         {

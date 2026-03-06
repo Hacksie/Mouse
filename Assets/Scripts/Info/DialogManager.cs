@@ -15,7 +15,18 @@ using UnityEngine.Networking;
 
 namespace HackedDesign
 {
-    public class DialogManager: AutoSingleton<DialogManager>
+    public interface IDialogManager
+    {
+        List<DialogLine> CurrentDialog { get; set; }
+
+        Sprite GetSpeakerSprite(DialogLine page);
+        Sprite GetSpeakerSprite(string name, string emotion);
+        void HideDialog();
+        void ShowDialog(string name);
+        void ShowDialog(string name, UnityAction dialogOverAction);
+    }
+
+    public class DialogManager: AutoSingleton<DialogManager>, IDialogManager
     {
         [SerializeField] private DialogPresenter presenter;
         [SerializeField] private List<Speaker> speakers;

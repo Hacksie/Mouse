@@ -1,67 +1,63 @@
 using HackedDesign.UI;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace HackedDesign
 {
     public class IntermissionState : IState
     {
-        private readonly PlayerController player;
-        private readonly Level level;
+        private readonly IGame game;
+        private readonly IPlayerController player;
+        private readonly ILevelManager level;
         private readonly IPresenter actionPresenter;
+        private readonly IDialogManager dialog;
 
         public bool PlayerActionAllowed => true;
         public bool Battle => false;
 
 
-        public IntermissionState(PlayerController player, Level level, IPresenter actionPresenter)
+        public IntermissionState(IGame game, IPlayerController player, ILevelManager level, IDialogManager dialog, IPresenter actionPresenter)
         {
+            this.game = game;
             this.player = player;
             this.level = level;
+            this.dialog = dialog;
             this.actionPresenter = actionPresenter;
         }
 
         public void Begin()
         {
             
-            this.level.Reset();
-            this.level.ShowNamedRoom("Hotdog Stand", false, true, this.player);
-            this.player.Character.ExecuteCommand(new FacingCommand(0, 1f));
-            this.player.Character.SetSitState();
+            level.Reset();
+            level.ShowNamedRoom("Hotdog Stand", false, true, player);
+            player.Character.ExecuteCommand(new FacingCommand(0, 1f));
+            player.Character.SetSitState();
 
-            DialogManager.Instance.ShowDialog("intro_intermission1", new UnityEngine.Events.UnityAction(Intro1Over));
+            dialog.ShowDialog("intro_intermission1", new UnityAction(Intro1Over));
         }
 
         public void Intro1Over()
         {
             Debug.Log("Intro1 over");
 
-            DialogManager.Instance.ShowDialog("intro_intermission2", new UnityEngine.Events.UnityAction(Intro2Over));
+            dialog.ShowDialog("intro_intermission2", new UnityAction(Intro2Over));
         }
 
-        public void Intro2Over()
-        {
-            Game.Instance.SetMissionSelect();
-        }
+        public void Intro2Over() => game.SetStateMissionSelect();
 
 
-        public void End()
-        {
-            this.actionPresenter.Hide();
-        }
+        public void End() => actionPresenter.Hide();
 
-        public void Update()
-        {
-            this.player.UpdateSitBehaviour();
-        }
+        public void Update() => player.UpdateSitBehaviour();
 
         public void FixedUpdate()
         {
-            this.player.FixedUpdateBehaviour();
+            player.FixedUpdateBehaviour();
         }
 
         public void LateUpdate()
         {
-            this.player.LateUpdateBehaviour();
+            player.LateUpdateBehaviour();
             
         }
 

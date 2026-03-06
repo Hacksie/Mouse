@@ -22,7 +22,7 @@ namespace HackedDesign.Editor
                 }
                 else
                 {
-                    Debug.LogWarning("User canceled scene save. Play mode aborted.");
+                    Debug.LogWarning("User cancelled scene save. Play mode aborted.");
                     EditorApplication.isPlaying = false;
                 }
             }

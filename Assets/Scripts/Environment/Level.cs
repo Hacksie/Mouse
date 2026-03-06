@@ -1,13 +1,24 @@
 
 using DunGen;
-using log4net.Core;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 namespace HackedDesign
 {
-    public class Level : MonoBehaviour
+    public interface ILevelManager
+    {
+        void Generate(int level, int length, int difficulty);
+        Vector3 GetLevelPlayerSpawnLocation();
+        List<EnemySpawn> GetSpawnLocationsOnLevel();
+        List<EnemySpawn> GetSpawnLocationsOnLevel(EnemyType type);
+
+        void RainOn();
+        void RainOff();
+        void Reset();
+        void ShowNamedRoom(string name, bool cityBg, bool rain, IPlayerController player);
+    }
+    public class Level : AutoSingleton<Level>, ILevelManager
     {
         [Header("Environment")]
         [SerializeField] Transform sky;
@@ -20,53 +31,88 @@ namespace HackedDesign
         [SerializeField] List<Transform> namedRooms;
         [SerializeField] List<GameObject> namedRoomPrefabs;
         [SerializeField] GameObject levelStartPrefab;
+        [SerializeField] List<GameObject> props;
+
+        [Header("Background")]
+        [SerializeField] List<GameObject> bg1Prefabs = new List<GameObject>();
+        [SerializeField] Transform bg1Parent;
+        [SerializeField] List<GameObject> bg2Prefabs = new List<GameObject>();
+        [SerializeField] Transform bg2Parent;
+        [SerializeField] List<GameObject> bg3Prefabs = new List<GameObject>();
+        [SerializeField] Transform bg3Parent;
+
+        [Header("Buildings")]
+        [SerializeField] Transform parent;
+        [SerializeField] Transform propsParent;
+        [SerializeField] List<GameObject> startBuildings = new List<GameObject>();
+        [SerializeField] List<GameObject> midBuildings = new List<GameObject>();
+        [SerializeField] List<GameObject> endBuildings = new List<GameObject>();
+        [Header("Settings")]
+        [SerializeField] int propCount = 50;
 
         private GameObject namedRoom;
         private GameObject levelStart;
 
+        public bool LevelComplete { get; set; }
+
         void Start()
         {
             Reset();
-            runtimeDungeon.Generator.ShouldRandomizeSeed = false;
-            backgroundLevels.ForEach(bg => bg.Generator.ShouldRandomizeSeed = false);
+            //runtimeDungeon.Generator.ShouldRandomizeSeed = false;
+            //backgroundLevels.ForEach(bg => bg.Generator.ShouldRandomizeSeed = false);
         }
 
         public void Reset()
         {
+            LevelComplete = false;
             if (this.namedRoom)
             {
                 this.namedRoom.SetActive(false);
                 Destroy(this.namedRoom);
             }
-            
-            backgroundLevels.ForEach(x => x.Generator.Clear(true));
+
+            if (this.levelStart != null)
+            {
+                this.levelStart.SetActive(false);
+                Destroy(this.levelStart);
+            }
+
+            //backgroundLevels.ForEach(x => x.Generator.Clear(true));
 
             runtimeDungeon.Generator.Clear(true);
+
+            foreach (Transform child in parent)
+            {
+                child.gameObject.SetActive(false);
+                Destroy(child.gameObject);
+            }
         }
 
         public void RainOff() => this.rain.gameObject.SetActive(false);
-
         public void RainOn() => this.rain.gameObject.SetActive(true);
-        public void ShowNamedRoom(string name, bool cityBg, bool rain, PlayerController player)
+        public void ShowNamedRoom(string name, bool cityBg, bool rain, IPlayerController player)
         {
             Reset();
             Random.seed = 1;
 
             if (cityBg)
             {
-                backgroundLevels.ForEach(bg =>
-                {
-                    try
-                    {
-                        bg.Generator.Seed = 50;
-                        bg.Generate();
-                    }
-                    catch
-                    {
-                        Debug.LogWarning("Failed to generate bg level");
-                    }
-                }
-                );
+                SpawnBG1();
+                SpawnBG2();
+                SpawnBG3();
+                //backgroundLevels.ForEach(bg =>
+                //{
+                //    try
+                //    {
+                //        bg.Generator.Seed = 50;
+                //        bg.Generate();
+                //    }
+                //    catch
+                //    {
+                //        Debug.LogWarning("Failed to generate bg level");
+                //    }
+                //}
+                //);
             }
 
             var room = namedRoomPrefabs.First(x => x.name == name);
@@ -82,57 +128,115 @@ namespace HackedDesign
         }
 
         // FIXME: This should be separated into seed and level
-        public void Generate(int level)
+        public void Generate(int level, int length, int difficulty)
         {
             Random.seed = level;
-            backgroundLevels.ForEach(bg => {
-                try
-                {
-                    bg.Generator.Seed = level;
-                    bg.Generate();
-                }
-                catch 
-                {
-                    Debug.LogWarning("Failed to generate bg level");
-                }
-            });
 
-            runtimeDungeon.Generator.Root = runtimeDungeon.gameObject;
-            runtimeDungeon.Generator.Seed = level;
-            runtimeDungeon.Generator.Generate();
+            SpawnBG1();
+            SpawnBG2();
+            SpawnBG3();
 
-            this.levelStart = Instantiate(levelStartPrefab , Vector3.zero, Quaternion.identity, this.transform);
+            //backgroundLevels.ForEach(bg =>
+            //{
+            //    try
+            //    {
+            //        bg.Generator.Seed = level;
+            //        bg.Generate();
+            //    }
+            //    catch
+            //    {
+            //        Debug.LogWarning("Failed to generate bg level");
+            //    }
+            //});
+
+            var buildingX = SpawnBuilding(startBuildings[Random.Range(0, startBuildings.Count)], 0, difficulty);
+
+            for (int i = 1; i <= length; i++)
+            {
+                buildingX = SpawnBuilding(midBuildings[Random.Range(0, midBuildings.Count)], buildingX, difficulty);
+            }
+
+            SpawnBuilding(endBuildings[Random.Range(0, endBuildings.Count)], buildingX, difficulty);
+
+            SpawnProps(propCount);
 
             ElevatorManager.Instance.Refresh();
-            SpawnEnemies(6);
+        }
 
-            //Debug.Log("Seed:" + level);
+        private void SpawnBG1() => SpawnBG(bg1Prefabs, bg1Parent);
 
-            //var random = new System.Random(level);
+        private void SpawnBG2() => SpawnBG(bg2Prefabs, bg2Parent);
 
-            //var spawners = FindObjectsByType<LevelSpawner>(FindObjectsSortMode.InstanceID);
-            //foreach (var spawner in spawners)
-            //{
-            //    spawner.SpawnBackgroundProps(random, level);
-            //    spawner.SpawnProps(random, level);
-            //}
+        private void SpawnBG3() => SpawnBG(bg3Prefabs, bg3Parent);
+
+        private void SpawnBG(List<GameObject> prefabs, Transform parent)
+        {
+            float xPosition = 0;
+            for (int i = 0; i < 20; i++)
+            {
+                var prefab = prefabs[Random.Range(0, prefabs.Count)];
+                var bg = Instantiate(prefab, new Vector3(xPosition, Random.Range(-3f, 3f) + parent.transform.position.y, 0), Quaternion.identity, parent);
+                xPosition = bg.GetWorldBounds().max.x + Random.Range(0f, 5f);
+            }
+        }
+
+        private float SpawnBuilding(GameObject prefab, float xPosition, int difficulty)
+        {
+            var building = Instantiate(prefab, new Vector3(xPosition + BuildingDistance(difficulty, xPosition), BuildingHeight(difficulty), 0), Quaternion.identity, parent);
+            return building.GetWorldBounds().max.x;
+        }
+
+        private void SpawnProps(int count)
+        {
+            ClearProps();
+            var locations = GetPropSpawnLocationsOnLevel();
+
+            for (int i = 0; i < count; i++)
+            {
+                if(locations.Count <= i)
+                {
+                    return;
+                }
+
+                var prop = Instantiate(props[Random.Range(0, props.Count)], locations[i].transform.position, Quaternion.identity, propsParent);
+            }
+        }
+
+        private void ClearProps()
+        {
+            for(int i = 0; i < propsParent.childCount; i++)
+            {
+                var child = propsParent.GetChild(i);
+                child.gameObject.SetActive(false);
+                Destroy(child.gameObject);
+            }
+        }
+
+        private float BuildingHeight(int difficulty)
+        {
+            return Random.Range(-6, 6) * difficulty;
+        }
+        private float BuildingDistance(int difficulty, float xPosition)
+        {
+            return Random.Range(4f + (xPosition / 200), 8f + (xPosition / 200))  * difficulty;
+        }
+
+        public Vector3 GetLevelPlayerSpawnLocation()
+        {
+            var spawn = GameObject.FindGameObjectWithTag("Respawn");
+
+            return spawn != null ? spawn.transform.position : Vector3.zero;
         }
 
         public List<EnemySpawn> GetSpawnLocationsOnLevel() => FindObjectsByType<EnemySpawn>(FindObjectsInactive.Exclude, FindObjectsSortMode.None).OrderBy(_ => Random.value).ToList();
-        public List<EnemySpawn> GetSpawnLocationsOnLevel(EnemyType type) => FindObjectsByType<EnemySpawn>(FindObjectsInactive.Exclude, FindObjectsSortMode.None).Where(x => x.CanSpawn(type)).OrderBy(_ => Random.value).ToList();
+        public List<EnemySpawn> GetSpawnLocationsOnLevel(EnemyType type) => FindObjectsByType<EnemySpawn>(FindObjectsInactive.Exclude, FindObjectsSortMode.None).Where(x => x.CanSpawnEnemy(type)).OrderBy(_ => Random.value).ToList();
 
-        public void SpawnEnemies(int count)
-        {
-            EnemyPool.Instance.Reset();
-            var spawns = GetSpawnLocationsOnLevel();
+        public List<EnemySpawn> GetPropSpawnLocationsOnLevel() => FindObjectsByType<EnemySpawn>(FindObjectsInactive.Exclude, FindObjectsSortMode.None).OrderBy(_ => Random.value).ToList();
+    }
 
-            Debug.Log(Mathf.Min(count, spawns.Count), this);
-
-            for (int i = 0; i < Mathf.Min(count, spawns.Count); i++)
-            {
-                Debug.Log("Spawn " + i.ToString(), this);
-                EnemyPool.Instance.Spawn(spawns[i]);
-            }
-        }
+    public static class NamedLevels
+    {
+        public static string Rooftop = "Rooftop";
+        public static string MouseStartingRoom = "Mouse Starting Room";
     }
 }

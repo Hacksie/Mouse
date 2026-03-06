@@ -6,66 +6,51 @@ namespace HackedDesign
 {
     public class FXPool:AutoSingleton<FXPool>
     {
-        [SerializeField] private FX fxPrefab;
+        [SerializeField] private List<FX> fxPrefabs;
         
-        private readonly List<FX> fxPool = new();
-        //[SerializeField] private List<FX> bloodSplat = new();
-        //[SerializeField] private List<FX> hitSplat = new();
+        private readonly Dictionary<FXType,List<FX>> fxPool = new();
 
-        //private readonly Dictionary<int, List<FX>> bloodPool = new();
-        //private readonly Dictionary<int, List<FX>> hitPool = new();
+        protected override void Awake() => base.Awake();
+
+        public void DespawnAll()
+        {
+            foreach (var type in fxPool.Values)
+            {
+                foreach(var fx in type)
+                {
+                    fx.Despawn();
+                }
+            }
+            fxPool.Clear();
+        }
 
         public void Spawn(FXType type, Vector3 position, Vector3 direction)
         {
-            var obj = fxPool.FirstOrDefault(x => !x.isActiveAndEnabled);
 
-            if (obj == null)
+            if(!fxPool.TryGetValue(type, out var fxList))
             {
-                obj = Instantiate(fxPrefab, this.transform);
-                fxPool.Add(obj);
+                fxList = new List<FX>();
+                fxPool[type] = fxList;
             }
 
-            obj.transform.position = position;
-            obj.transform.rotation.SetLookRotation(direction);
+            var fx = fxList.FirstOrDefault(f => !f.Playing);
 
-            obj.Spawn(type);
-        }
-
-        /*
-        private void SpawnAny(ref List<FX> fxPrefabs, Dictionary<int, List<FX>> pool, Vector3 position, Vector3 direction)
-        {
-            var idx = Random.Range(0, fxPrefabs.Count);
-            FX obj = null;
-
-            if (pool.TryGetValue(idx, out var list) && list != null)
+            if (fx == null)
             {
-                obj = list.FirstOrDefault(x => !x.isActiveAndEnabled);
-            }
+                var prefab = fxPrefabs.FirstOrDefault(x => x.FxType == type);
 
-            if (obj == null)
-            {
-                obj = Instantiate(fxPrefabs[idx], this.transform);
-                if (!pool.ContainsKey(idx))
+                if (prefab == null)
                 {
-                    pool.Add(idx, new List<FX>());
+                    Debug.LogWarning($"Prefab not found for FXType {type}");
+                    return;
                 }
 
-                pool[idx].Add(obj);
+                fx = Instantiate(prefab, this.transform);
+
+                fxPool[type].Add(fx);
             }
 
-            obj.transform.position = position;
-            obj.transform.rotation.SetLookRotation(direction);
-            obj.Spawn();
+            fx.Spawn(position, direction);
         }
-
-        public void SpawnBloodSplat(Vector3 position, Vector3 direction)
-        {
-            SpawnAny(ref bloodSplat, bloodPool, position, direction);
-        }
-
-        public void SpawnHitSplash(Vector3 position, Vector3 direction)
-        {
-            SpawnAny(ref hitSplat, hitPool, position, direction);
-        }*/
     }
 }

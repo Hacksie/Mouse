@@ -9,9 +9,6 @@ namespace HackedDesign
 {
     public class Elevator: MonoBehaviour
     {
-        public void Interact()
-        {
-            Game.Instance.SetElevator();
-        }
+        public void Interact() => Game.Instance.SetStateElevator();
     }
 }

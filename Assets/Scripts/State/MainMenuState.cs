@@ -5,7 +5,7 @@ namespace HackedDesign
 {
     public class MainMenuState : IState
     {
-        private IPresenter mainMenu;
+        private readonly IPresenter mainMenu;
         
         public bool PlayerActionAllowed => false;
         public bool Battle => false;
@@ -17,15 +17,9 @@ namespace HackedDesign
             
         }
 
-        public void Begin()
-        {
-            this.mainMenu.Show();
-        }
+        public void Begin() => mainMenu.Show();
 
-        public void End()
-        {
-            this.mainMenu.Hide();
-        }
+        public void End() => mainMenu.Hide();
 
         public void Update()
         {

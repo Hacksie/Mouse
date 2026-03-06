@@ -1,5 +1,4 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace HackedDesign
 {
@@ -7,7 +6,7 @@ namespace HackedDesign
     {
         void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.CompareTag("Player"))
+            if (other.CompareTag(Tags.Player))
             {
                 Debug.Log("player seen", this);
             }

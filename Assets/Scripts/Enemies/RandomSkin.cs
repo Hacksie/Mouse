@@ -5,13 +5,10 @@ namespace HackedDesign
 {
     public class RandomSkin: MonoBehaviour
     {
-        [SerializeField] private List<Material> skins = new List<Material>();
+        [SerializeField] private List<Material> skins = new();
         [SerializeField] private SpriteRenderer sprite;
 
-        void Awake()
-        {
-            this.AutoBind(ref sprite);
-        }
+        void Awake() => this.AutoBind(ref sprite);
 
         void Start()
         {

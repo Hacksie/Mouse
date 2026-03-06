@@ -13,14 +13,6 @@ namespace HackedDesign.UI
         [Header("UI")]
         [SerializeField] private UnityEngine.UI.Text nameLabel;
         [SerializeField] private UnityEngine.UI.Slider targetHealthbar;
-        [SerializeField] private Targeter targeter;
-
-
-        private new void Awake()
-        {
-            base.Awake();
-            targeter.targetChangedAction += Repaint;
-        }
 
         public void Repaint(Interactable interactable)
         {

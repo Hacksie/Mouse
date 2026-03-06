@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89377a5c2dcb66b40af385ad8492cda9, type: 3}
   m_Name: Skyline Archetype
   m_EditorClassIdentifier: 
+  StraightenChance: 1
   TileSets:
   - {fileID: 11400000, guid: 0d106a5253adea647885bd32386c1ec0, type: 2}
   BranchStartTileSets: []
@@ -24,5 +25,12 @@ MonoBehaviour:
   BranchCount:
     Min: 1
     Max: 2
-  StraightenChance: 1
+  StraighteningSettings:
+    OverrideStraightenChance: 1
+    StraightenChance: 1
+    OverrideCanStraightenMainPath: 0
+    CanStraightenMainPath: 1
+    OverrideCanStraightenBranchPaths: 0
+    CanStraightenBranchPaths: 0
   Unique: 0
+  fileVersion: 1

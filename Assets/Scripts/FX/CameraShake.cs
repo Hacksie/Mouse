@@ -10,7 +10,6 @@ namespace HackedDesign
         private CinemachineBasicMultiChannelPerlin perlinNoise;
 
         private float shakeTimer = 0;
-
  
         new void Awake()
         {
@@ -39,6 +38,3 @@ namespace HackedDesign
         }
     }
 }
-
-
-

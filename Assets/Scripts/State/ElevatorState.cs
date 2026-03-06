@@ -5,28 +5,29 @@ namespace HackedDesign
 {
     public class ElevatorState : IState
     {
-        private readonly IPresenter elevatorMenu;
+        private readonly IGame game;
+        private readonly ElevatorPresenter elevatorMenu;
         
         public bool PlayerActionAllowed => false;
         public bool Battle => false;
 
 
-        public ElevatorState(IPresenter elevatorMenu)
+        public ElevatorState(IGame game, ElevatorPresenter elevatorMenu)
         {
-            this.elevatorMenu = elevatorMenu;     
-            
+            this.game = game;
+            this.elevatorMenu = elevatorMenu;
+            this.elevatorMenu.done.AddListener(Done);
         }
 
         public void Begin()
         {
-            this.elevatorMenu.Repaint();
-            this.elevatorMenu.Show();
+            elevatorMenu.Repaint();
+            elevatorMenu.Show();
         }
 
-        public void End()
-        {
-            this.elevatorMenu.Hide();
-        }
+        public void Done() => game.SetStatePlaying();
+
+        public void End() => elevatorMenu.Hide();
 
         public void Update()
         {

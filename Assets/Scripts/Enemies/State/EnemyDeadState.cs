@@ -10,11 +10,13 @@ namespace HackedDesign
     public class EnemyDeadState: IEnemyState
     {
 
+        public bool IsAlive => false;
+
         public EnemyDeadState()
         {
         }
 
-        public void UpdateBehaviour(AIContext ctx)
+        public void UpdateBehaviour(AiContext ctx)
         {
 
         }

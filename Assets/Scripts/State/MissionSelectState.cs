@@ -18,14 +18,14 @@ namespace HackedDesign
 
         public void Begin()
         {
-            this.missionSelectPresenter.Show();
-            this.missionSelectPresenter.Repaint();
+            missionSelectPresenter.Show();
+            missionSelectPresenter.Repaint();
             //GameObject.FindGameObjectWithTag("Respawn").transform.position = player.transform.position; // FIXME:
         }
 
         public void End()
         {
-            this.missionSelectPresenter.Hide();
+            missionSelectPresenter.Hide();
         }
 
         public void Update()

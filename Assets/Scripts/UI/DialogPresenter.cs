@@ -7,6 +7,7 @@ namespace HackedDesign.UI
 {
     public class DialogPresenter : AbstractPresenter
     {
+        [SerializeField] private DialogManager dialogManager;
         [SerializeField] private Typewriter typewriter;
         [SerializeField] private UnityEngine.UI.Text nameText;
         [SerializeField] private UnityEngine.UI.Text dialogText;
@@ -16,20 +17,19 @@ namespace HackedDesign.UI
 
         private int currentPage = 0;
 
-        private new void Awake()
+        private void Awake()
         {
-            base.Awake();
             this.AutoBind(ref typewriter);
             typewriter.Text = dialogText;
         }
 
         public override void Repaint()
         {
-            if (DialogManager.Instance.CurrentDialog != null && DialogManager.Instance.CurrentDialog[currentPage] != null)
+            if (dialogManager.CurrentDialog != null && dialogManager.CurrentDialog[currentPage] != null)
             {
-                var page = DialogManager.Instance.CurrentDialog[currentPage];
+                var page = dialogManager.CurrentDialog[currentPage];
                 dialogText.text = page.Text;
-                dialogAvatar.sprite = DialogManager.Instance.GetSpeakerSprite(page);
+                dialogAvatar.sprite = dialogManager.GetSpeakerSprite(page);
                 nameText.text = page.Speaker;
                 typewriter.Play(page.Text);
             }
@@ -45,9 +45,9 @@ namespace HackedDesign.UI
         {
             currentPage++;
 
-            Debug.Log("Page " + currentPage + "/" + DialogManager.Instance.CurrentDialog.Count, this);
+            Debug.Log("Page " + currentPage + "/" + dialogManager.CurrentDialog.Count, this);
 
-            if (currentPage >= DialogManager.Instance.CurrentDialog.Count)
+            if (currentPage >= dialogManager.CurrentDialog.Count)
             {
                 Debug.Log("Hide", this);
                 currentPage = 0;

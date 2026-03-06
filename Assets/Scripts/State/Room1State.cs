@@ -6,46 +6,42 @@ namespace HackedDesign
 {
     public class Room1State : IState
     {
-        private PlayerController player;
-        private Level level;
+        private readonly IPlayerController player;
+        private readonly ILevelManager level;
+        private readonly IDialogManager dialog;
 
         public bool PlayerActionAllowed => true;
         public bool Battle => false;
 
 
-        public Room1State(PlayerController player, Level level)
+        public Room1State(IPlayerController player, ILevelManager level, IDialogManager dialog)
         {
             this.player = player;
             this.level = level;
+            this.dialog = dialog;
         }
 
         public void Begin()
         {
-            this.level.Reset();
-            this.level.ShowNamedRoom("Mouse Starting Room", false, true, this.player);
-            this.player.Character.SetIdleState();
+            level.Reset();
+            level.ShowNamedRoom(NamedLevels.MouseStartingRoom, true, true, player);
+            player.Character.Shadow.enabled = false;
+            player.Character.SetIdleState();
+            dialog.ShowDialog("intro_room1", Dialog1End);
         }
 
-        public void End()
+        public void End() => player.Character.Shadow.enabled = true;
+
+        public void Dialog1End()
         {
-            
+
         }
 
-        public void Update()
-        {
-            this.player.UpdateIdleBehaviour();
-        }
+        public void Update() => player.UpdateIdleBehaviour();
 
-        public void FixedUpdate()
-        {
-            this.player.FixedUpdateBehaviour();
-        }
+        public void FixedUpdate() => player.FixedUpdateBehaviour();
 
-        public void LateUpdate()
-        {
-            this.player.LateUpdateBehaviour();
-            
-        }
+        public void LateUpdate() => player.LateUpdateBehaviour();
 
         public void Menu()
         {

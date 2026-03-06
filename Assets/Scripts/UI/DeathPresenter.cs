@@ -6,12 +6,6 @@ namespace HackedDesign.UI
 {
     public class DeathPresenter : AbstractPresenter
     {
-
-        private new void Awake()
-        {
-            base.Awake();
-        }
-
         public override void Repaint()
         {
 
@@ -19,12 +13,12 @@ namespace HackedDesign.UI
 
         public void RestartClick()
         {
-            Game.Instance.SetLoading();
+            Game.Instance.SetStateLoading();
         }
 
         public void ExitClick()
         {
-            Game.Instance.SetMainMenu();
+            Game.Instance.SetStateMainMenu();
         }
     }
 }

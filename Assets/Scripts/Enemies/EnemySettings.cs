@@ -16,6 +16,7 @@ namespace HackedDesign
         [SerializeField] private float minRoamTime = 1f;
         [SerializeField] private float maxRoamTime = 10.0f;
         [SerializeField] private float roamTime = 7f;
+        [field: SerializeField] public Vector2 SpawnOffset {  get; set; }
         
         public float ReactionTime { get => reactionTime; set => reactionTime = value; }
         public bool Aggressive { get => aggressive; set => aggressive = value; }

@@ -5,32 +5,23 @@ namespace HackedDesign
 {
     public class OSState : IState
     {
-        private IPresenter inventoryPresenter;
+        private readonly IGame game;
+        private readonly IPresenter inventoryPresenter;
         public bool PlayerActionAllowed => false;
         public bool Battle => false;
 
 
-        public OSState(IPresenter inventoryPresenter)
+        public OSState(IGame game, IPresenter inventoryPresenter)
         {
+            this.game = game;
             this.inventoryPresenter = inventoryPresenter;
-            
         }
 
-        public void Begin()
-        {
-            this.inventoryPresenter.Show();
-        }
+        public void Begin() => inventoryPresenter.Show();
 
-        public void End()
-        {
-            this.inventoryPresenter.Hide();
-        }
+        public void End() => inventoryPresenter.Hide();
 
-        public void Update()
-        {
-            this.inventoryPresenter.Repaint();   
-  
-        }
+        public void Update() => inventoryPresenter.Repaint();
 
         public void FixedUpdate()
         {
@@ -42,14 +33,8 @@ namespace HackedDesign
             
         }
 
-        public void Menu()
-        {
-            Game.Instance.SetMainMenu();
-        }
+        public void Menu() => game.SetStateMainMenu();
 
-        public void Select()
-        {
-            Game.Instance.SetPlaying();
-        }
+        public void Select() => game.SetStatePlaying();
     }
 }

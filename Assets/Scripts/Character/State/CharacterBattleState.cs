@@ -5,23 +5,23 @@ namespace HackedDesign
 {
     public class CharacterBattleState : ICharacterState
     {
-        private const float ShootShakeIntensity = 0.7f;
-        private const float ShootShakeTime = 0.1f;
         private readonly ICharacterExecute characterExecute;
+        private readonly IAttackController attackController;
         private readonly Animator animator;
-        private float nextAttackTimer = int.MinValue;
-
+        
         public bool IsAlive => true;
+        public bool CanAttack => true;
 
-        public CharacterBattleState(ICharacterExecute charExecute, Animator animator)
+        public CharacterBattleState(ICharacterExecute charExecute, IAttackController attackController, Animator animator)
         {
             this.animator = animator;
             this.characterExecute = charExecute;
+            this.attackController = attackController;
         }
 
         public void Animate(CharacterAnimationContext ctx)
         {
-            if (this.animator == null)
+            if (this.animator.OrNull() == null)
             {
                 return;
             }
@@ -39,16 +39,20 @@ namespace HackedDesign
 
         public void ResetAnimationTriggers()
         {
-            if (this.animator == null)
+            if (this.animator.OrNull() == null)
             {
                 return;
             }
             this.animator.ResetTrigger(AnimatorParams.Interact);
             this.animator.ResetTrigger(AnimatorParams.Roll);
             this.animator.ResetTrigger(AnimatorParams.Melee);
-            this.animator.ResetTrigger(AnimatorParams.BasicAttack);
+            this.animator.ResetTrigger(AnimatorParams.Shoot);
             this.animator.ResetTrigger(AnimatorParams.StrongAttack);
             this.animator.ResetTrigger(AnimatorParams.Jump);
+            this.animator.ResetTrigger(AnimatorParams.MeleeAnticipate);
+            this.animator.ResetTrigger(AnimatorParams.KickAnticipate);
+            this.animator.ResetTrigger(AnimatorParams.PunchAnticipate);
+            this.animator.ResetTrigger(AnimatorParams.ShootAnticipate);
         }
 
         public void Begin()
@@ -60,100 +64,18 @@ namespace HackedDesign
 
         public void Attack(CharacterAttackContext ctx)
         {
-            if (Time.time >= nextAttackTimer)
+            if (attackController.CanShoot && attackController.HasGun && ctx.aiming)
             {
-                if (ctx.operatingSystem.HasAmmo && ctx.aiming && ctx.operatingSystem.HasPistol)
-                {
-                    ctx.operatingSystem.DecreaseAmmo();
-                    //operatingSystem.Momentum -= settings.attackMomentumLoss;
-                    Shoot(ctx);
-                    this.animator.SetTrigger(AnimatorParams.BasicAttack);
-
-                }
-                else
-                {
-                    //operatingSystem.Momentum -= settings.attackMomentumLoss;
-                    Melee(ctx);
-                    switch (Random.Range(0, 2 + (ctx.operatingSystem.HasAmmo && ctx.operatingSystem.HasPistol ? 1 : 0)))
-                    {
-                        case 0:
-                            this.animator.SetTrigger(AnimatorParams.Punch);
-                            break;
-                        case 1:
-                            this.animator.SetTrigger(AnimatorParams.Kick);
-                            break;
-                        case 2:
-                            this.animator.SetTrigger(AnimatorParams.Melee);
-                            break;
-                    }
-                }
-
-                nextAttackTimer = Time.time + ctx.settings.AttackRate;
+                Debug.Log("ranged attack");
+                this.attackController.Shoot(ctx.target);
+            }
+            else
+            {
+                Debug.Log("melee attack");
+                this.attackController.Melee();
             }
         }
 
-        private void Shoot(CharacterAttackContext ctx)
-        {
-            if (ctx.isPlayer)
-            {
-                CameraShake.Instance.Shake(ShootShakeIntensity, ShootShakeTime);
-            }
-
-            if (ctx.target != null)
-            {
-                var result = Physics2D.Raycast(ctx.pivot, ctx.target - ctx.pivot, ctx.settings.ShootDistance, ctx.settings.AttackMask);
-
-                Debug.DrawRay(ctx.pivot, ctx.target - ctx.pivot, Color.red, 0.3f);
-
-                if (result)
-                {
-
-                    if (result.transform.TryGetComponent<BreakGlass>(out var glass))
-                    {
-                        glass.Break(ctx.pivot);
-                    }
-                    if (result.transform.TryGetComponent<CharController>(out var targetChar))
-                    {
-
-                        var weapon = ctx.operatingSystem.CurrentWeapon;
-                        var damage = Random.Range(weapon.minShootDamage, weapon.maxShootDamage + 1);
-                        Debug.Log("Shoot " + targetChar.name + " " + damage);
-                        targetChar.TakeDamage(damage, result.point);
-                    }
-                    else
-                    {
-                        FXPool.Instance.Spawn(FXType.EnvHit, result.point, ctx.pivot - (Vector3)result.point);
-                    }
-                }
-            }
-        }
-
-        private void Melee(CharacterAttackContext ctx)
-        {
-            var results = Physics2D.OverlapCircleAll(ctx.pivot, ctx.settings.MeleeDistance, ctx.settings.AttackMask);
-
-            if (ctx.isPlayer && results != null && results.Length > 0)
-            {
-                CameraShake.Instance.Shake(0.5f, 0.3f);
-            }
-
-            //var result = Physics2D.Raycast(head.position, target - head.position, operatingSystem.settings.meleeDistance, attackMask);
-            foreach (var result in results)
-            {
-                if (result.transform.TryGetComponent<BreakGlass>(out var glass))
-                {
-                    glass.Break(ctx.pivot);
-                }
-
-                if (result.transform.TryGetComponent<CharController>(out var targetChar))
-                {
-                    var weapon = ctx.operatingSystem.CurrentWeapon;
-                    var damage = Random.Range(weapon.minMeleeDamage, weapon.maxMeleeDamage);
-                    targetChar.TakeDamage(damage, result.ClosestPoint(ctx.pivot));
-                }
-            }
-        }
-
-        public float CurrentSpeed(CharacterSpeedContext ctx) => ctx.crouched ? ctx.crouchSpeed : (ctx.walk ? ctx.walkSpeed : ctx.runSpeed);
+        public float CurrentSpeed(CharacterSpeedContext ctx) => ctx.crouched ? ctx.crouchSpeed : (ctx.walk ? ctx.walkSpeed : ctx.runSpeed) + ctx.momentum;
     }
 }

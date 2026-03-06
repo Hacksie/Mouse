@@ -10,6 +10,5 @@ namespace HackedDesign
     {
         public int seed;
         public MissionType type;
-
     }
 }

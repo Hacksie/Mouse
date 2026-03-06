@@ -5,78 +5,87 @@ namespace HackedDesign
 {
     public class PlayingState : IState
     {
-        private readonly PlayerController player;
-        private readonly Level level;
+        private readonly IGame game;
+        private readonly IPlayerController player;
         private readonly IPresenter actionBar;
         private readonly IPresenter traceBar;
-        private readonly EnemyPool enemyPool;
+        private readonly IPresenter debugPanel;
+        private readonly IEnemyManager enemyManager;
+        private readonly IMissionTimer timer;
+        private readonly bool debug;
 
         public bool PlayerActionAllowed => true;
         public bool Battle => true;
 
-
-        public PlayingState(PlayerController player, Level level, EnemyPool enemyPool, IPresenter actionBar, IPresenter traceBar)
+        public PlayingState(IGame game, IPlayerController player, IEnemyManager enemyManager, IMissionTimer timer, IPresenter actionBar, IPresenter traceBar, IPresenter debugPanel, bool debug = false)
         {
+            this.game = game;
             this.player = player;
-            this.level = level;
+            this.enemyManager = enemyManager;
+            this.timer = timer;
             this.actionBar = actionBar;
-            this.enemyPool = enemyPool;
             this.traceBar = traceBar;
-            
+            this.debugPanel = debugPanel;
+            this.debug = debug;
         }
 
         public void Begin()
         {
-            //Game.Instance.LevelTimer.Timer.Start();
-            //Game.Instance.LevelTimer.Timer.OnTimerStop += TimeOut;
-            //this.level.Reset();
-            //this.level.Generate(1);
-
-            this.player.Character.SetBattleState();
-            this.actionBar.Show();
-            //this.traceBar.Show();
+            timer.Timer.OnTimerStop += TimeOut;
+            player.Character.SetBattleState();
+            actionBar.Show();
+            traceBar.Show();
+            //UnityEngine.Cursor.visible = false;
         }
 
         public void End()
         {
-            this.player.Stop();
-            //this.traceBar.Hide();
-            this.actionBar.Hide();
+            timer.Timer.OnTimerStop -= TimeOut;
+            player.Stop();
+            traceBar.Hide();
+            actionBar.Hide();
+            debugPanel.Hide();
+            //UnityEngine.Cursor.visible = true;
         }
 
-        private void TimeOut()
-        {
-            Debug.Log("Timeout");
-        }
+        private void TimeOut() => Debug.Log("Timeout");
 
         public void Update()
         {
-            Game.Instance.LevelTimer.Timer.Tick(Time.deltaTime);
-            this.player.UpdateBattleBehaviour();
-            this.enemyPool.UpdateAllBehaviour();
+            timer.Timer.Tick(Time.deltaTime);
+            player.UpdateBattleBehaviour();
+            enemyManager.UpdateAllBehaviour();
+            UpdateDebugPanel();
+        }
+
+        private void UpdateDebugPanel()
+        {
+            if (this.debug)
+            {
+                debugPanel.Show();
+                debugPanel.Repaint();
+            }
+            else
+            {
+                debugPanel.Hide();
+            }
         }
 
         public void FixedUpdate()
         {
-            this.player.FixedUpdateBehaviour();
-            this.enemyPool.UpdateAllFixedBehaviour();
+            player.FixedUpdateBehaviour();
+            enemyManager.UpdateAllFixedBehaviour();
         }
 
         public void LateUpdate()
         {
-            this.player.LateUpdateBehaviour();
-            this.enemyPool.UpdateAllLateBehaviour();
-            
+            player.LateUpdateBehaviour();
+            enemyManager.UpdateAllLateBehaviour();
+            traceBar.Repaint();
         }
 
-        public void Menu()
-        {
-            Game.Instance.SetPaused();
-        }
+        public void Menu() => game.SetStatePaused();
 
-        public void Select()
-        {
-            Game.Instance.SetOS();
-        }
+        public void Select() => game.SetStateOS();
     }
 }

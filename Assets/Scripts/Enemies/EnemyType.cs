@@ -1,10 +1,13 @@
-﻿
-namespace HackedDesign
+﻿namespace HackedDesign
 {
     public enum EnemyType
     {
         SecurityCamera,
         SecurityGuard,
-        Mech
+        Mech,
+        Wasp,
+        BombDrone,
+        Laser,
+        ProxMine
     }
 }

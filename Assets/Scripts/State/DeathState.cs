@@ -14,18 +14,11 @@ namespace HackedDesign
         public DeathState(IPresenter deathMenu)
         {
             this.deathMenu = deathMenu;     
-            
         }
 
-        public void Begin()
-        {
-            this.deathMenu.Show();
-        }
+        public void Begin() => deathMenu.Show();
 
-        public void End()
-        {
-            this.deathMenu.Hide();
-        }
+        public void End() => deathMenu.Hide();
 
         public void Update()
         {

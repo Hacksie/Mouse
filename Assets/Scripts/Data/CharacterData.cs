@@ -4,11 +4,6 @@ namespace HackedDesign
 {
     public class CharacterData
     {
-        //[SerializeField] public Action changeActions;
-        //[SerializeField] public Action dieActions;
-        //[SerializeField] public Action hitActions;
-        //[SerializeField] public CharacterSettings settings;
-
         private List<OSTask> puTaskList = new();
         public List<OSTask> PuTaskList { get => puTaskList; set => puTaskList = value; }
         public string saveName;
@@ -21,14 +16,17 @@ namespace HackedDesign
         public bool infiniteAmmo = false;
         public bool infinityHealth = false;
         public int currentMission = 2;
-        public bool hasPistol = true;
         public float momentumFactor = 0.05f;
+        public float momentum = 0.0f;
+        public float maxMomentum = 5.0f;
 
         public int kinetic = 1;
         public int digital = 1;
         public int stealth = 1;
 
-        public WeaponSettings currentWeapon;
+        public List<WeaponSettings> weapons = new List<WeaponSettings>();
+
+        public int currentWeaponSlot = 0;
 
         public OSTab currentTab;
 
@@ -36,12 +34,15 @@ namespace HackedDesign
 
         public void Reset(CharacterSettings settings)
         {
-            health = settings.startingHealth;
-            ammo = settings.startingAmmo;
-            infiniteAmmo = settings.infiniteAmmo;
-            infinityHealth = settings.infiniteHealth;
-            currentWeapon = settings.weaponSettings.Count > 0 ? settings.weaponSettings[0] : null;
-            maxHealth = settings.startingHealth;
+            health = settings.StartingHealth;
+            ammo = settings.StartingAmmo;
+            infiniteAmmo = settings.InfiniteAmmo;
+            infinityHealth = settings.InfiniteHealth;
+            weapons.AddRange(settings.WeaponSettings);
+            currentWeaponSlot = 0;
+            maxHealth = settings.StartingHealth;
+            maxMomentum = settings.MaxMomentum;
+            momentum = 0.0f;
         }
     }
 

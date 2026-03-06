@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "Mouse",
     "maps": [
         {
@@ -18,7 +19,7 @@
                     "name": "Menu",
                     "type": "Button",
                     "id": "ac658868-998d-4ae1-a722-0b20d156724b",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -54,7 +55,7 @@
                     "name": "Jump",
                     "type": "Button",
                     "id": "dffc3a3b-f4ea-41b5-95b2-b92963439433",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -63,16 +64,7 @@
                     "name": "Interact",
                     "type": "Button",
                     "id": "6434da15-9541-4737-b085-880cbd9193de",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Aim",
-                    "type": "PassThrough",
-                    "id": "5b625e0f-78ec-46bb-903e-bba4af48b8c5",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -81,6 +73,15 @@
                     "name": "Attack",
                     "type": "Button",
                     "id": "6788a817-5c8b-4b46-9945-a9a9054a3d8d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Hack",
+                    "type": "PassThrough",
+                    "id": "5b625e0f-78ec-46bb-903e-bba4af48b8c5",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -99,7 +100,7 @@
                     "name": "Roll",
                     "type": "Button",
                     "id": "c6b9c5b5-2a6a-48a3-97a3-5ab2a9d51bcf",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "Tap",
                     "initialStateCheck": false
@@ -108,7 +109,7 @@
                     "name": "Crouch Toggle",
                     "type": "Button",
                     "id": "81e92f95-2d5a-407b-9726-a1eb01574f91",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -117,31 +118,31 @@
                     "name": "OperatingSystem",
                     "type": "Button",
                     "id": "e803dc87-acf4-4dcd-aac6-0bbe7692f971",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Action1",
+                    "name": "Action 1",
                     "type": "Button",
                     "id": "e27cda1f-01f7-4ddc-bb49-e6778c4f635a",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Action2",
+                    "name": "Action 2",
                     "type": "Button",
                     "id": "cba96407-32a7-4483-93c9-65b4b640e1bb",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Action3",
+                    "name": "Action 3",
                     "type": "Button",
                     "id": "85767796-63d9-489d-9a5a-effc96edb377",
                     "expectedControlType": "Button",
@@ -150,27 +151,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Action4",
+                    "name": "Action 4",
                     "type": "Button",
                     "id": "ad547085-8dea-4748-8bfe-c933e329a710",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "ActionBarUp",
-                    "type": "Button",
-                    "id": "c58a72e6-8f5c-4a55-b01a-024804c083a7",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "ActionBarDown",
-                    "type": "Button",
-                    "id": "2cbc27cd-7c8d-426b-9625-de2367408faa",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -180,7 +163,16 @@
                     "name": "Walk Toggle",
                     "type": "Button",
                     "id": "2e2b7fd5-1d9f-483a-a061-4997f6d91c9b",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Switch to Weapon",
+                    "type": "Button",
+                    "id": "727d4acb-69f2-4e2d-9759-f513e4c569ff",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -245,7 +237,7 @@
                 {
                     "name": "",
                     "id": "01ed0c1d-46cc-4aeb-8903-5cbe86a6de7e",
-                    "path": "<XInputController>/buttonWest",
+                    "path": "<Gamepad>/rightTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -476,7 +468,7 @@
                 {
                     "name": "",
                     "id": "fe656418-592c-40e2-9d3f-24db9bffe8da",
-                    "path": "<Keyboard>/downArrow",
+                    "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -531,11 +523,11 @@
                 {
                     "name": "",
                     "id": "a7cfa7c0-b907-4f16-8ede-898560589341",
-                    "path": "<Gamepad>/leftTrigger",
+                    "path": "<Gamepad>/dpad/up",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Action1",
+                    "action": "Action 1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -546,18 +538,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Action1",
+                    "action": "Action 1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "38327c7c-b282-41b7-ae2b-29a46f4dd35b",
-                    "path": "<Gamepad>/leftShoulder",
+                    "path": "<Gamepad>/dpad/down",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Action2",
+                    "action": "Action 2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -568,18 +560,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Action2",
+                    "action": "Action 2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "5778531c-7e65-411c-890f-a8682e540ebd",
-                    "path": "<Gamepad>/rightTrigger",
+                    "path": "<Gamepad>/dpad/left",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Action3",
+                    "action": "Action 3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -590,18 +582,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Action3",
+                    "action": "Action 3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "ba56a16c-cf10-4cf0-8ee1-8740386d54ab",
-                    "path": "<Gamepad>/rightShoulder",
+                    "path": "<Gamepad>/dpad/right",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Action4",
+                    "action": "Action 4",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -612,29 +604,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Action4",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "0e3fe6d8-9e7d-47b0-b903-5246fe2afe24",
-                    "path": "<Keyboard>/pageUp",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "ActionBarUp",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "8e9cb530-a774-46cb-a7b1-be7c1e7e662e",
-                    "path": "<Keyboard>/pageDown",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "ActionBarDown",
+                    "action": "Action 4",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -645,7 +615,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Aim",
+                    "action": "Hack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -756,6 +726,28 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Walk Toggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6370b133-5403-4586-9b86-279ae84b144a",
+                    "path": "<Keyboard>/5",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Switch to Weapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "aac90fea-dc89-4fba-a1ce-f7e6d00a6cf1",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Switch to Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

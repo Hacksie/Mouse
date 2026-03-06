@@ -1,4 +1,4 @@
-
+#nullable enable
 
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,27 +12,26 @@ namespace HackedDesign
         [SerializeField] private float walkSpeed = 4f;
         [SerializeField] private float runSpeed = 9;
         [SerializeField] private float crouchSpeed = 2;
-        [Range(0, .3f)] [SerializeField] public float movementSmoothing = .05f;
         [SerializeField] private float shootDistance = 10.0f;
         [SerializeField] private float meleeDistance = 10.0f;
         [SerializeField] private float interactDistance = 1.0f;
         [SerializeField] private LayerMask attackMask = 0;
-        [SerializeField] public LayerMask interactMask = 0;
+        [SerializeField] private LayerMask interactMask = 0;
+        [SerializeField] private float alertRadius = 20;
         //[SerializeField] public int maxHealth = 100;
-        [SerializeField] public int startingHealth = 100;
-        [SerializeField] public int startingAmmo = 6;
-        [SerializeField] public bool infiniteAmmo = false;
-        [SerializeField] public bool infiniteHealth = false;
-        [SerializeField] public int minBulletDamage = 50;
-        [SerializeField] public int maxBulletDamage = 150;
-        [SerializeField] public int minMeleeDamage = 25;
-        [SerializeField] public int maxMeleeDamage = 100;
-        [SerializeField] public List<WeaponSettings> weaponSettings;
-        [SerializeField] public float momentumAirLoss = 0.5f;
-        [SerializeField] public float baseMomentumFactor = 0.1f;
-        [SerializeField] public float attackMomentumLoss = 0.5f;
-        [SerializeField] public float minMomentum = 0f;
-        [SerializeField] public float maxMomentum = 5f;
+        [SerializeField] private int startingHealth = 100;
+        [SerializeField] private int startingAmmo = 6;
+        [SerializeField] private bool infiniteAmmo = false;
+        [SerializeField] private bool infiniteHealth = false;
+        [SerializeField] private List<WeaponSettings> weaponSettings = new();
+        [SerializeField] private float momentumAirLoss = 0.5f;
+        [SerializeField] private float baseMomentumFactor = 0.1f;
+        [SerializeField] private float attackMomentumLoss = 0.5f;
+        [SerializeField] private float minMomentum = 0f;
+        [SerializeField] private float maxMomentum = 5f;
+        [SerializeField] private FXType hitfx = FXType.Blood;
+        [SerializeField] private float timeSlowSpeed = 0.5f;
+        [SerializeField] private float anticipateDelay = 0.2f;
 
         public float ShootDistance { get => shootDistance; private set => shootDistance = value; }
         public float AttackRate { get => attackRate; private set => attackRate = value; }
@@ -42,5 +41,21 @@ namespace HackedDesign
         public float InteractDistance { get => interactDistance; private set => interactDistance = value; }
         public float MeleeDistance { get => meleeDistance; private set => meleeDistance = value; }
         public LayerMask AttackMask { get => attackMask; private set => attackMask = value; }
+        public FXType HitFX { get => hitfx; private set => hitfx = value; }
+        public LayerMask InteractMask { get => this.interactMask; set => this.interactMask = value; }
+        public int StartingHealth { get => this.startingHealth; set => this.startingHealth = value; }
+        public float MaxMomentum { get => this.maxMomentum; set => this.maxMomentum = value; }
+        public float MinMomentum { get => this.minMomentum; set => this.minMomentum = value; }
+        public float AttackMomentumLoss { get => this.attackMomentumLoss; set => this.attackMomentumLoss = value; }
+        public float BaseMomentumFactor { get => this.baseMomentumFactor; set => this.baseMomentumFactor = value; }
+        public float MomentumAirLoss { get => this.momentumAirLoss; set => this.momentumAirLoss = value; }
+        public List<WeaponSettings> WeaponSettings { get => this.weaponSettings; set => this.weaponSettings = value; }
+        public bool InfiniteHealth { get => this.infiniteHealth; set => this.infiniteHealth = value; }
+        public bool InfiniteAmmo { get => this.infiniteAmmo; set => this.infiniteAmmo = value; }
+        public int StartingAmmo { get => this.startingAmmo; set => this.startingAmmo = value; }
+        public float AlertRadius { get => this.alertRadius; set => this.alertRadius = value; }
+        public float TimeSlowSpeed { get => this.timeSlowSpeed; set => this.timeSlowSpeed = value; }
+
+        public float AnticipateDelay { get => this.anticipateDelay; private set => this.anticipateDelay = value; }
     }
 }

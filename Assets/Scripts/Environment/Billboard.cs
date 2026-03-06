@@ -7,13 +7,13 @@ using UnityEngine.Rendering.Universal;
 
 public class Billboard : MonoBehaviour
 {
-
+    private const float defaultChance = 0.75f;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] public List<Sprite> billboards;
     [SerializeField] private bool change = false;
     [SerializeField] private float changeTimeMin = 10;
     [SerializeField] protected float changeTimeMax = 40;
-    private float billboardChance = 0.5f;
+    private readonly float billboardChance = defaultChance;
 
     private float timer; 
 

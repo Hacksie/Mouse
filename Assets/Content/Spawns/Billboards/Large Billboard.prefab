@@ -1,0 +1,141 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &9180354152676982706
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6609423062398310337}
+  - component: {fileID: 7231488125231602498}
+  - component: {fileID: 6286129887318735114}
+  m_Layer: 0
+  m_Name: Large Billboard
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6609423062398310337
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9180354152676982706}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7231488125231602498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9180354152676982706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9fe37c160ad8874b9e1b6a3a16c0906, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Mouse::HackedDesign.RandomContents
+  changeToPickSomething: 0.75
+  weightedPrefabs:
+  - weight: 1
+    prefab: {fileID: 2605326013822489405, guid: 7b1493f0874d8c04cbfb810168eb79bd, type: 3}
+  - weight: 1
+    prefab: {fileID: 2605326013822489405, guid: 2546e389d018d5a49bbd125e3af4c3ef, type: 3}
+  - weight: 1
+    prefab: {fileID: 2605326013822489405, guid: 392aeac157c462b459533915a30bec74, type: 3}
+  - weight: 1
+    prefab: {fileID: 2605326013822489405, guid: 788418ceb98c3e8488932e2697fd8833, type: 3}
+  - weight: 1
+    prefab: {fileID: 2605326013822489405, guid: 51e70c539e05e464490bfc4962082a3d, type: 3}
+  - weight: 1
+    prefab: {fileID: 2605326013822489405, guid: 4c610e57f72fb554a90a8ae5f69e3769, type: 3}
+  - weight: 1
+    prefab: {fileID: 2605326013822489405, guid: 09dcdad8a7bb1a24b9ef1b8d07a56ed6, type: 3}
+  - weight: 1
+    prefab: {fileID: 2605326013822489405, guid: a3bcbc726e82709418233d9a6033e5c9, type: 3}
+  - weight: 1
+    prefab: {fileID: 2605326013822489405, guid: 8431f59d7f5c76643a762aa9546b2284, type: 3}
+  - weight: 1
+    prefab: {fileID: 2605326013822489405, guid: a3bcbc726e82709418233d9a6033e5c9, type: 3}
+  - weight: 1
+    prefab: {fileID: 2605326013822489405, guid: a41ab89240edadf4991f290b593d17bf, type: 3}
+  - weight: 1
+    prefab: {fileID: 2605326013822489405, guid: fe93dc6eedb992348910cf244b9d501e, type: 3}
+  - weight: 1
+    prefab: {fileID: 2605326013822489405, guid: 890d827d3d140cf4295fe6023cbfbea0, type: 3}
+  - weight: 1
+    prefab: {fileID: 2605326013822489405, guid: 4ed5c1bb19e565c49927ec1ac33adfbc, type: 3}
+  - weight: 1
+    prefab: {fileID: 2605326013822489405, guid: 8cc76926fcb94fe448a53fbff257a3fa, type: 3}
+  - weight: 1
+    prefab: {fileID: 2605326013822489405, guid: 1ccee2ee0ce6edf43a7e4325355615b6, type: 3}
+  - weight: 1
+    prefab: {fileID: 2605326013822489405, guid: 1fc031626d382be438f78f7a16df33a1, type: 3}
+  - weight: 1
+    prefab: {fileID: 2605326013822489405, guid: c0b59279e7d7b3145a066a87e9f96a44, type: 3}
+  - weight: 1
+    prefab: {fileID: 2605326013822489405, guid: bc4f1ff0773fe404fa9418580fd5b177, type: 3}
+  - weight: 1
+    prefab: {fileID: 4070400558305773655, guid: 49fe31842efe7234190db39212b1775f, type: 3}
+  - weight: 1
+    prefab: {fileID: 4070400558305773655, guid: 7efc2c69c9a82124a8cf7ece51c80e8a, type: 3}
+  - weight: 1
+    prefab: {fileID: 4070400558305773655, guid: a7155c62e0c1a3f449e4f2c2e15c29fb, type: 3}
+  - weight: 1
+    prefab: {fileID: 4070400558305773655, guid: 34493928f2dbabc48947ecb8b39152d3, type: 3}
+  - weight: 1
+    prefab: {fileID: 4070400558305773655, guid: 943efb292c97f65498c4c1ee598411a5, type: 3}
+  - weight: 1
+    prefab: {fileID: 4070400558305773655, guid: 7aa2726a87d02b94d8b8a1cd7275ed58, type: 3}
+  - weight: 1
+    prefab: {fileID: 4070400558305773655, guid: fc18ff2c5292419459e2f98e6d15e6f7, type: 3}
+  - weight: 1
+    prefab: {fileID: 4070400558305773655, guid: f12d9a8a00ebc0740b5b48693bbd7a82, type: 3}
+  - weight: 1
+    prefab: {fileID: 4070400558305773655, guid: 81e588cf8a0652347ab384ee89fa4b28, type: 3}
+  - weight: 1
+    prefab: {fileID: 4070400558305773655, guid: 93a5219d6827ba44b8c281251e4436a5, type: 3}
+  - weight: 1
+    prefab: {fileID: 4070400558305773655, guid: 1476898a4cc15e9469c12e5d341bc675, type: 3}
+  - weight: 1
+    prefab: {fileID: 4070400558305773655, guid: 99792bf1aa83840408493e1ae88f8f6e, type: 3}
+  - weight: 1
+    prefab: {fileID: 4070400558305773655, guid: f6e6f68313ecd6145b1ff2bd11031a8c, type: 3}
+  - weight: 1
+    prefab: {fileID: 4070400558305773655, guid: a290dbb41cd182c4eb951cf5a1cc244a, type: 3}
+  - weight: 1
+    prefab: {fileID: 4070400558305773655, guid: cdb3eb197416ca540884a18fb020bcf2, type: 3}
+  - weight: 1
+    prefab: {fileID: 4070400558305773655, guid: 3ff6418903c4cc543bd9aa1f3b9022e0, type: 3}
+  - weight: 1
+    prefab: {fileID: 4070400558305773655, guid: c818ddd75195f8848812f820af99e6b5, type: 3}
+  - weight: 1
+    prefab: {fileID: 4070400558305773655, guid: 672a21eec4633654c9d1880ef7d1d915, type: 3}
+  - weight: 1
+    prefab: {fileID: 4070400558305773655, guid: 9fc259e97dd00a54c92d074a182325cb, type: 3}
+  - weight: 1
+    prefab: {fileID: 4070400558305773655, guid: d689286b1b298f347b19d7fe45056989, type: 3}
+--- !u!114 &6286129887318735114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9180354152676982706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4615ea1dd3708ad4aa826a37e6cae0ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Mouse::HackedDesign.RandomPosition
+  rangeX: {x: -10, y: 5}
+  rangeY: {x: -10, y: 5}

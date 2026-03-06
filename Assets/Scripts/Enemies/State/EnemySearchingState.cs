@@ -9,20 +9,22 @@ namespace HackedDesign
 {
     public class EnemySearchingState : IEnemyState
     {
-        private readonly IAI ai;
+        private readonly IAi ai;
 
         private float reactionStartTime = 0f;
 
 
         private bool sawPlayer = false;
 
-        public EnemySearchingState(IAI ai)
+        public bool IsAlive => true;
+
+        public EnemySearchingState(IAi ai)
         {
             this.ai = ai;
             ai.Character.ExecuteCommand(new WalkCommand(false));
         }
 
-        public void UpdateBehaviour(AIContext ctx)
+        public void UpdateBehaviour(AiContext ctx)
         {
             if (Game.Instance.Player.Character.IsDead)
             {
@@ -56,12 +58,17 @@ namespace HackedDesign
                 }
             }
 
+            float move = 0;
+            move = Mathf.Sign((ctx.position - ctx.lastKnownPlayerPosition).x) < 0 ? 1 : -1;
+
+            ai.Character.ExecuteCommand(new FacingCommand(move, 0));
+
             if (!ctx.settings.Stationary)
             {
-                float move = 0;
-                if (!ctx.wallInFront && !ctx.dropInFront)
+                
+                if (ctx.wallInFront || ctx.dropInFront)
                 {
-                    move = Mathf.Sign((ctx.position - ctx.lastKnownPlayerPosition).x) < 0 ? 1 : -1;
+                    move = 0;
                 }
 
                 ai.Character.ExecuteCommand(new MoveCommand(move, 0));

@@ -10,32 +10,32 @@ namespace HackedDesign.UI
         //[SerializeField] private CharacterData gameData;
         [SerializeField] private OperatingSystem os;
         [Header("UI")]
-        [SerializeField] private UnityEngine.UI.Slider ramSlider;
-        [SerializeField] private UnityEngine.UI.Slider healthSlider;
-        [SerializeField] private UnityEngine.UI.Slider energySlider;
-        [SerializeField] private RectTransform ammoPanel;
-        [SerializeField] private UnityEngine.UI.Text ammoText;
+        [SerializeField] private Slider ramSlider;
+        [SerializeField] private Slider healthSlider;
+        [SerializeField] private Slider energySlider;
+        [SerializeField] private RectTransform attackPanel;
+        [SerializeField] private RectTransform gunPanel;
+        [SerializeField] private Text ammoText;
         [SerializeField] private List<Button> buttonList = new List<Button>(6);
         [SerializeField] private List<Image> imageList = new List<Image>(6);
 
 
-        private new void Awake()
+        void Awake()
         {
-            base.Awake();
             os.changeActions += Repaint;
         }
 
         public override void Repaint()
         {
             healthSlider.value = os.Health;
-            ammoPanel.gameObject.SetActive(os.HasPistol);
-            if (os.HasPistol)
+            gunPanel.gameObject.SetActive(os.CurrentWeapon.weaponType == WeaponType.Gun);
+            if (os.CurrentWeapon.weaponType == WeaponType.Gun)
             {
                 ammoText.text = os.Ammo.ToString();
             }
             
             RepaintHacks();
-            RepaintRam();
+            RepaintMomentum();
             RepaintEnergy();
         }
 
@@ -69,9 +69,10 @@ namespace HackedDesign.UI
             }
         }
 
-        public void RepaintRam()
+        public void RepaintMomentum()
         {
-            ramSlider.value = os.GetRamUsage();
+            ramSlider.maxValue = os.MaxMomentum;
+            ramSlider.value = os.Momentum;
         }
 
         private void RepaintEnergy()

@@ -8,20 +8,21 @@ namespace HackedDesign
 {
     public class LevelEndState : IState
     {
-        private readonly PlayerController player;
+        private readonly IPlayerController player;
 
         public bool PlayerActionAllowed => false;
 
         public bool Battle => false;
 
-        public LevelEndState(PlayerController player)
+        public LevelEndState(IPlayerController player)
         {
             this.player = player;
         }
 
         public void Begin()
         {
-            this.player.Stop();
+            player.Stop();
+            player.Character.SetIdleState();
         }
 
         public void End()
@@ -51,7 +52,7 @@ namespace HackedDesign
 
         public void Update()
         {
-            
+            player.UpdateIdleBehaviour();
         }
     }
 }

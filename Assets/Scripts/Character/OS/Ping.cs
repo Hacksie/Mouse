@@ -2,7 +2,7 @@
 
 namespace HackedDesign
 {
-    [CreateAssetMenu(fileName = "Ping", menuName = "Mouse/PU/Ping")]
+    [CreateAssetMenu(fileName = "Ping", menuName = "Mouse/OS/Ping")]
     public class Ping : Hack
     {
         public override void Trigger(GameObject target)
